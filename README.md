@@ -16,3 +16,37 @@ Features:
 Tech:
 
 - React + TypeScript Vite + Stylex
+
+---
+
+Database:
+
+const testData = {
+listName: "My 30th birthday",
+items: [
+{
+name: "shoe",
+addedDate: "11/01/2024",
+link: "www.shoelink.com",
+price: "33.44",
+color: "red",
+status: "open",
+description: "Item desc",
+quantity: 1,
+image: "donot know yet",
+mostWanted: true,
+},
+{
+name: "cube box",
+addedDate: "11/01/2024",
+link: "",
+price: "",
+color: "red",
+status: "open",
+description: "any cube box is fine",
+quantity: 4,
+image: "donot know yet",
+mostWanted: false,
+},
+],
+}

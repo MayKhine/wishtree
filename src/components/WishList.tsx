@@ -1,12 +1,19 @@
+import { WishListType } from "src/types"
 import { WishItem } from "./WishItem"
 
-export const WishList = () => {
+type WishListProps = {
+  data: WishListType
+}
+export const WishList = ({ data }: WishListProps) => {
+  // console.log("what is in my wish list: ", data)
   return (
     <div>
-      {" "}
-      A place to hold all wish list itmes
+      <h2> {data.listName} </h2>
+
       <div>
-        <WishItem />{" "}
+        {data.items.map((item, index) => {
+          return <WishItem key={index} itemData={item} />
+        })}
       </div>
     </div>
   )
