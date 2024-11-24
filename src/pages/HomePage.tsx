@@ -1,7 +1,9 @@
+import { MenuBar } from "../components/MenuBar"
 import { CreateWishList } from "../components/CreateWishList"
 import { WishList } from "../components/WishList"
 import * as stylex from "@stylexjs/stylex"
-
+import { CreateWishListButton } from "../components/CreateWishListButton"
+import { useState } from "react"
 export const HomePage = () => {
   const testDate = new Date("11/01/2024")
   const testData = {
@@ -34,14 +36,31 @@ export const HomePage = () => {
       },
     ],
   }
-
+  const [openCreateWishList, setOpenCreateWishList] = useState<boolean>(false)
   return (
     <div {...stylex.props(styles.base)}>
+      <MenuBar />
       This is home page
-      <CreateWishList />
-      <WishList data={testData} />
+      <CreateWishListButton
+        onClickFn={() => {
+          setOpenCreateWishList(true)
+        }}
+      />
+      {openCreateWishList && (
+        <CreateWishList
+          onCancelFn={() => {
+            setOpenCreateWishList(!openCreateWishList)
+          }}
+          onCreateFn={() => {
+            console.log("Create a new wish list please!")
+            setOpenCreateWishList(!openCreateWishList)
+          }}
+        />
+      )}
     </div>
   )
 }
 
-const styles = stylex.create({ base: { backgroundColor: "#DDDDDD" } })
+const styles = stylex.create({
+  base: { backgroundColor: "#DDDDDD" },
+})
