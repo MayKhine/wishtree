@@ -1,6 +1,7 @@
 import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 import * as stylex from "@stylexjs/stylex"
 import { Button } from "../assets/Button"
+import { tokens } from "../tokens.stylex"
 
 type CreateWishListType = {
   onCancelFn: () => void
@@ -50,26 +51,36 @@ export const CreateWishList = ({
           id="listNotes"
         />
       </div>
-      <div {...stylex.props(styles.inputsContainer)}>
-        <input
-          {...stylex.props(styles.input)}
-          onChange={inputChangeHandler}
-          type="radio"
-          id="listPrivacy"
-          name="listPrivacy"
-          value="public"
-          onChangeCapture={inputChangeHandler}
-        />
-         <label htmlFor="listPrivacy">Public</label>
-        <input
-          {...stylex.props(styles.input)}
-          onChange={inputChangeHandler}
-          type="radio"
-          id="listPrivacy"
-          name="listPrivacy"
-          value="private"
-        />
-         <label htmlFor="listPrivacy">private</label>
+      <div {...stylex.props(styles.radioButtonsContainer)}>
+         
+        <div {...stylex.props(styles.radioButtonDiv)}>
+          <input
+            {...stylex.props(styles.radioButton)}
+            onChange={inputChangeHandler}
+            type="radio"
+            id="listPrivacy"
+            name="listPrivacy"
+            value="public"
+            onChangeCapture={inputChangeHandler}
+          />
+          <label {...stylex.props(styles.radioButton)} htmlFor="listPrivacy">
+            Public
+          </label>
+        </div>
+         
+        <div {...stylex.props(styles.radioButtonDiv)}>
+          <input
+            {...stylex.props(styles.radioButton)}
+            onChange={inputChangeHandler}
+            type="radio"
+            id="listPrivacy"
+            name="listPrivacy"
+            value="private"
+          />
+          <label {...stylex.props(styles.radioButton)} htmlFor="listPrivacy">
+            Private
+          </label>
+        </div>
       </div>
       <div {...stylex.props(styles.buttonsContainer)}>
         <Button text="Cancel" onClickFn={onCancelFn} />
@@ -98,10 +109,48 @@ const styles = stylex.create({
     width: "25rem",
     border: "0px solid black",
     fontFamily: '"Funnel Sans", sans-serif',
+    // backgroundColor: "pink",
   },
 
   buttonsContainer: {
     // backgroundColor: "pink",
     // margin: "1rem",
+  },
+
+  radioButtonsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    // backgroundColor: tokens.blue,
+    // paddingLeft: "2rem",
+    gap: "1rem",
+    // height: "5rem",
+    // alignItems: "center",
+    // alignItems: "baseline",
+    // alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  radioButtonDiv: {
+    backgroundColor: "pink",
+    height: "2rem",
+    display: "flex",
+    flexDirection: "row",
+    // // height: "5rem",
+    alignItems: "center",
+    marginTop: ".1rem",
+    alignContent: "center",
+    // // alignItems: "baseline",
+    // // alignItems: "center",
+    // justifyContent: "center",
+    // color: { default: "red", ":hover": "#FFFEFB" },
+  },
+
+  radioButton: {
+    // position: "absolute",
+    // left: "0",
+    height: "2rem",
+    width: "2rem",
+    backgroundColor: tokens.darkBlue,
+
+    color: { default: "red", ":hover": "#FFFEFB" },
   },
 })
