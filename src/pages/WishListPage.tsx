@@ -1,4 +1,4 @@
-import { WishList } from "../components/WishList"
+import { WishList } from "../components/wishList/WishList"
 import { WishListType } from "src/types"
 import { useParams } from "react-router-dom"
 import { MenuBar } from "../assets/MenuBar"

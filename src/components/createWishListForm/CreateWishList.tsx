@@ -1,24 +1,26 @@
 import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 import * as stylex from "@stylexjs/stylex"
-import { Button } from "../assets/Button"
-import { tokens } from "../tokens.stylex"
+import { Button } from "../../assets/Button"
+import { tokens } from "../../tokens.stylex"
+import { WishListItemType, WishListType } from "src/types"
 
 type CreateWishListType = {
   onCancelFn: () => void
-  onCreateFn: () => void
+  onCreateFn: (data: WishListItemType) => void
 }
 export const CreateWishList = ({
   onCancelFn,
   onCreateFn,
 }: CreateWishListType) => {
-  const [wishList, setWishList] = useState({
-    listId: "1",
+  const [wishList, setWishList] = useState<WishListType>({
+    listId: 1,
     listName: "",
     listPrivacy: "public",
     listNotes: "",
     listDate: new Date(),
     listItems: [],
   })
+
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     // console.log("event: ", event.target.value, event.target.id)
     //update the state}
@@ -60,6 +62,7 @@ export const CreateWishList = ({
             type="radio"
             id="listPrivacy"
             name="listPrivacy"
+            defaultChecked={true}
             value="public"
             onChangeCapture={inputChangeHandler}
           />
@@ -84,7 +87,12 @@ export const CreateWishList = ({
       </div>
       <div {...stylex.props(styles.buttonsContainer)}>
         <Button text="Cancel" onClickFn={onCancelFn} />
-        <Button text="Create" onClickFn={onCreateFn} />
+        <Button
+          text="Create"
+          onClickFn={() => {
+            onCreateFn(wishList)
+          }}
+        />
       </div>
     </div>
   )
@@ -125,23 +133,16 @@ const styles = stylex.create({
   },
 
   radioButtonDiv: {
-    // backgroundColor: "pink",
-    height: "2rem",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginTop: ".1rem",
-    alignContent: "center",
-    gap: ".5rem",
+    gap: ".2rem",
   },
 
   radioButton: {
     height: "2rem",
     width: "2rem",
-    // backgroundColor: tokens.darkBlue,
     appearance: "none", // Remove default browser styles
-    // position: "relative",
-    // display: "inline-block",
     border: "1px solid black",
     borderRadius: "50%",
     transition: "background-color 0.1s ease",
@@ -149,8 +150,9 @@ const styles = stylex.create({
 
     // Define default state
     ":checked": {
-      backgroundColor: "white", // Blue when checked
+      // backgroundColor: "black", // Blue when checked
       // borderColor: "white",
+      // border: ".8rem solid black",
       border: ".8rem solid black",
     },
 

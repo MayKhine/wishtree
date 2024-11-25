@@ -7,6 +7,14 @@ export type WishListType = {
   listItems: Array<WishListItemType>
 }
 
+export type WishType = {
+  listId: number
+  listName: string
+  listPrivacy: string
+  listNotes: string
+  listDate: Date
+}
+
 export type WishListItemType = {
   name: string
   addedDate: Date

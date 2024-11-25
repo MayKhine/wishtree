@@ -11,7 +11,7 @@ export const WishList = ({ data }: WishListProps) => {
       <h2> {data.listName} </h2>
 
       <div>
-        {data.items.map((item, index) => {
+        {data.items?.map((item, index) => {
           return <WishItem key={index} itemData={item} />
         })}
       </div>
