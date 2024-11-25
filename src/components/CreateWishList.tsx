@@ -63,7 +63,7 @@ export const CreateWishList = ({
             value="public"
             onChangeCapture={inputChangeHandler}
           />
-          <label {...stylex.props(styles.radioButton)} htmlFor="listPrivacy">
+          <label {...stylex.props(styles.label)} htmlFor="listPrivacy">
             Public
           </label>
         </div>
@@ -77,7 +77,7 @@ export const CreateWishList = ({
             name="listPrivacy"
             value="private"
           />
-          <label {...stylex.props(styles.radioButton)} htmlFor="listPrivacy">
+          <label {...stylex.props(styles.label)} htmlFor="listPrivacy">
             Private
           </label>
         </div>
@@ -120,37 +120,45 @@ const styles = stylex.create({
   radioButtonsContainer: {
     display: "flex",
     flexDirection: "column",
-    // backgroundColor: tokens.blue,
-    // paddingLeft: "2rem",
     gap: "1rem",
-    // height: "5rem",
-    // alignItems: "center",
-    // alignItems: "baseline",
-    // alignItems: "center",
     justifyContent: "flex-end",
   },
+
   radioButtonDiv: {
-    backgroundColor: "pink",
+    // backgroundColor: "pink",
     height: "2rem",
     display: "flex",
     flexDirection: "row",
-    // // height: "5rem",
     alignItems: "center",
     marginTop: ".1rem",
     alignContent: "center",
-    // // alignItems: "baseline",
-    // // alignItems: "center",
-    // justifyContent: "center",
-    // color: { default: "red", ":hover": "#FFFEFB" },
+    gap: ".5rem",
   },
 
   radioButton: {
-    // position: "absolute",
-    // left: "0",
     height: "2rem",
     width: "2rem",
-    backgroundColor: tokens.darkBlue,
+    // backgroundColor: tokens.darkBlue,
+    appearance: "none", // Remove default browser styles
+    // position: "relative",
+    // display: "inline-block",
+    border: "1px solid black",
+    borderRadius: "50%",
+    transition: "background-color 0.1s ease",
+    cursor: "pointer",
 
-    color: { default: "red", ":hover": "#FFFEFB" },
+    // Define default state
+    ":checked": {
+      backgroundColor: "white", // Blue when checked
+      // borderColor: "white",
+      border: ".8rem solid black",
+    },
+
+    ":hover": {
+      borderColor: "blue",
+    },
+  },
+  label: {
+    // color: { default: "red", ":hover": "#FFFEFB" },
   },
 })
