@@ -1,15 +1,19 @@
-import { MenuBar } from "../components/MenuBar"
+import { MenuBar } from "../assets/MenuBar"
 import { CreateWishList } from "../components/CreateWishList"
 import { WishList } from "../components/WishList"
 import * as stylex from "@stylexjs/stylex"
 import { CreateWishListButton } from "../components/CreateWishListButton"
 import { useState } from "react"
+import { WishListType } from "src/types"
 export const HomePage = () => {
   const testDate = new Date("11/01/2024")
   const testData = {
     listId: 123,
     listName: "My 30th birthday",
-    items: [
+    listPrivacy: "private",
+    listNotes: "no  notes",
+    listDate: testDate,
+    listItems: [
       {
         name: "shoe",
         addedDate: testDate,
@@ -37,6 +41,12 @@ export const HomePage = () => {
     ],
   }
   const [openCreateWishList, setOpenCreateWishList] = useState<boolean>(false)
+  const [wishList, setWishList] = useState<WishListType>()
+
+  const createWishListHandler = () => {
+    console.log("Create a new wish list please!")
+    setOpenCreateWishList(!openCreateWishList)
+  }
   return (
     <div {...stylex.props(styles.base)}>
       <MenuBar />
@@ -51,10 +61,7 @@ export const HomePage = () => {
           onCancelFn={() => {
             setOpenCreateWishList(!openCreateWishList)
           }}
-          onCreateFn={() => {
-            console.log("Create a new wish list please!")
-            setOpenCreateWishList(!openCreateWishList)
-          }}
+          onCreateFn={createWishListHandler}
         />
       )}
     </div>

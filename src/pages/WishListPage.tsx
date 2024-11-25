@@ -1,7 +1,7 @@
 import { WishList } from "../components/WishList"
 import { WishListType } from "src/types"
 import { useParams } from "react-router-dom"
-import { MenuBar } from "../components/MenuBar"
+import { MenuBar } from "../assets/MenuBar"
 
 type WishListPageType = {
   wishListData?: WishListType

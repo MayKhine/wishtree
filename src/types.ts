@@ -1,9 +1,10 @@
 export type WishListType = {
   listId: number
   listName: string
-  items: Array<WishListItemType>
-  privacy: string
+  listPrivacy: string
   listNotes: string
+  listDate: Date
+  listItems: Array<WishListItemType>
 }
 
 export type WishListItemType = {

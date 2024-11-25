@@ -1,6 +1,6 @@
-import { ReactEventHandler, ReactHTMLElement } from "react"
+import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 import * as stylex from "@stylexjs/stylex"
-import { Button } from "./Button"
+import { Button } from "../assets/Button"
 
 type CreateWishListType = {
   onCancelFn: () => void
@@ -10,17 +10,24 @@ export const CreateWishList = ({
   onCancelFn,
   onCreateFn,
 }: CreateWishListType) => {
-  const nameInputChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    console.log("e:", event.target.value)
+  const [wishList, setWishList] = useState({
+    listId: "1",
+    listName: "",
+    listPrivacy: "public",
+    listNotes: "",
+    listDate: new Date(),
+    listItems: [],
+  })
+  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log("event: ", event.target.value, event.target.id)
+    //update the state}
+    setWishList((prevState) => ({
+      ...prevState,
+      [event.target.id]: event.target.value,
+    }))
+    // console.log("what is in wishlist", wishList)
   }
 
-  const notesInputChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    console.log("e:", event.target.value)
-  }
   return (
     <div {...stylex.props(styles.base)}>
       <h3> Create A Wish List</h3>
@@ -29,21 +36,40 @@ export const CreateWishList = ({
         <input
           {...stylex.props(styles.input)}
           placeholder="My birthday wishlist"
-          onChange={nameInputChangeHandler}
+          onChange={inputChangeHandler}
+          type="text"
+          id="listName"
         />
       </div>
       <div {...stylex.props(styles.inputsContainer)}>
         <label aria-label="listNotes">Wishlist Notes</label>
         <input
           {...stylex.props(styles.input)}
-          // placeholder="My wish list"
-          onChange={notesInputChangeHandler}
+          onChange={inputChangeHandler}
+          type="text"
+          id="listNotes"
         />
-        {/* <textarea
+      </div>
+      <div {...stylex.props(styles.inputsContainer)}>
+        <input
           {...stylex.props(styles.input)}
-          // placeholder="My wish list"
-          onChange={notesInputChangeHandler}
-        /> */}
+          onChange={inputChangeHandler}
+          type="radio"
+          id="listPrivacy"
+          name="listPrivacy"
+          value="public"
+          onChangeCapture={inputChangeHandler}
+        />
+         <label htmlFor="listPrivacy">Public</label>
+        <input
+          {...stylex.props(styles.input)}
+          onChange={inputChangeHandler}
+          type="radio"
+          id="listPrivacy"
+          name="listPrivacy"
+          value="private"
+        />
+         <label htmlFor="listPrivacy">private</label>
       </div>
       <div {...stylex.props(styles.buttonsContainer)}>
         <Button text="Cancel" onClickFn={onCancelFn} />

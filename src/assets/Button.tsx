@@ -1,5 +1,5 @@
 import * as stylex from "@stylexjs/stylex"
-
+import { tokens } from "../tokens.stylex"
 type ButtonProps = {
   onClickFn: () => void
   type?: "submit" | "reset" | "button"
@@ -24,7 +24,7 @@ const styles = stylex.create({
     fontSize: "1rem",
     fontWeight: "600",
     padding: "1rem",
-    backgroundColor: "#134074",
+    backgroundColor: tokens.darkBlue,
     color: { default: "#eef4ed", ":hover": "#8da9c4" },
     cursor: "pointer",
   },

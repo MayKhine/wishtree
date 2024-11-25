@@ -1,4 +1,4 @@
-import { MenuBar } from "../components/MenuBar"
+import { MenuBar } from "../assets/MenuBar"
 
 export const ProfilePage = () => {
   return (
