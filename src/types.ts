@@ -28,3 +28,24 @@ export type WishListItemType = {
   image: string
   mostWanted: boolean
 }
+
+/*
+-- wish list data 
+[
+{  listId: number
+  listName: string
+  listPrivacy: string
+  listNotes: string
+  listDate: Date}, {
+  ......}
+]
+
+-- wish list items data 
+[
+  {
+  wishListID: number
+  wishes: [<wishlistitems>]
+}
+]
+
+*/

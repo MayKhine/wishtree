@@ -6,6 +6,8 @@ import { CreateWishListButton } from "../components/createWishListForm/CreateWis
 import { useState } from "react"
 import { WishListType } from "src/types"
 import { Wish } from "../components/wishes/Wish"
+import { useNavigate } from "react-router-dom"
+
 export const HomePage = () => {
   // const testDate = new Date("11/01/2024")
   // // const testData = {
@@ -41,6 +43,7 @@ export const HomePage = () => {
   //     },
   //   ],
   // // }
+  const navigate = useNavigate()
   const [openCreateWishList, setOpenCreateWishList] = useState<boolean>(false)
   const [wishList, setWishList] = useState<WishListType>()
 
@@ -63,26 +66,31 @@ export const HomePage = () => {
     <div {...stylex.props(styles.base)}>
       <MenuBar />
       <div>
-        {" "}
         <CreateWishListButton
           onClickFn={() => {
-            setOpenCreateWishList(true)
+            navigate("/createwishlist")
+            // setOpenCreateWishList(true)
           }}
         />
-        {openCreateWishList && (
+        {/* {openCreateWishList && (
           <CreateWishList
             onCancelFn={() => {
               setOpenCreateWishList(!openCreateWishList)
             }}
             onCreateFn={createWishListHandler}
           />
-        )}
+        )} */}
       </div>
+
       <div>
         If theres data in local storage, show wish list // on click go to
         individual list
         {dataFromLocalStorage?.listId && (
-          <div>
+          <div
+            onClick={() => {
+              navigate(`/wishlist/${dataFromLocalStorage.listId}`)
+            }}
+          >
             <Wish
               listId={dataFromLocalStorage.listId}
               listName={dataFromLocalStorage.listName}
