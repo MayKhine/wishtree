@@ -7,6 +7,7 @@ import { useState } from "react"
 import { WishListType } from "src/types"
 import { Wish } from "../components/wishes/Wish"
 import { useNavigate } from "react-router-dom"
+import { tokens } from "../tokens.stylex"
 
 export const HomePage = () => {
   // const testDate = new Date("11/01/2024")
@@ -44,14 +45,6 @@ export const HomePage = () => {
   //   ],
   // // }
   const navigate = useNavigate()
-  const [openCreateWishList, setOpenCreateWishList] = useState<boolean>(false)
-  const [wishList, setWishList] = useState<WishListType>()
-
-  const createWishListHandler = (data: WishListType) => {
-    setOpenCreateWishList(!openCreateWishList)
-    console.log("Home: What is in wish list: ", data)
-    localStorage.setItem("wishlist", JSON.stringify(data))
-  }
 
   const getDataFromLocalStorage = () => {
     const storedData = localStorage.getItem("wishlist")
@@ -65,28 +58,16 @@ export const HomePage = () => {
   return (
     <div {...stylex.props(styles.base)}>
       <MenuBar />
-      <div>
+      <div {...stylex.props(styles.wishes)}>
         <CreateWishListButton
           onClickFn={() => {
             navigate("/createwishlist")
-            // setOpenCreateWishList(true)
           }}
         />
-        {/* {openCreateWishList && (
-          <CreateWishList
-            onCancelFn={() => {
-              setOpenCreateWishList(!openCreateWishList)
-            }}
-            onCreateFn={createWishListHandler}
-          />
-        )} */}
-      </div>
 
-      <div>
-        If theres data in local storage, show wish list // on click go to
-        individual list
         {dataFromLocalStorage?.listId && (
           <div
+            {...stylex.props(styles.wishesContainer)}
             onClick={() => {
               navigate(`/wishlist/${dataFromLocalStorage.listId}`)
             }}
@@ -106,5 +87,24 @@ export const HomePage = () => {
 }
 
 const styles = stylex.create({
-  base: { backgroundColor: "#DDDDDD" },
+  base: {
+    backgroundColor: "#DDDDDD",
+    // display: "flex",
+    // flexDirection: "column",
+  },
+  wishes: {
+    backgroundColor: tokens.blue,
+    // display: "grid",
+    // gridTemplateRows: "10rem",
+    display: "flex",
+
+    // flexDirection: "row",
+    // width: "100%",
+    gap: "1rem",
+    // flexShrink: 0,
+    // flexWrap: "nowrap",
+  },
+  wishesContainer: {
+    width: "10rem",
+  },
 })

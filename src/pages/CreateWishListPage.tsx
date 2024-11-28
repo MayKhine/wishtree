@@ -1,18 +1,13 @@
 import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 import * as stylex from "@stylexjs/stylex"
 import { Button } from "../assets/Button"
-// import { Button } from "../../assets/Button"
-import { tokens } from "../../tokens.stylex"
+// import { tokens } from "../../tokens.stylex"
 import { WishListItemType, WishListType } from "src/types"
+import { useNavigate } from "react-router-dom"
+import { MenuBar } from "../assets/MenuBar"
+export const CreateWishListPage = () => {
+  const navigate = useNavigate()
 
-type CreateWishListPageType = {
-  onCancelFn?: () => void
-  onCreateFn?: (data: WishListItemType) => void
-}
-export const CreateWishListPage = ({
-  onCancelFn,
-  onCreateFn,
-}: CreateWishListPageType) => {
   const [wishList, setWishList] = useState<WishListType>({
     listId: 1,
     listName: "",
@@ -23,8 +18,6 @@ export const CreateWishListPage = ({
   })
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log("event: ", event.target.value, event.target.id)
-    //update the state}
     setWishList((prevState) => ({
       ...prevState,
       [event.target.id]: event.target.value,
@@ -32,8 +25,13 @@ export const CreateWishListPage = ({
     // console.log("what is in wishlist", wishList)
   }
 
+  const addDataToLocalStorage = () => {
+    localStorage.setItem("wishlist", JSON.stringify(wishList))
+  }
   return (
     <div {...stylex.props(styles.base)}>
+      <MenuBar />
+
       <h3> Create A Wish List</h3>
       <div {...stylex.props(styles.inputsContainer)}>
         <label aria-label="listName">Wishlist Name</label>
@@ -87,11 +85,21 @@ export const CreateWishListPage = ({
         </div>
       </div>
       <div {...stylex.props(styles.buttonsContainer)}>
-        <Button text="Cancel" onClickFn={onCancelFn} />
+        <Button
+          text="Cancel"
+          onClickFn={() => {
+            navigate("/")
+          }}
+        />
         <Button
           text="Create"
           onClickFn={() => {
-            onCreateFn(wishList)
+            console.log(
+              "Create the wish list => currently into the local storage then go to home"
+            )
+            navigate("/")
+
+            // onCreateFn(wishList)
           }}
         />
       </div>
