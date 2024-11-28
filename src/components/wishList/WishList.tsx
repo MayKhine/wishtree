@@ -9,9 +9,6 @@ export const WishList = ({ data }: WishListProps) => {
   // console.log("what is in my wish list: ", data)
   return (
     <div {...stylex.props(styles.base)}>
-      <div>
-        <h2> {data.listName} </h2>
-      </div>
       <div {...stylex.props(styles.itemList)}>
         {data.items?.map((item, index) => {
           return <WishItem key={index} itemData={item} />

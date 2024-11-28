@@ -2,6 +2,9 @@ import { WishList } from "../components/wishList/WishList"
 import { WishListType } from "src/types"
 import { useParams } from "react-router-dom"
 import { MenuBar } from "../assets/MenuBar"
+import * as stylex from "@stylexjs/stylex"
+import { Button } from "../assets/Button"
+import { tokens } from "../tokens.stylex"
 
 type WishListPageType = {
   wishListData?: WishListType
@@ -47,8 +50,31 @@ export const WishListPage = ({ wishListData }: WishListPageType) => {
   return (
     <div>
       <MenuBar />
-      To Display Wish List
+      <div>
+        <h2> {testData.listName} </h2>
+      </div>
+      <div {...stylex.props(styles.newWishContainer)}>
+        <Button
+          text="+ A new wish"
+          onClickFn={() => {
+            console.log("Add a new wish to this list: ", testData.listId)
+          }}
+        />
+      </div>
       <WishList data={testData} />
     </div>
   )
 }
+
+const styles = stylex.create({
+  base: { backgroundColor: "gray" },
+  newWishContainer: {
+    backgroundColor: tokens.blue,
+    display: "flex",
+    flexDirection: "row",
+    // justifyContent: "flex-end",
+    width: "60rem",
+    // paddingRight: "1rem",
+    paddingLeft: "1rem",
+  },
+})

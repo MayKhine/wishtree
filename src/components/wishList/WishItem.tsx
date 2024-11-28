@@ -11,7 +11,7 @@ type WishItemProp = {
 export const WishItem = ({ itemData }: WishItemProp) => {
   return (
     <div {...stylex.props(styles.base)}>
-      <div {...stylex.props(styles.base2)}>
+      <div {...stylex.props(styles.wishListContainer)}>
         <div {...stylex.props(styles.header)}>
           <h3>{itemData.name}</h3>
 
@@ -32,7 +32,7 @@ export const WishItem = ({ itemData }: WishItemProp) => {
 }
 
 const styles = stylex.create({
-  base2: {
+  wishListContainer: {
     // margin: "1rem",
     backgroundColor: "#eef4ed",
     borderRadius: ".5rem",
