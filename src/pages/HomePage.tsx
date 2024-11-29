@@ -1,6 +1,4 @@
 import { MenuBar } from "../assets/MenuBar"
-import { CreateWishList } from "../components/createWishListForm/CreateWishList"
-import { WishList } from "../components/wishList/WishList"
 import * as stylex from "@stylexjs/stylex"
 import { CreateWishListButton } from "../components/createWishListForm/CreateWishListButton"
 import { useState } from "react"

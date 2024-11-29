@@ -1,7 +1,7 @@
 import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 import * as stylex from "@stylexjs/stylex"
 import { Button } from "../assets/Button"
-// import { tokens } from "../../tokens.stylex"
+import { tokens, stdStyles } from "../tokens.stylex"
 import { WishListItemType, WishListType } from "src/types"
 import { useNavigate } from "react-router-dom"
 import { MenuBar } from "../assets/MenuBar"
@@ -33,20 +33,20 @@ export const CreateWishListPage = () => {
       <MenuBar />
 
       <h3> Create A Wish List</h3>
-      <div {...stylex.props(styles.inputsContainer)}>
+      <div {...stylex.props(stdStyles.inputsContainer)}>
         <label aria-label="listName">Wishlist Name</label>
         <input
-          {...stylex.props(styles.input)}
+          {...stylex.props(stdStyles.input)}
           placeholder="My birthday wishlist"
           onChange={inputChangeHandler}
           type="text"
           id="listName"
         />
       </div>
-      <div {...stylex.props(styles.inputsContainer)}>
+      <div {...stylex.props(stdStyles.inputsContainer)}>
         <label aria-label="listNotes">Wishlist Notes</label>
         <input
-          {...stylex.props(styles.input)}
+          {...stylex.props(stdStyles.input)}
           onChange={inputChangeHandler}
           type="text"
           id="listNotes"
@@ -114,20 +114,19 @@ const styles = stylex.create({
     flexDirection: "column",
     gap: "1rem",
   },
-  inputsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    // fontSize: ".8rem",
-  },
-  input: {
-    fontSize: "1rem",
-    padding: "1rem",
-    borderRadius: ".3rem",
-    width: "25rem",
-    border: "0px solid black",
-    fontFamily: '"Funnel Sans", sans-serif',
-    // backgroundColor: "pink",
-  },
+  // inputsContainer: {
+  //   display: "flex",
+  //   flexDirection: "column",
+  // },
+  // input: {
+  //   fontSize: "1rem",
+  //   padding: "1rem",
+  //   borderRadius: ".3rem",
+  //   width: "25rem",
+  //   border: "0px solid black",
+  //   fontFamily: '"Funnel Sans", sans-serif',
+  //   // backgroundColor: "pink",
+  // },
 
   buttonsContainer: {
     // backgroundColor: "pink",

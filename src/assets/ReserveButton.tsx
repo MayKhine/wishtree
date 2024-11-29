@@ -21,5 +21,8 @@ const styles = stylex.create({
     borderRadius: "5rem",
     padding: ".5rem",
     backgroundColor: "pink",
+    minWidth: "3rem",
+    display: "flex",
+    justifyContent: "center",
   }),
 })

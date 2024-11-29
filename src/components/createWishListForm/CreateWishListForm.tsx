@@ -4,14 +4,14 @@ import { Button } from "../../assets/Button"
 import { tokens } from "../../tokens.stylex"
 import { WishListItemType, WishListType } from "src/types"
 
-type CreateWishListType = {
+type CreateWishListFormType = {
   onCancelFn: () => void
   onCreateFn: (data: WishListItemType) => void
 }
-export const CreateWishList = ({
+export const CreateWishListForm = ({
   onCancelFn,
   onCreateFn,
-}: CreateWishListType) => {
+}: CreateWishListFormType) => {
   const [wishList, setWishList] = useState<WishListType>({
     listId: 1,
     listName: "",

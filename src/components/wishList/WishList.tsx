@@ -30,7 +30,7 @@ const styles = stylex.create({
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
-    width: "60rem",
+    maxWidth: "60rem",
     backgroundColor: tokens.blue,
     // padding: "1rem",
   },

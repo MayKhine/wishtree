@@ -5,12 +5,16 @@ import { MenuBar } from "../assets/MenuBar"
 import * as stylex from "@stylexjs/stylex"
 import { Button } from "../assets/Button"
 import { tokens } from "../tokens.stylex"
+import { PopUp } from "../assets/PopUp"
+import { useState } from "react"
+import { NewWishItemForm } from "../components/wishes/NewWishItemForm"
 
 type WishListPageType = {
   wishListData?: WishListType
 }
 export const WishListPage = ({ wishListData }: WishListPageType) => {
   const { wishlistid } = useParams<{ wishlistid: string }>()
+  const [togglePopUp, setTogglePopUp] = useState(false)
   console.log("Wish List ID: ", wishlistid)
   const testDate = new Date("11/01/2024")
 
@@ -47,6 +51,10 @@ export const WishListPage = ({ wishListData }: WishListPageType) => {
     ],
   }
 
+  const addANewWish = () => {
+    console.log("Add a new wish to this list: ", testData.listId)
+    setTogglePopUp(!togglePopUp)
+  }
   return (
     <div>
       <MenuBar />
@@ -54,13 +62,20 @@ export const WishListPage = ({ wishListData }: WishListPageType) => {
         <h2> {testData.listName} </h2>
       </div>
       <div {...stylex.props(styles.newWishContainer)}>
-        <Button
-          text="+ A new wish"
-          onClickFn={() => {
-            console.log("Add a new wish to this list: ", testData.listId)
-          }}
-        />
+        <Button text="+ A new wish" onClickFn={addANewWish} />
+        {togglePopUp && (
+          <PopUp>
+            <NewWishItemForm
+              listId={testData.listId}
+              togglePopUp={() => {
+                console.log("what is toggle popup ", togglePopUp)
+                setTogglePopUp(!togglePopUp)
+              }}
+            />
+          </PopUp>
+        )}
       </div>
+
       <WishList data={testData} />
     </div>
   )
@@ -73,7 +88,7 @@ const styles = stylex.create({
     display: "flex",
     flexDirection: "row",
     // justifyContent: "flex-end",
-    width: "60rem",
+    // width: "60rem",
     // paddingRight: "1rem",
     paddingLeft: "1rem",
   },

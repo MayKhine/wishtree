@@ -27,5 +27,6 @@ const styles = stylex.create({
     backgroundColor: tokens.darkBlue,
     color: { default: "#eef4ed", ":hover": "#8da9c4" },
     cursor: "pointer",
+    minWidth: "5.5rem",
   },
 })
