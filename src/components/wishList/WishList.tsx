@@ -1,7 +1,8 @@
-import { WishListType } from "src/types"
-import { WishItem } from "./WishItem"
 import * as stylex from "@stylexjs/stylex"
 import { tokens } from "../../tokens.stylex"
+import { WishListType } from "../../types"
+import { WishItem } from "./WishItem"
+
 type WishListProps = {
   data: WishListType
 }
@@ -10,7 +11,7 @@ export const WishList = ({ data }: WishListProps) => {
   return (
     <div {...stylex.props(styles.base)}>
       <div {...stylex.props(styles.itemList)}>
-        {data.items?.map((item, index) => {
+        {data.listItems?.map((item, index) => {
           return <WishItem key={index} itemData={item} />
         })}
       </div>

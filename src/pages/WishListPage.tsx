@@ -1,13 +1,18 @@
-import { WishList } from "../components/wishList/WishList"
-import { WishListType } from "src/types"
-import { useParams } from "react-router-dom"
-import { MenuBar } from "../assets/MenuBar"
 import * as stylex from "@stylexjs/stylex"
-import { Button } from "../assets/Button"
-import { tokens } from "../tokens.stylex"
-import { PopUp } from "../assets/PopUp"
 import { useState } from "react"
+import { useParams } from "react-router-dom"
+// import { Button } from "src/assets/Button"
+// import { MenuBar } from "src/assets/MenuBar"
+// import { PopUp } from "src/assets/PopUp"
+// import { NewWishItemForm } from "src/components/wishes/NewWishItemForm"
+// import { WishList } from "src/components/wishList/WishList"
+import { WishListType } from "src/types"
+import { Button } from "../assets/Button"
+import { MenuBar } from "../assets/MenuBar"
+import { PopUp } from "../assets/PopUp"
 import { NewWishItemForm } from "../components/wishes/NewWishItemForm"
+import { WishList } from "../components/wishList/WishList"
+import { tokens } from "../tokens.stylex"
 
 type WishListPageType = {
   wishListData?: WishListType
@@ -22,8 +27,9 @@ export const WishListPage = ({ wishListData }: WishListPageType) => {
     listId: 123,
     listName: "My 30th birthday",
     listNotes: "balh blah",
-    privacy: "public",
-    items: [
+    listPrivacy: "public",
+    listDate: new Date(),
+    listItems: [
       {
         name: "shoe",
         addedDate: testDate,
@@ -49,7 +55,7 @@ export const WishListPage = ({ wishListData }: WishListPageType) => {
         mostWanted: false,
       },
     ],
-  }
+  } satisfies WishListType
 
   const addANewWish = () => {
     console.log("Add a new wish to this list: ", testData.listId)
