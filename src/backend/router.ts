@@ -1,12 +1,31 @@
+import { z } from "zod"
+import { authMiddleware } from "./authMiddleware"
+import { UserService } from "./services/UserService"
 import { publicProcedure, router } from "./trpc"
-import { z } from 'zod'
 
-export const makeAppRouter = () => {
+export type MakeAppRouterParams = {
+  userService: UserService
+}
+
+export const makeAppRouter = ({ userService }: MakeAppRouterParams) => {
   return router({
-    getWishlist: publicProcedure.input(z.object({ id: z.string() })).query(async () => {
+    getWishlist: publicProcedure
+      .input(z.object({ id: z.string() }))
+      .query(async () => {
+        return {}
+      }),
 
-      return {}
-    }),
+    updateProfile: publicProcedure
+      .use(authMiddleware(userService))
+      .input(
+        z.object({
+          name: z.string(),
+        }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        // Protected: Use ctx.user for updates
+        return { message: `Profile updated for ${ctx.user.email}` }
+      }),
   })
 }
 
