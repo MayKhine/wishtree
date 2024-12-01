@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  frontend-nginx:
+    image: wishtree-server
+    build:
+      context: ./
+    # platform: linux/arm64/v8
+    ports:
+      - "12347:80"

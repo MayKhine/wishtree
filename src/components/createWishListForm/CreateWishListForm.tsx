@@ -1,12 +1,11 @@
-import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 import * as stylex from "@stylexjs/stylex"
-import { Button } from "../../assets/Button"
-import { tokens } from "../../tokens.stylex"
-import { WishListItemType, WishListType } from "src/types"
+import { useState } from "react"
+import { Button } from "src/assets/Button"
+import { WishListType } from "src/types"
 
 type CreateWishListFormType = {
   onCancelFn: () => void
-  onCreateFn: (data: WishListItemType) => void
+  onCreateFn: (data: WishListType) => void
 }
 export const CreateWishListForm = ({
   onCancelFn,
