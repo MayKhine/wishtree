@@ -4,7 +4,6 @@ import { UserService } from "./services/UserService"
 export const authMiddleware = (userService: UserService) => {
   return async ({ ctx, next }: any) => {
     // get the token from authorization: "Bearer <token>"
-    // const token = ctx.headers.authorization?.split(" ")[1]
     const token = ctx.req.cookies["auth-token"] // Read the token from the cookie
 
     if (!token) {
@@ -14,7 +13,6 @@ export const authMiddleware = (userService: UserService) => {
       })
     }
 
-    // TODO
     const [error, user] = await userService.authenticate(token)
     if (error) {
       console.error("Unable to authenticate: ", error)

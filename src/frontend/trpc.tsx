@@ -17,12 +17,6 @@ export const TrpcQueryContextProvider: FC<PropsWithChildren> = ({
       links: [
         httpBatchLink({
           url: VITE_API_URL,
-          // You can pass any HTTP headers you wish here
-          async headers() {
-            return {
-              //              authorization: getAuthCookie(),
-            }
-          },
         }),
       ],
     }),

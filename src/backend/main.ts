@@ -1,4 +1,5 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express"
+import cookieParser from "cookie-parser"
 import cors from "cors"
 import express, { Request, Response } from "express"
 import { makeAppRouter } from "src/backend/router"
@@ -16,6 +17,8 @@ const main = async () => {
       credentials: true,
     }),
   )
+
+  app.use(cookieParser())
 
   // make the trpc appRouter - it handles all the requests
   const services = await bootstrap()

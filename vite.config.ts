@@ -14,8 +14,7 @@ export default defineConfig({
       "/trpc": {
         target: "http://localhost:4000", // Your Express server
         changeOrigin: true,
-        secure: false, // Aka not https
-        cookieDomainRewrite: "", // ?? do i need it? Allows cookies to be written
+        // cookieDomainRewrite: "", // ?? do i need it? Allows cookies to be written
       },
     },
   },

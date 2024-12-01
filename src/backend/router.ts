@@ -53,9 +53,11 @@ export const makeAppRouter = ({ userService }: MakeAppRouterParams) => {
 
         return token
       }),
-    helloWorld: publicProcedure.query(async () => ({
-      hello: "world",
-    })),
+    helloWorld: publicProcedure
+      .use(authMiddleware(userService))
+      .query(async () => {
+        return { foo: "bar" }
+      }),
 
     getWishlist: publicProcedure
       .input(z.object({ id: z.string() }))
