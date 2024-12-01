@@ -1,12 +1,81 @@
+import { z } from "zod"
+import { authMiddleware } from "./authMiddleware"
+import { UserService } from "./services/UserService"
 import { publicProcedure, router } from "./trpc"
-import { z } from 'zod'
+import { LuxonDateTimeSchema } from "./utils/LuxonDateTimeSchema"
 
-export const makeAppRouter = () => {
+export type MakeAppRouterParams = {
+  userService: UserService
+}
+
+export const makeAppRouter = ({ userService }: MakeAppRouterParams) => {
   return router({
-    getWishlist: publicProcedure.input(z.object({ id: z.string() })).query(async () => {
+    createUser: publicProcedure
+      .input(
+        z.object({
+          name: z.string(),
+          email: z.string(),
+          birthday: LuxonDateTimeSchema.optional(),
+          password: z.string(),
+        }),
+      )
+      .mutation(async ({ input, ctx }) => {
+        const [error, token] = await userService.createUser(input)
+        if (error) throw error
 
-      return {}
-    }),
+        ctx.res.cookie("auth-token", token, {
+          httpOnly: true, // Prevent access via JavaScript
+          secure: false, // Use HTTPS in production
+          sameSite: "strict", // CSRF protection
+          // maxAge: 7 * 24 * 60 * 60 * 1000, // tokens already have an expirey, that expirey should be expressed here.
+        })
+
+        return token
+      }),
+    loginUser: publicProcedure
+      .input(
+        z.object({
+          email: z.string(),
+          password: z.string(),
+        }),
+      )
+      .mutation(async ({ input, ctx }) => {
+        const { email, password } = input
+        const [err, token] = await userService.login(email, password)
+        if (err) throw err
+
+        ctx.res.cookie("auth-token", token, {
+          httpOnly: true, // Prevent access via JavaScript
+          secure: false, // Use HTTPS in production
+          sameSite: "strict", // CSRF protection
+          // maxAge: 7 * 24 * 60 * 60 * 1000, // tokens already have an expirey, that expirey should be expressed here.
+        })
+
+        return token
+      }),
+    helloWorld: publicProcedure
+      .use(authMiddleware(userService))
+      .query(async () => {
+        return { foo: "bar" }
+      }),
+
+    getWishlist: publicProcedure
+      .input(z.object({ id: z.string() }))
+      .query(async () => {
+        return {}
+      }),
+
+    updateProfile: publicProcedure
+      .use(authMiddleware(userService))
+      .input(
+        z.object({
+          name: z.string(),
+        }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        // Protected: Use ctx.user for updates
+        return { message: `Profile updated for ${ctx.user?.email}` }
+      }),
   })
 }
 

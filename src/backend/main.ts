@@ -1,8 +1,10 @@
-import express from 'express'
-import cors from 'cors'
-import { createExpressMiddleware} from '@trpc/server/adapters/express'
-import { makeAppRouter } from 'src/backend/router'
-import { metaHotTeardown } from 'src/backend/utils/metaHotTeardown'
+import { createExpressMiddleware } from "@trpc/server/adapters/express"
+import cookieParser from "cookie-parser"
+import cors from "cors"
+import express, { Request, Response } from "express"
+import { makeAppRouter } from "src/backend/router"
+import { metaHotTeardown } from "src/backend/utils/metaHotTeardown"
+import { bootstrap } from "./bootstrap"
 
 const main = async () => {
   const app = express()
@@ -10,20 +12,26 @@ const main = async () => {
   // Some cors settings to enable us to have a website hosted at :3000 calling backend at :4000 for example (cross domain)
   app.use(
     cors({
-      origin: true, 
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], 
-      credentials: true, 
+      origin: true,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      credentials: true,
     }),
   )
 
+  app.use(cookieParser())
+
   // make the trpc appRouter - it handles all the requests
-  const appRouter = await makeAppRouter()
+  const services = await bootstrap()
+  const appRouter = await makeAppRouter(services)
 
   app.use(
     "/trpc",
     createExpressMiddleware({
       router: appRouter,
-      createContext: () => ({}),
+      createContext: ({ req, res }: { req: Request; res: Response }) => ({
+        req,
+        res,
+      }),
     }),
   )
 
