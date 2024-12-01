@@ -1,10 +1,8 @@
-import { MenuBar } from "../assets/MenuBar"
 import * as stylex from "@stylexjs/stylex"
-import { CreateWishListButton } from "../components/createWishListForm/CreateWishListButton"
-import { useState } from "react"
-import { WishListType } from "src/types"
-import { Wish } from "../components/wishes/Wish"
 import { useNavigate } from "react-router-dom"
+import { MenuBar } from "../assets/MenuBar"
+import { CreateWishListButton } from "../components/createWishListForm/CreateWishListButton"
+import { Wish } from "../components/wishes/Wish"
 import { tokens } from "../tokens.stylex"
 
 export const HomePage = () => {
