@@ -10,7 +10,7 @@ export const migration = {
         name TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         birthday DATE,
-        password TEXT NOT NULL
+        passwordHash TEXT NOT NULL
       );
     `)
 

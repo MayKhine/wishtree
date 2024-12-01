@@ -10,15 +10,7 @@ export const makeSecretFileAdapter = (
 ): SecretManagerAdapter => {
   let cachedSecret: string | undefined
 
-  const secretExists = async (): Promise<ErrorType<boolean, Error>> => {
-    const exists = await fileAdapter.fileExists(secretFileName)
-
-    return [null, exists] as const
-  }
-
-  const getSecret = async (): Promise<
-    ErrorType<string, Error | "NotFound">
-  > => {
+  const getSecret = async (): Promise<ErrorType<string, Error>> => {
     if (cachedSecret) {
       return [null, cachedSecret]
     }
@@ -26,7 +18,7 @@ export const makeSecretFileAdapter = (
       await fileAdapter.readFileString(secretFileName)
 
     if (readError === "ENOENT") {
-      return ["NotFound", null]
+      return generateSecret()
     } else if (readError) {
       return [readError, null]
     }
@@ -48,8 +40,6 @@ export const makeSecretFileAdapter = (
   }
 
   return {
-    secretExists,
     getSecret,
-    generateSecret,
   }
 }

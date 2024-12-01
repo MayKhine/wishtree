@@ -1,6 +1,6 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express"
 import cors from "cors"
-import express from "express"
+import express, { Request, Response } from "express"
 import { makeAppRouter } from "src/backend/router"
 import { metaHotTeardown } from "src/backend/utils/metaHotTeardown"
 import { bootstrap } from "./bootstrap"
@@ -25,7 +25,10 @@ const main = async () => {
     "/trpc",
     createExpressMiddleware({
       router: appRouter,
-      createContext: () => ({}),
+      createContext: ({ req, res }: { req: Request; res: Response }) => ({
+        req,
+        res,
+      }),
     }),
   )
 

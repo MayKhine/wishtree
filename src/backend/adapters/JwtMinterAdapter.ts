@@ -4,9 +4,7 @@ import { JwtMinterAdapter } from "../services/UserService"
 export const makeJwtMinterAdapter = (
   options: JwtMinterAdapterOptions,
 ): JwtMinterAdapter => {
-  const secret = ""
-
-  const generateToken = (payload: Record<string, unknown>) => {
+  const generateToken = (payload: Record<string, unknown>, secret: string) => {
     return jwt.sign(payload, secret, {
       expiresIn: options.expiresInSeconds || "1h",
     })

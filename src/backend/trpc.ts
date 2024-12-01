@@ -1,6 +1,12 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC } from "@trpc/server"
+import { CreateExpressContextOptions } from "@trpc/server/adapters/express"
+import { User } from "./models/models"
 
-const t = initTRPC.create();
+type Context = {
+  user?: User
+} & CreateExpressContextOptions
 
-export const router = t.router;
-export const publicProcedure = t.procedure;
+const t = initTRPC.context<Context>().create()
+
+export const router = t.router
+export const publicProcedure = t.procedure

@@ -1,3 +1,4 @@
+import fs from "fs/promises"
 import { Duration } from "luxon"
 import { makeAuthAdapter } from "./adapters/AuthAdapter"
 import { makeJwtMinterAdapter } from "./adapters/JwtMinterAdapter"
@@ -9,10 +10,14 @@ import { runMigrations } from "./utils/migrationManager"
 import { makeSqliteConnection } from "./utils/sqliteConnection"
 
 export const bootstrap = async () => {
+  const storageDir = "./storage"
+
+  await fs.mkdir(storageDir, { recursive: true })
   const db = makeSqliteConnection("./storage/db.sqlite")
   await runMigrations(db)
 
   const fileHelper = makeFileStorageHelper("./storage")
+  await fileHelper.init()
   const secretAdapter = makeSecretFileAdapter(fileHelper)
 
   const userRepository = makeSqliteUserRepository(db)

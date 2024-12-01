@@ -8,4 +8,15 @@ export default defineConfig({
   build: {
     outDir: "dist/frontend",
   },
+  server: {
+    // proxy /trpc requests
+    proxy: {
+      "/trpc": {
+        target: "http://localhost:4000", // Your Express server
+        changeOrigin: true,
+        secure: false, // Aka not https
+        cookieDomainRewrite: "", // ?? do i need it? Allows cookies to be written
+      },
+    },
+  },
 })

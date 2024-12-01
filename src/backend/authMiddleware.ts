@@ -3,7 +3,10 @@ import { UserService } from "./services/UserService"
 
 export const authMiddleware = (userService: UserService) => {
   return async ({ ctx, next }: any) => {
-    const token = ctx.headers.authorization?.split(" ")[1] // Extract token from "Bearer <token>"
+    // get the token from authorization: "Bearer <token>"
+    // const token = ctx.headers.authorization?.split(" ")[1]
+    const token = ctx.req.cookies["auth-token"] // Read the token from the cookie
+
     if (!token) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
@@ -13,14 +16,15 @@ export const authMiddleware = (userService: UserService) => {
 
     // TODO
     const [error, user] = await userService.authenticate(token)
-    if (!user) {
+    if (error) {
+      console.error("Unable to authenticate: ", error)
       throw new TRPCError({
         code: "UNAUTHORIZED",
         message: "Invalid or expired token",
       })
     }
 
-    ctx.user = user // Attach user info to context
-    return next() // Proceed to the actual resolver
+    ctx.user = user
+    return next()
   }
 }

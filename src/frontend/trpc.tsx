@@ -6,7 +6,7 @@ import type { AppRouter } from "src/backend/router"
 //     👆 **type-only** import because we don't want to pull in actual server-side deps to frontend!
 
 export const trpc = createTRPCReact<AppRouter>()
-const VITE_API_URL = import.meta.env.VITE_API_URL
+const VITE_API_URL = import.meta.env.VITE_API_URL ?? "/trpc"
 
 export const TrpcQueryContextProvider: FC<PropsWithChildren> = ({
   children,

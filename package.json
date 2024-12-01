@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",
-    "@trpc/client": "^10.45.2",
-    "@trpc/react-query": "^10.45.2",
-    "@trpc/server": "^10.45.2",
+    "@trpc/client": "11.0.0-rc.648",
+    "@trpc/react-query": "11.0.0-rc.648",
+    "@trpc/server": "11.0.0-rc.648",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
