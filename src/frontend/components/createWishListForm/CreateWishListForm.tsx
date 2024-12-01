@@ -1,13 +1,16 @@
-import { ReactEventHandler, ReactHTMLElement, useState } from "react"
 import * as stylex from "@stylexjs/stylex"
-import { Button } from "../assets/Button"
-import { tokens, stdStyles } from "../tokens.stylex"
-import { WishListItemType, WishListType } from "src/types"
-import { useNavigate } from "react-router-dom"
-import { MenuBar } from "../assets/MenuBar"
-export const CreateWishListPage = () => {
-  const navigate = useNavigate()
+import { useState } from "react"
+import { Button } from "src/frontend/assets/Button"
+import { WishListType } from "src/frontend/types"
 
+type CreateWishListFormType = {
+  onCancelFn: () => void
+  onCreateFn: (data: WishListType) => void
+}
+export const CreateWishListForm = ({
+  onCancelFn,
+  onCreateFn,
+}: CreateWishListFormType) => {
   const [wishList, setWishList] = useState<WishListType>({
     listId: 1,
     listName: "",
@@ -18,6 +21,8 @@ export const CreateWishListPage = () => {
   })
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log("event: ", event.target.value, event.target.id)
+    //update the state}
     setWishList((prevState) => ({
       ...prevState,
       [event.target.id]: event.target.value,
@@ -25,28 +30,23 @@ export const CreateWishListPage = () => {
     // console.log("what is in wishlist", wishList)
   }
 
-  const addDataToLocalStorage = () => {
-    localStorage.setItem("wishlist", JSON.stringify(wishList))
-  }
   return (
     <div {...stylex.props(styles.base)}>
-      <MenuBar />
-
       <h3> Create A Wish List</h3>
-      <div {...stylex.props(stdStyles.inputsContainer)}>
+      <div {...stylex.props(styles.inputsContainer)}>
         <label aria-label="listName">Wishlist Name</label>
         <input
-          {...stylex.props(stdStyles.input)}
+          {...stylex.props(styles.input)}
           placeholder="My birthday wishlist"
           onChange={inputChangeHandler}
           type="text"
           id="listName"
         />
       </div>
-      <div {...stylex.props(stdStyles.inputsContainer)}>
+      <div {...stylex.props(styles.inputsContainer)}>
         <label aria-label="listNotes">Wishlist Notes</label>
         <input
-          {...stylex.props(stdStyles.input)}
+          {...stylex.props(styles.input)}
           onChange={inputChangeHandler}
           type="text"
           id="listNotes"
@@ -85,21 +85,11 @@ export const CreateWishListPage = () => {
         </div>
       </div>
       <div {...stylex.props(styles.buttonsContainer)}>
-        <Button
-          text="Cancel"
-          onClickFn={() => {
-            navigate("/")
-          }}
-        />
+        <Button text="Cancel" onClickFn={onCancelFn} />
         <Button
           text="Create"
           onClickFn={() => {
-            console.log(
-              "Create the wish list => currently into the local storage then go to home"
-            )
-            navigate("/")
-
-            // onCreateFn(wishList)
+            onCreateFn(wishList)
           }}
         />
       </div>
@@ -114,19 +104,20 @@ const styles = stylex.create({
     flexDirection: "column",
     gap: "1rem",
   },
-  // inputsContainer: {
-  //   display: "flex",
-  //   flexDirection: "column",
-  // },
-  // input: {
-  //   fontSize: "1rem",
-  //   padding: "1rem",
-  //   borderRadius: ".3rem",
-  //   width: "25rem",
-  //   border: "0px solid black",
-  //   fontFamily: '"Funnel Sans", sans-serif',
-  //   // backgroundColor: "pink",
-  // },
+  inputsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    // fontSize: ".8rem",
+  },
+  input: {
+    fontSize: "1rem",
+    padding: "1rem",
+    borderRadius: ".3rem",
+    width: "25rem",
+    border: "0px solid black",
+    fontFamily: '"Funnel Sans", sans-serif',
+    // backgroundColor: "pink",
+  },
 
   buttonsContainer: {
     // backgroundColor: "pink",

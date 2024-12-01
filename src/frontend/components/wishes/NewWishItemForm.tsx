@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex"
-import { tokens, stdStyles } from "../../tokens.stylex"
 import { Button } from "../../assets/Button"
+import { stdStyles, tokens } from "../../tokens.stylex"
 
 type NewWishItemFormType = {
   togglePopUp: () => void

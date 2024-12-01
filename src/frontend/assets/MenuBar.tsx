@@ -1,7 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
+import { useNavigate } from "react-router-dom"
 import { tokens } from "../tokens.stylex"
 import { MenuButton } from "./MenuButton"
-import { useNavigate } from "react-router-dom"
 export const MenuBar = () => {
   const navigate = useNavigate()
   return (

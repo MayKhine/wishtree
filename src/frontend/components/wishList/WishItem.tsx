@@ -1,9 +1,9 @@
 // import * as stylex from "@stylexjs/stylex"
 import * as stylex from "@stylexjs/stylex"
+import { WishListItemType } from "src/frontend/types"
 import { Button } from "../../assets/Button"
-import { tokens } from "../../tokens.stylex"
-import { WishListItemType } from "src/types"
 import { ReserveButton } from "../../assets/ReserveButton"
+import { tokens } from "../../tokens.stylex"
 
 type WishItemProp = {
   itemData: WishListItemType

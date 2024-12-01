@@ -1,5 +1,5 @@
-import { WishType } from "src/types"
 import * as stylex from "@stylexjs/stylex"
+import { WishType } from "src/frontend/types"
 import { tokens } from "../../tokens.stylex"
 export const Wish = ({
   listId,
