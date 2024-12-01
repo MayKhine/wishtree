@@ -18,8 +18,8 @@ const main = async () => {
   )
 
   // make the trpc appRouter - it handles all the requests
-  await bootstrap()
-  const appRouter = await makeAppRouter({ userService })
+  const services = await bootstrap()
+  const appRouter = await makeAppRouter(services)
 
   app.use(
     "/trpc",

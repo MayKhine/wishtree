@@ -12,7 +12,7 @@ export const makeJwtMinterAdapter = (
     })
   }
 
-  const verifyToken = (token: string) => {
+  const verifyToken = (token: string, secret: string) => {
     return jwt.verify(token, secret) as Record<string, unknown>
   }
 
@@ -22,6 +22,5 @@ export const makeJwtMinterAdapter = (
   }
 }
 export type JwtMinterAdapterOptions = {
-  jwt: string
   expiresInSeconds?: number
 }

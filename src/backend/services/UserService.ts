@@ -7,6 +7,7 @@ export const makeUserService = (
   userRepository: UserRepository,
   authAdapter: AuthAdapter,
   jwtMinter: JwtMinterAdapter,
+  secretAdapter: SecretManagerAdapter,
 ) => {
   const createUser = async ({ password, ...rest }: CreateUserInput) => {
     const newUser = { ...rest, id: uuidv4() }
@@ -43,11 +44,42 @@ export const makeUserService = (
     return [null, token]
   }
 
+  const authenticate = async (
+    token: string,
+  ): Promise<ErrorType<User, Error | "NotFound">> => {
+    const [getSecretError, getSecretResult] = await secretAdapter.getSecret()
+
+    let secret: string
+    if (getSecretError === "NotFound") {
+      const [secretError, generatedSecret] =
+        await secretAdapter.generateSecret()
+      if (secretError) {
+        return [secretError, null]
+      }
+      secret = generatedSecret
+    } else if (getSecretError) {
+      return [getSecretError, null]
+    } else {
+      secret = getSecretResult
+    }
+
+    const object = (await jwtMinter.verifyToken(token, secret)) as {
+      user: User
+    }
+
+    const [getUserError, user] = await userRepository.getUser(object.user.id)
+
+    if (getUserError) {
+      return [getUserError, null]
+    }
+
+    return [null, user]
+  }
+
   return {
     createUser,
     login,
-    // TODO authenticate and get the user
-    authenticate: (token: string) => [null, null],
+    authenticate,
   }
 }
 
@@ -76,5 +108,11 @@ export type AuthAdapter = {
 
 export type JwtMinterAdapter = {
   generateToken(payload: object): string
-  verifyToken(token: string): object | null
+  verifyToken(token: string, secret: string): object | null
+}
+
+export type SecretManagerAdapter = {
+  secretExists: () => Promise<ErrorType<boolean, Error>>
+  getSecret: () => Promise<ErrorType<string, Error | "NotFound">>
+  generateSecret: () => Promise<ErrorType<string, Error>>
 }
