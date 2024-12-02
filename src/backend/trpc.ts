@@ -1,10 +1,12 @@
 import { initTRPC } from "@trpc/server"
-import { CreateExpressContextOptions } from "@trpc/server/adapters/express"
+import { Request, Response } from "express"
 import { User } from "./models/models"
 
 type Context = {
   user?: User
-} & CreateExpressContextOptions
+  req: Request
+  res: Response
+}
 
 const t = initTRPC.context<Context>().create()
 
