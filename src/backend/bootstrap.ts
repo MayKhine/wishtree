@@ -4,7 +4,9 @@ import { makeAuthAdapter } from "./adapters/AuthAdapter"
 import { makeJwtMinterAdapter } from "./adapters/JwtMinterAdapter"
 import { makeSecretFileAdapter } from "./adapters/SecretFileAdapter"
 import { makeSqliteUserRepository } from "./adapters/SqliteUserRepository"
+import { makeWishListStorageAdapter } from "./adapters/WishListAdapter"
 import { makeUserService } from "./services/UserService"
+import { makeWishListService } from "./services/WishListService"
 import { makeFileStorageHelper } from "./utils/fileStorageHelper"
 import { runMigrations } from "./utils/migrationManager"
 import { makeSqliteConnection } from "./utils/sqliteConnection"
@@ -33,5 +35,8 @@ export const bootstrap = async () => {
     secretAdapter,
   )
 
-  return { userService }
+  const wishListStore = makeWishListStorageAdapter(db)
+  const wishListService = makeWishListService(wishListStore)
+
+  return { userService, wishListService }
 }

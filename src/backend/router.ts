@@ -1,14 +1,19 @@
 import { z } from "zod"
 import { authMiddleware } from "./authMiddleware"
 import { UserService } from "./services/UserService"
+import { WishListService } from "./services/WishListService"
 import { publicProcedure, router } from "./trpc"
 import { LuxonDateTimeSchema } from "./utils/LuxonDateTimeSchema"
 
 export type MakeAppRouterParams = {
   userService: UserService
+  wishListService: WishListService
 }
 
-export const makeAppRouter = ({ userService }: MakeAppRouterParams) => {
+export const makeAppRouter = ({
+  userService,
+  wishListService,
+}: MakeAppRouterParams) => {
   return router({
     createUser: publicProcedure
       .input(
@@ -53,11 +58,6 @@ export const makeAppRouter = ({ userService }: MakeAppRouterParams) => {
 
         return token
       }),
-    helloWorld: publicProcedure
-      .use(authMiddleware(userService))
-      .query(async () => {
-        return { foo: "bar" }
-      }),
 
     getWishlist: publicProcedure
       .input(z.object({ id: z.string() }))
@@ -75,6 +75,24 @@ export const makeAppRouter = ({ userService }: MakeAppRouterParams) => {
       .mutation(async ({ ctx, input }) => {
         // Protected: Use ctx.user for updates
         return { message: `Profile updated for ${ctx.user?.email}` }
+      }),
+
+    upsertWishList: publicProcedure
+      .use(authMiddleware(userService))
+      // TODO should not be any
+      .input(z.any())
+      .mutation(async ({ input }) => {
+        // TODO need to also pass ctx, user to validation
+        await wishListService.upsertDbWishList(input)
+      }),
+
+    upsertWishItem: publicProcedure
+      .use(authMiddleware(userService))
+      // TODO should not be any
+      .input(z.any())
+      .mutation(async ({ input }) => {
+        // TODO need to also pass ctx, user to validation
+        await wishListService.upsertWishItem(input)
       }),
   })
 }
