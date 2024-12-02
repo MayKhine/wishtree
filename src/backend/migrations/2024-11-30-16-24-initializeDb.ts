@@ -18,7 +18,7 @@ export const migration = {
       CREATE TABLE WishList (
         id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
-        description TEXT,
+        description TEXT NOT NULL,
         eventDate DATETIME,
         userId TEXT NOT NULL,
         FOREIGN KEY (userId) REFERENCES User(id)

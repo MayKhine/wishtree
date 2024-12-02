@@ -1,3 +1,4 @@
+import { DateTime } from "luxon"
 import { DbUser } from "../domain/models/User"
 import { UserRepository } from "../services/UserService"
 import { sql } from "../utils/sql"
@@ -22,6 +23,7 @@ export const makeSqliteUserRepository = (
   const getUser = async (
     id: string,
   ): Promise<ErrorType<DbUser, "NotFound" | Error>> => {
+    // Types are a problem here, DbUser date fields are DateTime but must be str...
     const [user] = await sqliteConnection.all<DbUser>(
       sql`SELECT * FROM user WHERE id = ${id}`,
     )
@@ -30,6 +32,10 @@ export const makeSqliteUserRepository = (
       return ["NotFound", null] as const
     }
 
+    // STUPID!
+    user.birthday = user.birthday
+      ? DateTime.fromISO(user.birthday as unknown as string)
+      : undefined
     return [null, user] as const
   }
 
@@ -44,6 +50,10 @@ export const makeSqliteUserRepository = (
       return ["NotFound", null] as const
     }
 
+    // STUPID!
+    user.birthday = user.birthday
+      ? DateTime.fromISO(user.birthday as unknown as string)
+      : undefined
     return [null, user] as const
   }
 
