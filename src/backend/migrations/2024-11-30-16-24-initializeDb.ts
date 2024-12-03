@@ -1,4 +1,4 @@
-import { sql } from "../utils/sql"
+import { sql } from "../utils/sql.old"
 import { SqliteConnection } from "../utils/sqliteConnection"
 
 export const migration = {

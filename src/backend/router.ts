@@ -60,21 +60,29 @@ export const makeAppRouter = ({
       }),
 
     getWishlist: publicProcedure
-      .input(z.object({ id: z.string() }))
-      .query(async () => {
-        return {}
+      .input(z.object({ wishListId: z.string() }))
+      .query(async ({ input }) => {
+        const [err, wishList] = await wishListService.getWishItems(
+          input.wishListId,
+        )
+        if (err) throw err
+        return wishList
       }),
 
-    updateProfile: publicProcedure
+    getWishItems: publicProcedure
+      .input(z.object({ wishListId: z.string() }))
+      .query(async ({ input }) => {
+        const [err, wishList] = await wishListService.getWishItems(
+          input.wishListId,
+        )
+        if (err) throw err
+        return wishList
+      }),
+
+    getMyWishLists: publicProcedure
       .use(authMiddleware(userService))
-      .input(
-        z.object({
-          name: z.string(),
-        }),
-      )
-      .mutation(async ({ ctx, input }) => {
-        // Protected: Use ctx.user for updates
-        return { message: `Profile updated for ${ctx.user?.email}` }
+      .query(async ({ ctx: { user } }) => {
+        //...TODO
       }),
 
     upsertWishList: publicProcedure

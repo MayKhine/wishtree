@@ -1,5 +1,5 @@
 import { migrations } from "../migrations"
-import { sql } from "./sql"
+import { sql } from "./sql.old"
 import { SqliteConnection } from "./sqliteConnection"
 
 export const runMigrations = async (sqliteConnection: SqliteConnection) => {

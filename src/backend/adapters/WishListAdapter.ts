@@ -1,6 +1,6 @@
 import { DbWishItem, DbWishList } from "../domain/models/WishList"
 import { WishListStoreAdapter } from "../services/WishListService"
-import { sql } from "../utils/sql"
+import { sql } from "../utils/sql.old"
 import { SqliteConnection } from "../utils/sqliteConnection"
 import { ErrorType } from "../utils/tryCatch"
 
