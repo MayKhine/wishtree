@@ -3,12 +3,12 @@ export type SqlProducer = {
 }
 
 export type ProducedSql = {
-  values: Array<SimpleParam>
+  params: Array<SimpleParam>
   query: string
 }
 
 // maybe others?
-export type SimpleParam = string | number | boolean
+export type SimpleParam = string | number | boolean | null
 export type SqlParam = Array<SimpleParam> | SimpleParam | SqlProducer
 
 export const sql = (
@@ -25,28 +25,28 @@ const produceFragment = (
   return {
     produce: (offset: number = 0) => {
       const newStrings = new Array<string>()
-      const newValues = new Array<SimpleParam>()
+      const newParams = new Array<SimpleParam>()
 
       for (let i = 0; i < values.length; i++) {
         const str = strings[i]
         const value = values[i]
         if (isSqlProducer(value)) {
           newStrings.push(str)
-          const subFields = value.produce(newValues.length)
+          const subFields = value.produce(newParams.length)
           newStrings.push(subFields.query)
-          newValues.push(...subFields.values)
+          newParams.push(...subFields.params)
         } else {
           if (Array.isArray(value)) {
             const arrayStringComponents = []
             for (const subValue of value) {
-              newValues.push(subValue)
-              arrayStringComponents.push(`$${newValues.length}`)
+              newParams.push(subValue)
+              arrayStringComponents.push(`$${newParams.length}`)
             }
             newStrings.push(str)
             newStrings.push(`(${arrayStringComponents.join(", ")})`)
           } else {
-            newValues.push(value)
-            newStrings.push(str, `$${newValues.length + offset}`)
+            newParams.push(value)
+            newStrings.push(str, `$${newParams.length + offset}`)
           }
         }
       }
@@ -55,7 +55,7 @@ const produceFragment = (
 
       return {
         query: newStrings.join(""),
-        values: newValues,
+        params: newParams,
       }
     },
   }
@@ -72,7 +72,7 @@ sql.join = function (
   return {
     produce: (offset: number = 0) => {
       const queryParts: string[] = []
-      const values: SimpleParam[] = []
+      const params: SimpleParam[] = []
 
       const joinQp = new Array<string>()
       const joinValues = new Array<SimpleParam>()
@@ -84,21 +84,21 @@ sql.join = function (
 
       for (let i = 0; i < fragments.length; i++) {
         const frag = fragments[i]
-        const subFields = frag.produce(offset + values.length)
-        values.push(...subFields.values)
+        const subFields = frag.produce(offset + params.length)
+        params.push(...subFields.params)
         queryParts.push(subFields.query)
         if (i === fragments.length - 1) {
           continue
         }
 
         // TODO unpak the join?
-        values.push(...joinValues)
+        params.push(...joinValues)
         queryParts.push(joinQp.join(""))
       }
 
       return {
         query: queryParts.join(""),
-        values,
+        params,
       }
     },
   }

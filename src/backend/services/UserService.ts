@@ -1,6 +1,6 @@
 import { DateTime } from "luxon"
 import { v4 as uuidv4 } from "uuid"
-import { DbUser, User } from "../domain/models/User"
+import { User, UserPass } from "../domain/models/User"
 import { ErrorType } from "../utils/tryCatch"
 
 export const makeUserService = (
@@ -9,7 +9,7 @@ export const makeUserService = (
   jwtMinter: JwtMinterAdapter,
   secretAdapter: SecretManagerAdapter,
 ) => {
-  const dbUserToUser = ({ passwordHash: _, ...rest }: DbUser): User => {
+  const dbUserToUser = ({ passwordHash: _, ...rest }: UserPass): User => {
     return { ...rest }
   }
 
@@ -75,14 +75,14 @@ export const makeUserService = (
   // Check if the token is valid
   const authenticate = async (
     token: string,
-  ): Promise<ErrorType<DbUser, Error | "NotFound">> => {
+  ): Promise<ErrorType<UserPass, Error | "NotFound">> => {
     const [getSecretError, secret] = await secretAdapter.getSecret()
     if (getSecretError) {
       return [getSecretError, null]
     }
 
     const object = (await jwtMinter.verifyToken(token, secret)) as {
-      user: DbUser
+      user: UserPass
     }
 
     const [getUserError, user] = await userRepository.getUser(object.user.id)
@@ -111,9 +111,11 @@ export type CreateUserInput = {
 }
 
 export type UserRepository = {
-  saveUser(user: DbUser): Promise<void>
-  getUser(id: string): Promise<ErrorType<DbUser, "NotFound" | Error>>
-  getUserByEmail(email: string): Promise<ErrorType<DbUser, "NotFound" | Error>>
+  saveUser(user: UserPass): Promise<void>
+  getUser(id: string): Promise<ErrorType<UserPass, "NotFound" | Error>>
+  getUserByEmail(
+    email: string,
+  ): Promise<ErrorType<UserPass, "NotFound" | Error>>
 }
 
 export type AuthAdapter = {

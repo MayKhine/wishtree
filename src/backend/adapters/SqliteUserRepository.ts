@@ -1,30 +1,48 @@
 import { DateTime } from "luxon"
-import { DbUser } from "../domain/models/User"
+import { UserPass } from "../domain/models/User"
 import { UserRepository } from "../services/UserService"
-import { sql, SqlFragment } from "../utils/sql"
+import { sql } from "../utils/sql.old"
 import { SqliteConnection } from "../utils/sqliteConnection"
 import { ErrorType } from "../utils/tryCatch"
 
 export const makeSqliteUserRepository = (
   sqliteConnection: SqliteConnection,
 ): UserRepository => {
-  const saveUser = async ({
-    id,
-    name,
-    email,
-    passwordHash,
-    birthday,
-  }: DbUser) => {
+  // Internal db safe format for the User. Safe fields for sqlite
+  type DbUserTruely = {
+    id: string
+    name: string
+    email: string
+    birthday: string | null
+    passwordHash: string
+  }
+
+  const toDbUserTruely = (user: UserPass): DbUserTruely => ({
+    ...user,
+    birthday: user?.birthday?.toISODate() ?? null,
+  })
+
+  const fromDbUserTruely = (user: DbUserTruely): UserPass => ({
+    ...user,
+    birthday: user.birthday ? DateTime.fromISO(user.birthday) : undefined,
+  })
+
+  const saveUser = async (user: UserPass) => {
+    const { id, name, email, birthday, passwordHash } = toDbUserTruely(user)
     await sqliteConnection.run(
-      sql`INSERT INTO user (id, name, email, birthday, passwordHash) VALUES (${id}, ${name}, ${email}, ${birthday?.toISODate() ?? null}, ${passwordHash})`,
+      sql`
+      INSERT INTO user 
+        (id, name, email, birthday, passwordHash) 
+      VALUES 
+        (${id}, ${name}, ${email}, ${birthday}, ${passwordHash})`,
     )
   }
 
   const getUser = async (
     id: string,
-  ): Promise<ErrorType<DbUser, "NotFound" | Error>> => {
+  ): Promise<ErrorType<UserPass, "NotFound" | Error>> => {
     // Types are a problem here, DbUser date fields are DateTime but must be str...
-    const [user] = await sqliteConnection.all<DbUser>(
+    const [user] = await sqliteConnection.all<UserPass>(
       sql`SELECT * FROM user WHERE id = ${id}`,
     )
 
@@ -41,52 +59,44 @@ export const makeSqliteUserRepository = (
 
   const getUserByEmail = async (
     email: string,
-  ): Promise<ErrorType<DbUser, "NotFound" | Error>> => {
-    const [user] = await sqliteConnection.all<DbUser>(
+  ): Promise<ErrorType<UserPass, "NotFound" | Error>> => {
+    const [dbUser] = await sqliteConnection.all<DbUserTruely>(
       sql`SELECT * FROM user WHERE email = ${email}`,
     )
 
-    if (!user) {
+    if (!dbUser) {
       return ["NotFound", null] as const
     }
 
-    // STUPID!
-    user.birthday = user.birthday
-      ? DateTime.fromISO(user.birthday as unknown as string)
-      : undefined
+    const user = fromDbUserTruely(dbUser)
     return [null, user] as const
   }
 
-  const getUserNew = async (
+  const getUserBy = async (
     params: { type: "email"; value: string } | { type: "id"; value: string },
   ) => {
-    const conditions = new Array<SqlFragment>()
-
+    let condition = sql``
     switch (params.type) {
       case "email": {
-        conditions.push(sql`id = ${params.value}`)
+        condition = sql`id = ${params.value}`
         break
       }
       case "id": {
-        conditions.push(sql`email = ${params.value}`)
+        condition = sql`email = ${params.value}`
         break
       }
     }
 
-    const whereClause = sql`WHERE ${sql.join(conditions, sql` AND `)}`
-
-    const [user] = await sqliteConnection.all<DbUser>(sql`
+    const [dbUser] = await sqliteConnection.all<DbUserTruely>(sql`
       SELECT *
       FROM users
-      ${whereClause}
+      WHERE ${condition}
     `)
-    if (!user) {
+    if (!dbUser) {
       return ["NotFound", null] as const
     }
 
-    user.birthday = user.birthday
-      ? DateTime.fromISO(user.birthday as unknown as string)
-      : undefined
+    const user = fromDbUserTruely(dbUser)
     return [null, user] as const
   }
 
@@ -94,5 +104,6 @@ export const makeSqliteUserRepository = (
     saveUser,
     getUser,
     getUserByEmail,
+    // getUserBy,
   }
 }

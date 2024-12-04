@@ -6,7 +6,7 @@ describe.only("sql", () => {
     const result = sql`SELECT * FROM USERS WHERE id = ${"hello"}`.produce()
 
     expect(result.query).toBe(`SELECT * FROM USERS WHERE id = $1`)
-    expect(result.values).toEqual(["hello"])
+    expect(result.params).toEqual(["hello"])
   })
 
   test("multiple fragments inline", () => {
@@ -25,7 +25,7 @@ describe.only("sql", () => {
       WHERE id = $1 AND email = $2
     `)
 
-    expect(query.values).toEqual([123, "test@example.com"])
+    expect(query.params).toEqual([123, "test@example.com"])
   })
 
   test("join", () => {
@@ -37,7 +37,7 @@ describe.only("sql", () => {
 
     // TODO!
     // SHOULD THE JOIN BE SQL?
-    const { query, values } = sql.join(filters, ` AND `).produce()
+    const { query, params: values } = sql.join(filters, ` AND `).produce()
 
     expect(query).toEqual(`age >= $1 AND status = $2 AND country = $3`)
   })
@@ -61,7 +61,7 @@ describe.only("sql", () => {
       WHERE age >= $1 AND status = $2 AND country = $3
     `)
 
-    expect(query.values).toEqual([18, "active", "USA"])
+    expect(query.params).toEqual([18, "active", "USA"])
   })
 
   test("arrays as primitives", () => {
@@ -79,7 +79,7 @@ describe.only("sql", () => {
       WHERE id in ($1, $2, $3, $4)
     `)
 
-    expect(query.values).toEqual([1, 2, 3, 4])
+    expect(query.params).toEqual([1, 2, 3, 4])
   })
 
   test("arrays as primitives with offset", () => {
@@ -97,6 +97,6 @@ describe.only("sql", () => {
       WHERE name = $1 OR id in ($2, $3, $4, $5)
     `)
 
-    expect(query.values).toEqual(["ethu", 1, 2, 3, 4])
+    expect(query.params).toEqual(["ethu", 1, 2, 3, 4])
   })
 })

@@ -3,7 +3,7 @@ import { DateTime } from "luxon"
 import { afterEach } from "node:test"
 import path from "path"
 import { afterAll, beforeAll, describe, expect, test } from "vitest"
-import { DbUser } from "../domain/models/User"
+import { UserPass } from "../domain/models/User"
 import { runMigrations } from "../utils/migrationManager"
 import { sql } from "../utils/sql.old"
 import { makeSqliteConnection } from "../utils/sqliteConnection"
@@ -44,7 +44,7 @@ describe("useradapter", () => {
       name: "Ethan",
       passwordHash: "hash",
       birthday: DateTime.fromISO("1989-06-26"),
-    } satisfies DbUser
+    } satisfies UserPass
 
     await userAdapter.saveUser(user)
 
