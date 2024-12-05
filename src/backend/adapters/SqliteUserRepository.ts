@@ -1,7 +1,7 @@
 import { DateTime } from "luxon"
 import { UserPass } from "../domain/models/User"
 import { UserRepository } from "../services/UserService"
-import { sql } from "../utils/sql.old"
+import { sql } from "../utils/sql"
 import { SqliteConnection } from "../utils/sqliteConnection"
 import { ErrorType } from "../utils/tryCatch"
 

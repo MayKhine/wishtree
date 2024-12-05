@@ -1,5 +1,5 @@
 import sqlite from "sqlite3"
-import { SqlProducer } from "./sql.old"
+import { SqlProducer } from "./sql"
 
 export const makeSqliteConnection = (dbPath: string) => {
   let db: sqlite.Database | undefined

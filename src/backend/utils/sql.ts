@@ -1,91 +1,105 @@
-export type SqlFragment = { query: string; params: Array<SqlParam> }
+export type SqlProducer = {
+  produce: (offset?: number) => ProducedSql
+}
 
-export type SqlParam = string | number | boolean | null
+export type ProducedSql = {
+  params: Array<SimpleParam>
+  query: string
+}
 
-// https://chatgpt.com/c/674bebd6-da34-8010-bb48-543406d11a24
-// this sucks because it is doing regex to replace already compiled sql
-export function sql(
+// maybe others?
+export type SimpleParam = string | number | boolean | null
+export type SqlParam = Array<SimpleParam> | SimpleParam | SqlProducer
+
+export const sql = (
   strings: TemplateStringsArray,
-  ...values: Array<SqlParam | SqlFragment>
-): SqlFragment {
-  const params: SqlParam[] = []
-  const queryComponents: string[] = []
+  ...values: Array<SqlParam>
+): SqlProducer => {
+  return produceFragment(strings, values)
+}
 
-  for (let i = 0; i < strings.length; i++) {
-    const str = strings[i]
-    const value = values[i]
-
-    queryComponents.push(str)
-
-    if (value === undefined) continue
-
-    if (isSqlFragment(value)) {
-      // Adjust parameter placeholders for embedded fragments
-      const offset = params.length
-      const adjustedQuery = value.query.replace(
-        /\$(\d+)/g,
-        (_, index) => `$${+index + offset}`,
-      )
-      queryComponents.push(adjustedQuery)
-      params.push(...value.params)
-    } else {
-      // Add a single parameter
-      queryComponents.push(`$${params.length + 1}`)
-      params.push(value)
-    }
-  }
-
+const produceFragment = (
+  strings: TemplateStringsArray,
+  values: Array<SqlParam>,
+): SqlProducer => {
   return {
-    query: queryComponents.join(""),
-    params,
+    produce: (offset: number = 0) => {
+      const newStrings = new Array<string>()
+      const newParams = new Array<SimpleParam>()
+
+      for (let i = 0; i < values.length; i++) {
+        const str = strings[i]
+        const value = values[i]
+        if (isSqlProducer(value)) {
+          newStrings.push(str)
+          const subFields = value.produce(newParams.length)
+          newStrings.push(subFields.query)
+          newParams.push(...subFields.params)
+        } else {
+          if (Array.isArray(value)) {
+            const arrayStringComponents = []
+            for (const subValue of value) {
+              newParams.push(subValue)
+              arrayStringComponents.push(`$${newParams.length}`)
+            }
+            newStrings.push(str)
+            newStrings.push(`(${arrayStringComponents.join(", ")})`)
+          } else {
+            newParams.push(value)
+            newStrings.push(str, `$${newParams.length + offset}`)
+          }
+        }
+      }
+      // always gotta be one more strings than values
+      newStrings.push(strings.at(-1)!)
+
+      return {
+        query: newStrings.join(""),
+        params: newParams,
+      }
+    },
   }
+}
+
+const isSqlProducer = (value: any): value is SqlProducer => {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
 }
 
 sql.join = function (
-  fragments: SqlFragment[],
-  separator: SqlFragment | string,
-): SqlFragment {
-  const queryParts: string[] = []
-  const params: SqlParam[] = []
-
-  for (let i = 0; i < fragments.length; i++) {
-    const fragment = fragments[i]
-    const offset = params.length
-
-    // Adjust placeholders in each fragment
-    const adjustedQuery = fragment.query.replace(
-      /\$(\d+)/g,
-      (_, index) => `$${+index + offset}`,
-    )
-    queryParts.push(adjustedQuery)
-    params.push(...fragment.params)
-
-    if (i < fragments.length - 1) {
-      // Add the separator
-      if (typeof separator === "string") {
-        queryParts.push(separator)
-      } else {
-        const separatorQuery = separator.query.replace(
-          /\$(\d+)/g,
-          (_, index) => `$${+index + params.length}`,
-        )
-        queryParts.push(separatorQuery)
-        params.push(...separator.params)
-      }
-    }
-  }
-
+  fragments: SqlProducer[],
+  separator: string | SqlProducer, // TODO should this be sql?
+): SqlProducer {
   return {
-    query: queryParts.join(""),
-    params,
-  }
-}
+    produce: (offset: number = 0) => {
+      const queryParts: string[] = []
+      const params: SimpleParam[] = []
 
-function isSqlFragment(value: any): value is SqlFragment {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    typeof value.query === "string" &&
-    Array.isArray(value.params)
-  )
+      const joinQp = new Array<string>()
+      const joinValues = new Array<SimpleParam>()
+      if (isSqlProducer(separator)) {
+        // TODO!
+      } else {
+        joinQp.push(separator)
+      }
+
+      for (let i = 0; i < fragments.length; i++) {
+        const frag = fragments[i]
+        const subFields = frag.produce(offset + params.length)
+        params.push(...subFields.params)
+        queryParts.push(subFields.query)
+        if (i === fragments.length - 1) {
+          continue
+        }
+
+        // TODO unpak the join?
+        params.push(...joinValues)
+        queryParts.push(joinQp.join(""))
+      }
+
+      return {
+        query: queryParts.join(""),
+        params,
+      }
+    },
+  }
 }

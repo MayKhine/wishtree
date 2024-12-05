@@ -1,7 +1,14 @@
 import { describe, expect, test } from "vitest"
 import { sql } from "./sql"
 
-describe("sql", () => {
+describe.only("sql", () => {
+  test("basic", () => {
+    const result = sql`SELECT * FROM USERS WHERE id = ${"hello"}`.produce()
+
+    expect(result.query).toBe(`SELECT * FROM USERS WHERE id = $1`)
+    expect(result.params).toEqual(["hello"])
+  })
+
   test("multiple fragments inline", () => {
     const idFilter = sql`id = ${123}`
     const emailFilter = sql`email = ${"test@example.com"}`
@@ -10,9 +17,8 @@ describe("sql", () => {
       SELECT *
       FROM users
       WHERE ${idFilter} AND ${emailFilter}
-    `
+    `.produce()
 
-    console.log(query)
     expect(query.query).toEqual(`
       SELECT *
       FROM users
@@ -29,12 +35,14 @@ describe("sql", () => {
       sql`country = ${"USA"}`,
     ]
 
-    const { query, params } = sql.join(filters, sql` AND `)
+    // TODO!
+    // SHOULD THE JOIN BE SQL?
+    const { query, params: values } = sql.join(filters, ` AND `).produce()
 
     expect(query).toEqual(`age >= $1 AND status = $2 AND country = $3`)
   })
 
-  test("yz", () => {
+  test("joins filters", () => {
     const filters = [
       sql`age >= ${18}`,
       sql`status = ${"active"}`,
@@ -44,8 +52,8 @@ describe("sql", () => {
     const query = sql`
       SELECT *
       FROM users
-      WHERE ${sql.join(filters, sql` AND `)}
-    `
+      WHERE ${sql.join(filters, ` AND `)}
+    `.produce()
 
     expect(query.query).toEqual(`
       SELECT *
@@ -54,5 +62,41 @@ describe("sql", () => {
     `)
 
     expect(query.params).toEqual([18, "active", "USA"])
+  })
+
+  test("arrays as primitives", () => {
+    const query = sql`
+      SELECT *
+      FROM users
+      WHERE id in ${[1, 2, 3, 4]}
+    `.produce()
+
+    console.log("query is", query.query)
+
+    expect(query.query).toEqual(`
+      SELECT *
+      FROM users
+      WHERE id in ($1, $2, $3, $4)
+    `)
+
+    expect(query.params).toEqual([1, 2, 3, 4])
+  })
+
+  test("arrays as primitives with offset", () => {
+    const query = sql`
+      SELECT *
+      FROM users
+      WHERE name = ${"ethu"} OR id in ${[1, 2, 3, 4]}
+    `.produce()
+
+    console.log("query is", query.query)
+
+    expect(query.query).toEqual(`
+      SELECT *
+      FROM users
+      WHERE name = $1 OR id in ($2, $3, $4, $5)
+    `)
+
+    expect(query.params).toEqual(["ethu", 1, 2, 3, 4])
   })
 })

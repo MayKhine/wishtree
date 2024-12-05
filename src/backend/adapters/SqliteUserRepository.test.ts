@@ -5,7 +5,7 @@ import path from "path"
 import { afterAll, beforeAll, describe, expect, test } from "vitest"
 import { UserPass } from "../domain/models/User"
 import { runMigrations } from "../utils/migrationManager"
-import { sql } from "../utils/sql.old"
+import { sql } from "../utils/sql"
 import { makeSqliteConnection } from "../utils/sqliteConnection"
 import { makeSqliteUserRepository } from "./SqliteUserRepository"
 
