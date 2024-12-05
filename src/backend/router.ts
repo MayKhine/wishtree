@@ -1,12 +1,107 @@
+import { z } from "zod"
+import { authMiddleware } from "./authMiddleware"
+import { UserService } from "./services/UserService"
+import { WishListService } from "./services/WishListService"
 import { publicProcedure, router } from "./trpc"
-import { z } from 'zod'
+import { LuxonDateTimeSchema } from "./utils/LuxonDateTimeSchema"
 
-export const makeAppRouter = () => {
+export type MakeAppRouterParams = {
+  userService: UserService
+  wishListService: WishListService
+}
+
+export const makeAppRouter = ({
+  userService,
+  wishListService,
+}: MakeAppRouterParams) => {
   return router({
-    getWishlist: publicProcedure.input(z.object({ id: z.string() })).query(async () => {
+    createUser: publicProcedure
+      .input(
+        z.object({
+          name: z.string(),
+          email: z.string(),
+          birthday: LuxonDateTimeSchema.optional(),
+          password: z.string(),
+        }),
+      )
+      .mutation(async ({ input, ctx }) => {
+        const [error, token] = await userService.createUser(input)
+        if (error) throw error
 
-      return {}
-    }),
+        ctx.res.cookie("auth-token", token, {
+          httpOnly: true, // Prevent access via JavaScript
+          secure: false, // Use HTTPS in production
+          sameSite: "strict", // CSRF protection
+          // maxAge: 7 * 24 * 60 * 60 * 1000, // tokens already have an expirey, that expirey should be expressed here.
+        })
+
+        return token
+      }),
+    loginUser: publicProcedure
+      .input(
+        z.object({
+          email: z.string(),
+          password: z.string(),
+        }),
+      )
+      .mutation(async ({ input, ctx }) => {
+        const { email, password } = input
+        const [err, token] = await userService.login(email, password)
+        if (err) throw err
+
+        ctx.res.cookie("auth-token", token, {
+          httpOnly: true, // Prevent access via JavaScript
+          secure: false, // Use HTTPS in production
+          sameSite: "strict", // CSRF protection
+          // maxAge: 7 * 24 * 60 * 60 * 1000, // tokens already have an expirey, that expirey should be expressed here.
+        })
+
+        return token
+      }),
+
+    getWishlist: publicProcedure
+      .input(z.object({ wishListId: z.string() }))
+      .query(async ({ input }) => {
+        const [err, wishList] = await wishListService.getWishItems(
+          input.wishListId,
+        )
+        if (err) throw err
+        return wishList
+      }),
+
+    getWishItems: publicProcedure
+      .input(z.object({ wishListId: z.string() }))
+      .query(async ({ input }) => {
+        const [err, wishList] = await wishListService.getWishItems(
+          input.wishListId,
+        )
+        if (err) throw err
+        return wishList
+      }),
+
+    getMyWishLists: publicProcedure
+      .use(authMiddleware(userService))
+      .query(async ({ ctx: { user } }) => {
+        //...TODO
+      }),
+
+    upsertWishList: publicProcedure
+      .use(authMiddleware(userService))
+      // TODO should not be any
+      .input(z.any())
+      .mutation(async ({ input }) => {
+        // TODO need to also pass ctx, user to validation
+        await wishListService.upsertDbWishList(input)
+      }),
+
+    upsertWishItem: publicProcedure
+      .use(authMiddleware(userService))
+      // TODO should not be any
+      .input(z.any())
+      .mutation(async ({ input }) => {
+        // TODO need to also pass ctx, user to validation
+        await wishListService.upsertWishItem(input)
+      }),
   })
 }
 

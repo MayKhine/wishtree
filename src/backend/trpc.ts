@@ -1,6 +1,14 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC } from "@trpc/server"
+import { Request, Response } from "express"
+import { User } from "./models/models"
 
-const t = initTRPC.create();
+type Context = {
+  user?: User
+  req: Request
+  res: Response
+}
 
-export const router = t.router;
-export const publicProcedure = t.procedure;
+const t = initTRPC.context<Context>().create()
+
+export const router = t.router
+export const publicProcedure = t.procedure
