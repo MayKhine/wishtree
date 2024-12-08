@@ -1,4 +1,5 @@
 import sqlite from "sqlite3"
+import { SqlProducer } from "./sql"
 
 export const makeSqliteConnection = (dbPath: string) => {
   let db: sqlite.Database | undefined
@@ -26,7 +27,8 @@ export const makeSqliteConnection = (dbPath: string) => {
     return db
   }
 
-  const run = async ({ query, params }: Statement) => {
+  const run = async (producer: SqlProducer) => {
+    const { query, params } = producer.produce()
     const db = await getDbConnection()
 
     await new Promise<void>((res, rej) => {
@@ -36,7 +38,8 @@ export const makeSqliteConnection = (dbPath: string) => {
     })
   }
 
-  const all = async <T>({ query, params }: Statement) => {
+  const all = async <T>(producer: SqlProducer) => {
+    const { query, params } = producer.produce()
     const db = await getDbConnection()
     // TODO err
     const result = await new Promise<Array<T>>((res, rej) =>
