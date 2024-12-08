@@ -8,6 +8,8 @@ import typescript from "rollup-plugin-typescript2"
 // import fs from "fs"
 import { builtinModules } from "module"
 // import path from "path"
+import replace from "@rollup/plugin-replace"
+import autoNamedExports from "rollup-plugin-auto-named-exports"
 import polyfillNode from "rollup-plugin-polyfill-node"
 
 export default defineConfig({
@@ -22,24 +24,30 @@ export default defineConfig({
     typescript({
       tsconfig: "./tsconfig.json", // Path to your tsconfig file
     }),
-    resolve({
-      preferBuiltins: true, // Use Node.js built-in modules
-    }),
+    resolve({ preferBuiltins: true }),
     commonjs(), // Convert CommonJS to ES modules
+    // autoNamedExports(),
     // globals(),
     // builtin(),
     json(), // Support importing JSON files
     // terser(), // Minify the output bundle
-    // replace({
-    //   preventAssignment: true,
-    //   "import.meta.env": JSON.stringify({
-    //     ...getEnv(),
-    //   }),
-    // }),
+    replace({
+      preventAssignment: true,
+      // "import.meta.env": JSON.stringify({
+      //   ...getEnv(),
+      // }),
+    }),
   ],
   external: [
+    // "zod",
+    // "cookie-parser",
+    // "jsonwebtoken",
+    // "bcrypt",
+    // "bcrypt-ts",
     "sqlite3",
     // Specify modules that should remain external (Node.js built-ins)
     ...builtinModules,
   ],
 })
+
+// console.log("builtinModules", builtinModules)
