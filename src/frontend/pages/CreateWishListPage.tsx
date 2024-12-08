@@ -1,58 +1,98 @@
 import * as stylex from "@stylexjs/stylex"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { v4 as uuidV4 } from "uuid"
 import { Button } from "../assets/Button"
+import { InputError } from "../assets/InputError"
 import { MenuBar } from "../assets/MenuBar"
-import { stdStyles } from "../tokens.stylex"
-import { WishListType } from "../types"
+import { stdStyles, tokens } from "../tokens.stylex"
+import { trpc } from "../trpc"
+
 export const CreateWishListPage = () => {
   const navigate = useNavigate()
 
-  const [wishList, setWishList] = useState<WishListType>({
-    listId: 1,
-    listName: "",
-    listPrivacy: "public",
-    listNotes: "",
-    listDate: new Date(),
-    listItems: [],
+  const { isSuccess, mutate: upsertWishList } =
+    trpc.upsertWishList.useMutation()
+
+  useEffect(() => {
+    if (!isSuccess) {
+      return
+    }
+    navigate("/")
+  }, [isSuccess, navigate])
+
+  const [error, setError] = useState(false)
+  const [wishList, setWishList] = useState({
+    id: uuidV4(),
+    title: "",
+    description: "",
+    eventDate: "",
   })
 
-  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const inputChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if (event.target.id === "title") {
+      setError(false)
+    }
+
     setWishList((prevState) => ({
       ...prevState,
       [event.target.id]: event.target.value,
     }))
-    // console.log("what is in wishlist", wishList)
   }
 
-  const addDataToLocalStorage = () => {
-    localStorage.setItem("wishlist", JSON.stringify(wishList))
+  const createWishListHandler = () => {
+    //check if wishlist title is empty
+    if (wishList.title.length === 0) {
+      setError(true)
+      return
+    }
+
+    upsertWishList({
+      id: wishList.id,
+      title: wishList.title,
+      description: wishList.description,
+      // eventDate: wishList.eventDate?.toISODate() ?? undefined,
+      eventDate: wishList.eventDate,
+    })
   }
+
   return (
     <div {...stylex.props(styles.base)}>
       <MenuBar />
 
-      <h3> Create A Wish List</h3>
-      <div {...stylex.props(stdStyles.inputsContainer)}>
-        <label aria-label="listName">Wishlist Name</label>
-        <input
-          {...stylex.props(stdStyles.input)}
-          placeholder="My birthday wishlist"
-          onChange={inputChangeHandler}
-          type="text"
-          id="listName"
-        />
-      </div>
-      <div {...stylex.props(stdStyles.inputsContainer)}>
-        <label aria-label="listNotes">Wishlist Notes</label>
-        <input
-          {...stylex.props(stdStyles.input)}
-          onChange={inputChangeHandler}
-          type="text"
-          id="listNotes"
-        />
-      </div>
-      <div {...stylex.props(styles.radioButtonsContainer)}>
+      <div {...stylex.props(styles.formContainer)}>
+        <h3> Create A Wish List</h3>
+        <div {...stylex.props(stdStyles.inputsContainer)}>
+          <label aria-label="title">Wishlist</label>
+          <input
+            {...stylex.props(stdStyles.input)}
+            placeholder="My birthday wishlist"
+            onChange={inputChangeHandler}
+            type="text"
+            id="title"
+          />
+          {error && <InputError errorMsg="Please enter a wishlist title" />}
+        </div>
+        <div {...stylex.props(stdStyles.inputsContainer)}>
+          <label aria-label="eventDate">Date</label>
+          <input
+            {...stylex.props(stdStyles.input)}
+            type="date"
+            id="eventDate"
+            onChange={inputChangeHandler}
+          />
+        </div>
+        <div {...stylex.props(stdStyles.inputsContainer)}>
+          <label aria-label="description">Description</label>
+          <textarea
+            {...stylex.props(stdStyles.inputTextArea)}
+            onChange={inputChangeHandler}
+            id="description"
+          />
+        </div>
+        {/* <div {...stylex.props(styles.radioButtonsContainer)}>
          
         <div {...stylex.props(styles.radioButtonDiv)}>
           <input
@@ -83,25 +123,16 @@ export const CreateWishListPage = () => {
             Private
           </label>
         </div>
-      </div>
-      <div {...stylex.props(styles.buttonsContainer)}>
-        <Button
-          text="Cancel"
-          onClickFn={() => {
-            navigate("/")
-          }}
-        />
-        <Button
-          text="Create"
-          onClickFn={() => {
-            console.log(
-              "Create the wish list => currently into the local storage then go to home",
-            )
-            navigate("/")
-
-            // onCreateFn(wishList)
-          }}
-        />
+      </div> */}
+        <div {...stylex.props(styles.buttonsContainer)}>
+          <Button
+            text="Cancel"
+            onClickFn={() => {
+              navigate("/")
+            }}
+          />
+          <Button text="Create Wishlist" onClickFn={createWishListHandler} />
+        </div>
       </div>
     </div>
   )
@@ -112,23 +143,16 @@ const styles = stylex.create({
     backgroundColor: "#eef4ed",
     display: "flex",
     flexDirection: "column",
-    gap: "1rem",
+    // gap: "1rem",
   },
-  // inputsContainer: {
-  //   display: "flex",
-  //   flexDirection: "column",
-  // },
-  // input: {
-  //   fontSize: "1rem",
-  //   padding: "1rem",
-  //   borderRadius: ".3rem",
-  //   width: "25rem",
-  //   border: "0px solid black",
-  //   fontFamily: '"Funnel Sans", sans-serif',
-  //   // backgroundColor: "pink",
-  // },
-
+  formContainer: {
+    backgroundColor: tokens.lightGreen,
+    width: "27rem",
+  },
   buttonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     // backgroundColor: "pink",
     // margin: "1rem",
   },
@@ -167,8 +191,5 @@ const styles = stylex.create({
     ":hover": {
       borderColor: "blue",
     },
-  },
-  label: {
-    // color: { default: "red", ":hover": "#FFFEFB" },
   },
 })
