@@ -1,11 +1,25 @@
 import { UpsertWishItemRequest } from "../domain/models/UpsertWishItem"
 import { UpsertWishListRequest } from "../domain/models/UpsertWishListInput"
+import { User } from "../domain/models/User"
 import { WishItem, WishList } from "../domain/models/WishList"
-import { User } from "../models/models"
 import { ErrorType } from "../utils/tryCatch"
 
 export const makeWishListService = (wishListStore: WishListStoreAdapter) => {
-  const wishListBelongsToUser = async (wishListId: string, user: User) => {
+  const getMyWishLists = async (user: User | undefined) => {
+    if (!user) {
+      return ["NoUser", null] as const
+    }
+    return await wishListStore.getWishListsByUserId(user.id)
+  }
+
+  const wishListBelongsToUser = async (
+    wishListId: string,
+    user: User | undefined,
+  ) => {
+    if (!user) {
+      return ["NoUser", null] as const
+    }
+
     const [err, wishList] = await wishListStore.getWishList(wishListId)
     if (err && err !== "NotFound") {
       return [err, null] as const
@@ -15,32 +29,27 @@ export const makeWishListService = (wishListStore: WishListStoreAdapter) => {
     const wishListIsBeingCreated = err === "NotFound"
 
     if (!wishListBelongsToUser && !wishListIsBeingCreated) {
-      return [null, false] as const
+      return ["Forbidden", null] as const
     }
 
-    return [null, true] as const
+    return [null, user] as const
   }
 
   const upsertWishList = async (
     upsertRequest: UpsertWishListRequest,
-    user: User | undefined,
+    maybeUser: User | undefined,
   ) => {
-    if (!user) {
-      return ["NoUser", null] as const
-    }
-
     const [belongToUserErr, belongToUser] = await wishListBelongsToUser(
       upsertRequest.id,
-      user,
+      maybeUser,
     )
     if (belongToUserErr) return [belongToUserErr, null] as const
-    if (!belongToUser) return ["Forbidden", null] as const
 
     // save
     await wishListStore.upsertDbWishList({
       ...upsertRequest,
       eventDate: upsertRequest.eventDate?.toISODate() ?? null,
-      userId: user.id,
+      userId: belongToUser.id,
     })
 
     return [null, undefined] as const
@@ -48,28 +57,25 @@ export const makeWishListService = (wishListStore: WishListStoreAdapter) => {
 
   const upsertWishItem = async (
     upsertRequest: UpsertWishItemRequest,
-    user: User | undefined,
+    maybeUser: User | undefined,
   ) => {
-    if (!user) {
-      return ["NoUser", null] as const
-    }
-
-    const [belongToUserErr, belongTouser] = await wishListBelongsToUser(
+    const [belongToUserErr, belongToUser] = await wishListBelongsToUser(
       upsertRequest.id,
-      user,
+      maybeUser,
     )
     if (belongToUserErr) return [belongToUserErr, null] as const
-    if (!belongTouser) return ["Forbidden", null] as const
 
     // save
     await wishListStore.upsertWishItem({
       ...upsertRequest,
+      status: "open",
     })
 
     return [null, undefined] as const
   }
 
   return {
+    getMyWishLists,
     getWishItems: wishListStore.getWishItems,
     getWishList: wishListStore.getWishList,
     upsertWishList,
@@ -83,5 +89,6 @@ export type WishListStoreAdapter = {
   upsertDbWishList: (wishList: WishList) => Promise<void>
   upsertWishItem: (wishItem: WishItem) => Promise<void>
   getWishList: (id: string) => Promise<ErrorType<WishList, Error | "NotFound">>
-  getWishItems: (wishListId: string) => Promise<WishItem[]>
+  getWishItems: (wishListId: string) => Promise<Array<WishItem>>
+  getWishListsByUserId: (userId: string) => Promise<Array<WishList>>
 }

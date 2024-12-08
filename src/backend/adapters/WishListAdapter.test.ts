@@ -106,7 +106,7 @@ describe("wla", () => {
     const wli = {
       id: "1",
       name: "hi",
-      mostWanted: 1,
+      mostWanted: true,
       imageUrl: null,
       link: null,
       notes: "get it for me",
