@@ -5,11 +5,13 @@ import { WishItem, WishList } from "../domain/models/WishList"
 import { ErrorType } from "../utils/tryCatch"
 
 export const makeWishListService = (wishListStore: WishListStoreAdapter) => {
-  const getMyWishLists = async (user: User | undefined) => {
+  const getMyWishLists = async (
+    user: User | undefined,
+  ): Promise<ErrorType<WishList[], Error | "NoUser">> => {
     if (!user) {
       return ["NoUser", null] as const
     }
-    return await wishListStore.getWishListsByUserId(user.id)
+    return [null, await wishListStore.getWishListsByUserId(user.id)] as const
   }
 
   const wishListBelongsToUser = async (
