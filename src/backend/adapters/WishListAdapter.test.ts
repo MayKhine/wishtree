@@ -3,7 +3,7 @@ import { DateTime } from "luxon"
 import { afterEach } from "node:test"
 import path from "path"
 import { afterAll, beforeAll, describe, expect, test } from "vitest"
-import { DbWishItem } from "../domain/models/WishList"
+import { WishItem } from "../domain/models/WishList"
 import { runMigrations } from "../utils/migrationManager"
 import { sql } from "../utils/sql"
 import { makeSqliteConnection } from "../utils/sqliteConnection"
@@ -114,7 +114,7 @@ describe("wla", () => {
       quantity: 1,
       status: "open",
       wishListId: "1",
-    } satisfies DbWishItem
+    } satisfies WishItem
     await wishListADapter.upsertWishItem(wli)
 
     const wlis = await wishListADapter.getWishItems("1")

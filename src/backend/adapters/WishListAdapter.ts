@@ -1,4 +1,4 @@
-import { DbWishItem, DbWishList } from "../domain/models/WishList"
+import { WishItem, WishList } from "../domain/models/WishList"
 import { WishListStoreAdapter } from "../services/WishListService"
 import { sql } from "../utils/sql"
 import { SqliteConnection } from "../utils/sqliteConnection"
@@ -7,7 +7,7 @@ import { ErrorType } from "../utils/tryCatch"
 export const makeWishListStorageAdapter = (
   sqliteConnection: SqliteConnection,
 ): WishListStoreAdapter => {
-  const upsertDbWishList = async (wishList: DbWishList) => {
+  const upsertDbWishList = async (wishList: WishList) => {
     await sqliteConnection.run(sql`
       INSERT INTO WishList (id, title, description, eventDate, userId)
       VALUES (${wishList.id}, ${wishList.title}, ${wishList.description}, ${wishList.eventDate}, ${wishList.userId})
@@ -21,8 +21,8 @@ export const makeWishListStorageAdapter = (
 
   const getWishList = async (
     id: string,
-  ): Promise<ErrorType<DbWishList, Error | "NotFound">> => {
-    const [wishList] = await sqliteConnection.all<DbWishList>(sql`
+  ): Promise<ErrorType<WishList, Error | "NotFound">> => {
+    const [wishList] = await sqliteConnection.all<WishList>(sql`
       SELECT id, title, description, eventDate, userId 
       FROM WishList
       WHERE id = ${id};
@@ -34,7 +34,7 @@ export const makeWishListStorageAdapter = (
   }
 
   const getWishItems = async (wishListId: string) => {
-    const items = await sqliteConnection.all<DbWishItem>(sql`
+    const items = await sqliteConnection.all<WishItem>(sql`
       SELECT id, name, notes, price, link, imageUrl, status, mostWanted, quantity, wishListId 
       FROM WishItem
       WHERE wishListId = ${wishListId};
@@ -54,7 +54,7 @@ export const makeWishListStorageAdapter = (
     mostWanted,
     quantity,
     wishListId,
-  }: DbWishItem) => {
+  }: WishItem) => {
     await sqliteConnection.run(sql`
       INSERT INTO WishItem (id, name, notes, price, link, imageUrl, status, mostWanted, quantity, wishListId)
       VALUES (${id}, ${name}, ${notes}, ${price}, ${link}, ${imageUrl}, ${status}, ${mostWanted}, ${quantity}, ${wishListId})

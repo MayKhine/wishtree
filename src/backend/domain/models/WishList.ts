@@ -1,6 +1,6 @@
 import { DateTime } from "luxon"
 
-export type DbWishList = {
+export type WishList = {
   id: string
   title: string
   description: string
@@ -10,7 +10,7 @@ export type DbWishList = {
 
 export type StatusType = "open" | "reserved" | "received"
 
-export type DbWishItem = {
+export type WishItem = {
   id: string
   name: string
   notes: string
@@ -18,7 +18,7 @@ export type DbWishItem = {
   link: string | null
   imageUrl: string | null
   status: string
-  mostWanted: number
+  mostWanted: boolean
   quantity: number
   wishListId: string
 }
