@@ -1,5 +1,7 @@
 import { z } from "zod"
 import { authMiddleware } from "./authMiddleware"
+import { upsertWishItemRequest } from "./domain/models/UpsertWishItem"
+import { upsertWishListSchema } from "./domain/models/UpsertWishListInput"
 import { UserService } from "./services/UserService"
 import { WishListService } from "./services/WishListService"
 import { publicProcedure, router } from "./trpc"
@@ -88,19 +90,18 @@ export const makeAppRouter = ({
     upsertWishList: publicProcedure
       .use(authMiddleware(userService))
       // TODO should not be any
-      .input(z.any())
-      .mutation(async ({ input }) => {
-        // TODO need to also pass ctx, user to validation
-        await wishListService.upsertDbWishList(input)
+      .input(upsertWishListSchema)
+      .mutation(async ({ input, ctx }) => {
+        const [err] = await wishListService.upsertWishList(input, ctx.user)
+        if (err) throw err
       }),
 
     upsertWishItem: publicProcedure
       .use(authMiddleware(userService))
-      // TODO should not be any
-      .input(z.any())
-      .mutation(async ({ input }) => {
-        // TODO need to also pass ctx, user to validation
-        await wishListService.upsertWishItem(input)
+      .input(upsertWishItemRequest)
+      .mutation(async ({ input, ctx }) => {
+        const [err] = await wishListService.upsertWishItem(input, ctx.user)
+        if (err) throw err
       }),
   })
 }
