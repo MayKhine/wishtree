@@ -92,7 +92,6 @@ export const makeAppRouter = ({
 
     upsertWishList: publicProcedure
       .use(authMiddleware(userService))
-      // TODO should not be any
       .input(upsertWishListSchema)
       .mutation(async ({ input, ctx }) => {
         const [err] = await wishListService.upsertWishList(input, ctx.user)
