@@ -59,7 +59,7 @@ export const makeWishListService = (wishListStore: WishListStoreAdapter) => {
     upsertRequest: UpsertWishItemRequest,
     maybeUser: User | undefined,
   ) => {
-    const [belongToUserErr, belongToUser] = await wishListBelongsToUser(
+    const [belongToUserErr] = await wishListBelongsToUser(
       upsertRequest.id,
       maybeUser,
     )
