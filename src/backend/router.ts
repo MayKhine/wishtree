@@ -84,7 +84,10 @@ export const makeAppRouter = ({
     getMyWishLists: publicProcedure
       .use(authMiddleware(userService))
       .query(async ({ ctx: { user } }) => {
-        //...TODO
+        const [err, wishLists] = await wishListService.getMyWishLists(user)
+        if (err) throw err
+
+        return wishLists
       }),
 
     upsertWishList: publicProcedure
