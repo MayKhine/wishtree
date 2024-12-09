@@ -1,83 +1,38 @@
 import * as stylex from "@stylexjs/stylex"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 import { MenuBar } from "../assets/MenuBar"
-import { CreateWishListButton } from "../components/createWishListForm/CreateWishListButton"
-import { Wish } from "../components/wishes/Wish"
+import { PopUp } from "../assets/PopUp"
+import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
+import { WishListForm } from "../components/forms/WishListForm"
 import { tokens } from "../tokens.stylex"
+import { trpc } from "../trpc"
 
 export const HomePage = () => {
-  // const testDate = new Date("11/01/2024")
-  // // const testData = {
-  //   listId: 123,
-  //   listName: "My 30th birthday",
-  //   listPrivacy: "private",
-  //   listNotes: "no  notes",
-  //   listDate: testDate,
-  //   listItems: [
-  //     {
-  //       name: "shoe",
-  //       addedDate: testDate,
-  //       link: "www.shoelink.com",
-  //       price: 22.3,
-  //       // color: "red",
-  //       status: "open",
-  //       notes: "Item desc",
-  //       quantity: 1,
-  //       image: "donot know yet",
-  //       mostWanted: true,
-  //     },
-  //     {
-  //       name: "cube box",
-  //       addedDate: testDate,
-  //       link: "",
-  //       price: 22,
-  //       // color: "red",
-  //       status: "booked",
-  //       notes: "any cube box is fine",
-  //       quantity: 4,
-  //       image: "donot know yet",
-  //       mostWanted: false,
-  //     },
-  //   ],
-  // // }
-  const navigate = useNavigate()
-
-  const getDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem("wishlist")
-    return storedData ? JSON.parse(storedData) : []
+  const { data } = trpc.getMyWishLists.useQuery()
+  const [openWishListForm, setOpenWishListForm] = useState(false)
+  console.log("Data: ", data)
+  const closeWishListForm = () => {
+    setOpenWishListForm(false)
   }
-  // localStorage.clear()
-
-  const dataFromLocalStorage = getDataFromLocalStorage()
-  console.log("Local data: ", dataFromLocalStorage)
-
   return (
     <div {...stylex.props(styles.base)}>
       <MenuBar />
       <div {...stylex.props(styles.wishes)}>
         <CreateWishListButton
           onClickFn={() => {
-            navigate("/createwishlist")
+            setOpenWishListForm(true)
           }}
         />
-
-        {dataFromLocalStorage?.listId && (
-          <div
-            {...stylex.props(styles.wishesContainer)}
-            onClick={() => {
-              navigate(`/wishlist/${dataFromLocalStorage.listId}`)
-            }}
-          >
-            <Wish
-              listId={dataFromLocalStorage.listId}
-              listName={dataFromLocalStorage.listName}
-              listDate={dataFromLocalStorage.listDate}
-              listPrivacy={dataFromLocalStorage.listPrivacy}
-              listNotes={dataFromLocalStorage.listNotes}
-            />
-          </div>
+        {openWishListForm && (
+          <PopUp>
+            <WishListForm closeWishListForm={closeWishListForm} />
+          </PopUp>
         )}
       </div>
+
+      {data?.map((wishList) => {
+        return <div>{wishList.title} </div>
+      })}
     </div>
   )
 }
@@ -85,20 +40,12 @@ export const HomePage = () => {
 const styles = stylex.create({
   base: {
     backgroundColor: "#DDDDDD",
-    // display: "flex",
-    // flexDirection: "column",
   },
   wishes: {
     backgroundColor: tokens.blue,
-    // display: "grid",
-    // gridTemplateRows: "10rem",
     display: "flex",
 
-    // flexDirection: "row",
-    // width: "100%",
     gap: "1rem",
-    // flexShrink: 0,
-    // flexWrap: "nowrap",
   },
   wishesContainer: {
     width: "10rem",

@@ -1,0 +1,172 @@
+import * as stylex from "@stylexjs/stylex"
+import { useEffect, useState } from "react"
+import { v4 as uuidV4 } from "uuid"
+import { Button } from "../../assets/Button"
+import { InputError } from "../../assets/InputError"
+import { stdStyles, tokens } from "../../tokens.stylex"
+import { trpc } from "../../trpc"
+
+type WishListFormType = {
+  closeWishListForm: () => void
+}
+
+export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
+  const { isSuccess, mutate: upsertWishList } =
+    trpc.upsertWishList.useMutation()
+
+  useEffect(() => {
+    if (!isSuccess) {
+      return
+    }
+    closeWishListForm()
+  }, [isSuccess, closeWishListForm])
+
+  const [error, setError] = useState(false)
+  const [wishList, setWishList] = useState({
+    id: uuidV4(),
+    title: "",
+    description: "",
+    eventDate: "",
+  })
+
+  const inputChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if (event.target.id === "title") {
+      setError(false)
+    }
+
+    setWishList((prevState) => ({
+      ...prevState,
+      [event.target.id]: event.target.value,
+    }))
+  }
+
+  const createWishListHandler = () => {
+    if (wishList.title.length === 0) {
+      setError(true)
+      return
+    }
+
+    upsertWishList({
+      id: wishList.id,
+      title: wishList.title,
+      description: wishList.description,
+      eventDate: wishList.eventDate,
+    })
+  }
+
+  const [coverImg, setCoverImg] = useState<string | null>()
+
+  const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCoverImg(URL.createObjectURL(event.target.files[0]))
+  }
+  const imgButtonHandler = () => {
+    const input = document.getElementById("coverimg") as HTMLInputElement
+    input.click()
+  }
+
+  return (
+    <div {...stylex.props(styles.base)}>
+      <div {...stylex.props(styles.formContainer)}>
+        <h3> Create A Wish List</h3>
+        <div {...stylex.props(stdStyles.inputsContainer)}>
+          <label aria-label="title">Wishlist</label>
+          <input
+            {...stylex.props(stdStyles.input)}
+            placeholder="My birthday wishlist"
+            onChange={inputChangeHandler}
+            type="text"
+            id="title"
+          />
+          {error && <InputError errorMsg="Please enter a wishlist title" />}
+        </div>
+        <div {...stylex.props(stdStyles.inputsContainer)}>
+          <label aria-label="eventDate">Date</label>
+          <input
+            {...stylex.props(stdStyles.input)}
+            type="date"
+            id="eventDate"
+            onChange={inputChangeHandler}
+          />
+        </div>
+        <div {...stylex.props(stdStyles.inputsContainer)}>
+          <label aria-label="description">Description</label>
+          <textarea
+            {...stylex.props(stdStyles.inputTextArea)}
+            onChange={inputChangeHandler}
+            id="description"
+          />
+        </div>
+
+        <div {...stylex.props(stdStyles.inputsContainer)}>
+          <label aria-label="coverImg">Cover Image</label>
+          <div {...stylex.props(styles.imgPreviewDiv)}>
+            <input
+              {...stylex.props(styles.imgInput)}
+              onChange={imgPreview}
+              id="coverimg"
+              type="file"
+              accept="image/*"
+            />
+            <Button onClickFn={imgButtonHandler} text="Choose Image" />
+            {coverImg && coverImg.length > 0 && (
+              <img
+                {...stylex.props(styles.imgPreview)}
+                id="coverImg"
+                src={coverImg}
+              ></img>
+            )}
+          </div>
+        </div>
+
+        <div {...stylex.props(styles.buttonsContainer)}>
+          <Button
+            text="Cancel"
+            onClickFn={() => {
+              closeWishListForm()
+            }}
+          />
+          <Button text="Create Wishlist" onClickFn={createWishListHandler} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const styles = stylex.create({
+  base: {
+    backgroundColor: "#eef4ed",
+    display: "flex",
+    flexDirection: "column",
+  },
+  formContainer: {
+    backgroundColor: tokens.lightGreen,
+    width: "27rem",
+  },
+  buttonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  imgInput: {
+    display: "none",
+  },
+  imgPreview: {
+    border: "0px solid black",
+    width: "100%",
+    height: "18rem",
+    objectFit: "contain",
+    backgroundColor: "lightgray",
+    borderRadius: ".3rem",
+  },
+  imgPreviewDiv: {
+    border: "0px solid black",
+    width: "100%",
+    height: "18rem",
+    objectFit: "contain",
+    backgroundColor: "white",
+    borderRadius: ".3rem",
+  },
+})

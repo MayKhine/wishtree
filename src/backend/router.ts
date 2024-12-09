@@ -86,7 +86,6 @@ export const makeAppRouter = ({
       .query(async ({ ctx: { user } }) => {
         const [err, wishLists] = await wishListService.getMyWishLists(user)
         if (err) throw err
-
         return wishLists
       }),
 
