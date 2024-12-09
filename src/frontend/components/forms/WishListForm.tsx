@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { v4 as uuidV4 } from "uuid"
 import { Button } from "../../assets/Button"
 import { InputError } from "../../assets/InputError"
+import { RemoveButton } from "../../assets/RemoveButton"
 import { stdStyles, tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
 
@@ -57,13 +58,18 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
   }
 
   const [coverImg, setCoverImg] = useState<string | null>()
-
+  const [coverImgButtonText, setCoverImgButtonText] =
+    useState("Add Cover Image")
   const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCoverImg(URL.createObjectURL(event.target.files[0]))
+    setCoverImgButtonText("Change Cover Image")
   }
   const imgButtonHandler = () => {
     const input = document.getElementById("coverimg") as HTMLInputElement
     input.click()
+  }
+  const removeimgButtonHandler = () => {
+    setCoverImg("")
   }
 
   return (
@@ -109,14 +115,17 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
               type="file"
               accept="image/*"
             />
-            <Button onClickFn={imgButtonHandler} text="Choose Image" />
             {coverImg && coverImg.length > 0 && (
-              <img
-                {...stylex.props(styles.imgPreview)}
-                id="coverImg"
-                src={coverImg}
-              ></img>
+              <div {...stylex.props(styles.imgPreviewDiv2)}>
+                <img
+                  {...stylex.props(styles.imgPreview)}
+                  id="coverImg"
+                  src={coverImg}
+                />
+                <RemoveButton onClickFn={removeimgButtonHandler} />
+              </div>
             )}
+            <Button onClickFn={imgButtonHandler} text={coverImgButtonText} />
           </div>
         </div>
 
@@ -153,20 +162,28 @@ const styles = stylex.create({
   imgInput: {
     display: "none",
   },
+
   imgPreview: {
     border: "0px solid black",
-    width: "100%",
+    width: "calc(100% - 1.5rem)",
     height: "18rem",
     objectFit: "contain",
-    backgroundColor: "lightgray",
+    // backgroundColor: "lightgray",
     borderRadius: ".3rem",
   },
   imgPreviewDiv: {
     border: "0px solid black",
     width: "100%",
-    height: "18rem",
+    height: "22rem",
     objectFit: "contain",
     backgroundColor: "white",
     borderRadius: ".3rem",
+    display: "flex",
+    flexDirection: "column",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  imgPreviewDiv2: {
+    marginLeft: "1.5rem",
   },
 })
