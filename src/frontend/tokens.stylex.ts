@@ -17,7 +17,7 @@ export const stdStyles = stylex.create({
     padding: "1rem",
     borderRadius: ".3rem",
     width: "25rem",
-    border: "0px solid black",
+    border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
   },
   inputTextArea: {
@@ -26,15 +26,13 @@ export const stdStyles = stylex.create({
     borderRadius: ".3rem",
     width: "25rem",
     height: "10rem",
-    border: "0px solid black",
+    border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
     resize: "none",
   },
   inputsContainer: {
     display: "flex",
     flexDirection: "column",
-    // height: ''
     minHeight: "6.5rem",
-    // backgroundColor: "gray",
   },
 })

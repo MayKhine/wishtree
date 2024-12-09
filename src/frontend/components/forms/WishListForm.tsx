@@ -74,69 +74,73 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
 
   return (
     <div {...stylex.props(styles.base)}>
-      <div {...stylex.props(styles.formContainer)}>
+      <div {...stylex.props(styles.header)}>
         <h3> Create A Wish List</h3>
-        <div {...stylex.props(stdStyles.inputsContainer)}>
-          <label aria-label="title">Wishlist</label>
-          <input
-            {...stylex.props(stdStyles.input)}
-            placeholder="My birthday wishlist"
-            onChange={inputChangeHandler}
-            type="text"
-            id="title"
-          />
-          {error && <InputError errorMsg="Please enter a wishlist title" />}
-        </div>
-        <div {...stylex.props(stdStyles.inputsContainer)}>
-          <label aria-label="eventDate">Date</label>
-          <input
-            {...stylex.props(stdStyles.input)}
-            type="date"
-            id="eventDate"
-            onChange={inputChangeHandler}
-          />
-        </div>
-        <div {...stylex.props(stdStyles.inputsContainer)}>
-          <label aria-label="description">Description</label>
-          <textarea
-            {...stylex.props(stdStyles.inputTextArea)}
-            onChange={inputChangeHandler}
-            id="description"
-          />
-        </div>
-
-        <div {...stylex.props(stdStyles.inputsContainer)}>
-          <label aria-label="coverImg">Cover Image</label>
-          <div {...stylex.props(styles.imgPreviewDiv)}>
+      </div>
+      <div {...stylex.props(styles.formDiv)}>
+        <div {...stylex.props(styles.leftDiv)}>
+          <div {...stylex.props(stdStyles.inputsContainer)}>
+            <label aria-label="title">Wishlist</label>
             <input
-              {...stylex.props(styles.imgInput)}
-              onChange={imgPreview}
-              id="coverimg"
-              type="file"
-              accept="image/*"
+              {...stylex.props(stdStyles.input)}
+              placeholder="My birthday wishlist"
+              onChange={inputChangeHandler}
+              type="text"
+              id="title"
             />
-            {coverImg && coverImg.length > 0 && (
-              <div {...stylex.props(styles.imgPreviewDiv2)}>
-                <img
-                  {...stylex.props(styles.imgPreview)}
-                  id="coverImg"
-                  src={coverImg}
-                />
-                <RemoveButton onClickFn={removeimgButtonHandler} />
-              </div>
-            )}
-            <Button onClickFn={imgButtonHandler} text={coverImgButtonText} />
+            {error && <InputError errorMsg="Please enter a wishlist title" />}
+          </div>
+          <div {...stylex.props(stdStyles.inputsContainer)}>
+            <label aria-label="eventDate">Date</label>
+            <input
+              {...stylex.props(stdStyles.input)}
+              type="date"
+              id="eventDate"
+              onChange={inputChangeHandler}
+            />
+          </div>
+          <div {...stylex.props(stdStyles.inputsContainer)}>
+            <label aria-label="description">Description</label>
+            <textarea
+              {...stylex.props(stdStyles.inputTextArea)}
+              onChange={inputChangeHandler}
+              id="description"
+            />
           </div>
         </div>
-
-        <div {...stylex.props(styles.buttonsContainer)}>
-          <Button
-            text="Cancel"
-            onClickFn={() => {
-              closeWishListForm()
-            }}
-          />
-          <Button text="Create Wishlist" onClickFn={createWishListHandler} />
+        <div {...stylex.props(styles.rightDiv)}>
+          <div {...stylex.props(stdStyles.inputsContainer)}>
+            <label aria-label="coverImg">Cover Image</label>
+            <div {...stylex.props(styles.imgPreviewDiv)}>
+              <input
+                {...stylex.props(styles.imgInput)}
+                onChange={imgPreview}
+                id="coverimg"
+                type="file"
+                accept="image/*"
+              />
+              {coverImg && coverImg.length > 0 && (
+                <div {...stylex.props(styles.imgPreviewDiv2)}>
+                  <img
+                    {...stylex.props(styles.imgPreview)}
+                    id="coverImg"
+                    src={coverImg}
+                  />
+                  <RemoveButton onClickFn={removeimgButtonHandler} />
+                </div>
+              )}
+              <Button onClickFn={imgButtonHandler} text={coverImgButtonText} />
+            </div>
+          </div>
+          <div {...stylex.props(styles.buttonsContainer)}>
+            <Button
+              text="Cancel"
+              onClickFn={() => {
+                closeWishListForm()
+              }}
+            />
+            <Button text="Create Wishlist" onClickFn={createWishListHandler} />
+          </div>
         </div>
       </div>
     </div>
@@ -145,14 +149,31 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: "#eef4ed",
+    backgroundColor: tokens.offWhite,
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    fontWeight: "600",
+    fontSize: "1rem",
+    minWidth: "55rem",
+    flexWrap: "wrap",
+    padding: "3rem",
+    borderRadius: "1rem",
   },
-  formContainer: {
-    backgroundColor: tokens.lightGreen,
-    width: "27rem",
+
+  header: {
+    marginBottom: "1rem",
   },
+
+  formDiv: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "2rem",
+  },
+  leftDiv: { width: "100%" },
+  rightDiv: { minWidth: "25rem" },
   buttonsContainer: {
     display: "flex",
     flexDirection: "row",
@@ -168,13 +189,12 @@ const styles = stylex.create({
     width: "calc(100% - 1.5rem)",
     height: "18rem",
     objectFit: "contain",
-    // backgroundColor: "lightgray",
     borderRadius: ".3rem",
   },
   imgPreviewDiv: {
-    border: "0px solid black",
+    border: "2px solid #82A3A1",
     width: "100%",
-    height: "22rem",
+    height: "21rem",
     objectFit: "contain",
     backgroundColor: "white",
     borderRadius: ".3rem",
@@ -182,8 +202,10 @@ const styles = stylex.create({
     flexDirection: "column",
     alignContent: "center",
     justifyContent: "center",
+    marginBottom: "1rem",
   },
   imgPreviewDiv2: {
+    // marginLeft: "1.5rem",
     marginLeft: "1.5rem",
   },
 })
