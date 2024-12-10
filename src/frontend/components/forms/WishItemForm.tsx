@@ -121,7 +121,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
 
           <div>
             <div {...stylex.props(styles.pirceQuantityContainer)}>
-              <div>
+              <div {...stylex.props(styles.numberContainer)}>
                 <label aria-label="price">Price</label>
                 <input
                   {...stylex.props(styles.priceInput)}
@@ -131,7 +131,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                   min={0}
                 />
               </div>
-              <div>
+              <div {...stylex.props(styles.numberContainer)}>
                 <label aria-label="quantity">Quantity</label>
                 <input
                   {...stylex.props(styles.quantityInput)}
@@ -215,7 +215,7 @@ const styles = stylex.create({
     alignItems: "center",
     fontWeight: "600",
     fontSize: "1rem",
-    width: "55rem",
+    minWidth: "55rem",
     flexWrap: "wrap",
     padding: "3rem",
     borderRadius: "1rem",
@@ -230,8 +230,8 @@ const styles = stylex.create({
     flexDirection: "row",
     gap: "2rem",
   },
-  leftDiv: { width: "100%" },
-  rightDiv: { minWidth: "25rem" },
+  leftDiv: { width: "100%", backgroundColor: "white" },
+  rightDiv: { width: "100%", backgroundColor: "white" },
 
   buttonsContainer: {
     display: "flex",
@@ -246,15 +246,13 @@ const styles = stylex.create({
 
   imgPreview: {
     border: "0px solid black",
-    width: "calc(100% - 1.5rem)",
+    width: "calc(100% - 2rem)",
     height: "18rem",
     objectFit: "contain",
     borderRadius: ".3rem",
   },
   imgPreviewDiv: {
     border: "2px solid #82A3A1",
-    // width: "100%",
-    // width: "95%",
     height: "21rem",
     objectFit: "contain",
     backgroundColor: "lightgray",
@@ -264,9 +262,9 @@ const styles = stylex.create({
     alignContent: "center",
     justifyContent: "center",
     marginBottom: "1rem",
+    width: "27rem",
   },
   imgPreviewDiv2: {
-    // marginLeft: "1.5rem",
     marginLeft: "1.5rem",
   },
 
@@ -280,7 +278,11 @@ const styles = stylex.create({
   },
   pirceQuantityContainer: {
     display: "flex",
+    justifyContent: "space-between",
+    marginRight: "2.5rem",
   },
+  numberContainer: { display: "flex", flexDirection: "column" },
+
   priceInput: {
     fontSize: "1rem",
     padding: "1rem",
