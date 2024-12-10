@@ -20,7 +20,7 @@ export const Button = ({ onClickFn, type, text }: ButtonProps) => {
 const styles = stylex.create({
   base: {
     border: "0px",
-    borderRadius: ".2rem",
+    borderRadius: ".3rem",
     fontSize: "1rem",
     fontWeight: "600",
     padding: "1rem",
@@ -29,5 +29,6 @@ const styles = stylex.create({
     color: { default: "#eef4ed", ":hover": "#8da9c4" },
     cursor: "pointer",
     minWidth: "5.5rem",
+    width: "100%",
   },
 })

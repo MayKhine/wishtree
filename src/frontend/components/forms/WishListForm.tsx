@@ -60,6 +60,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
   const [coverImg, setCoverImg] = useState<string | null>()
   const [coverImgButtonText, setCoverImgButtonText] =
     useState("Add Cover Image")
+
   const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCoverImg(URL.createObjectURL(event.target.files[0]))
     setCoverImgButtonText("Change Cover Image")
@@ -157,7 +158,7 @@ const styles = stylex.create({
     alignItems: "center",
     fontWeight: "600",
     fontSize: "1rem",
-    minWidth: "55rem",
+    width: "55rem",
     flexWrap: "wrap",
     padding: "3rem",
     borderRadius: "1rem",
@@ -174,10 +175,12 @@ const styles = stylex.create({
   },
   leftDiv: { width: "100%" },
   rightDiv: { minWidth: "25rem" },
+
   buttonsContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    gap: "1rem",
+    // justifyContent: "space-between",
   },
 
   imgInput: {
@@ -193,10 +196,11 @@ const styles = stylex.create({
   },
   imgPreviewDiv: {
     border: "2px solid #82A3A1",
-    width: "100%",
+    // width: "100%",
+    // width: "95%",
     height: "21rem",
     objectFit: "contain",
-    backgroundColor: "white",
+    backgroundColor: "lightgray",
     borderRadius: ".3rem",
     display: "flex",
     flexDirection: "column",

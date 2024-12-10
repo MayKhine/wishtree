@@ -4,6 +4,7 @@ import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
 import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
 import { WishListForm } from "../components/forms/WishListForm"
+import { WishList } from "../components/wishList/WishList"
 import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 
@@ -15,39 +16,44 @@ export const HomePage = () => {
     setOpenWishListForm(false)
   }
   return (
-    <div {...stylex.props(styles.base)}>
+    <div>
       <MenuBar />
-      <div {...stylex.props(styles.wishes)}>
-        <CreateWishListButton
-          onClickFn={() => {
-            setOpenWishListForm(true)
-          }}
-        />
-        {openWishListForm && (
-          <PopUp>
-            <WishListForm closeWishListForm={closeWishListForm} />
-          </PopUp>
-        )}
+      <div {...stylex.props(styles.base)}>
+        <div {...stylex.props(styles.header)}> My Wishlists</div>
+        <div {...stylex.props(styles.wishesContainer)}>
+          <CreateWishListButton
+            onClickFn={() => {
+              setOpenWishListForm(true)
+            }}
+          />
+          {openWishListForm && (
+            <PopUp>
+              <WishListForm closeWishListForm={closeWishListForm} />
+            </PopUp>
+          )}
+          {data?.map((wishList) => {
+            return <WishList title={wishList.title} wishlistID={wishList.id} />
+          })}
+        </div>
       </div>
-
-      {data?.map((wishList) => {
-        return <div>{wishList.title} </div>
-      })}
     </div>
   )
 }
 
 const styles = stylex.create({
   base: {
-    backgroundColor: "#DDDDDD",
+    // backgroundColor: "gray",
+    marginLeft: "1rem",
+    marginRight: "1rem",
   },
-  wishes: {
-    backgroundColor: tokens.blue,
-    display: "flex",
-
-    gap: "1rem",
+  header: {
+    marginTop: "2rem",
+    fontSize: "1.5rem",
+    fontWeight: "600",
+    marginBottom: "1rem",
   },
   wishesContainer: {
-    width: "10rem",
+    display: "flex",
+    gap: "1.5rem",
   },
 })
