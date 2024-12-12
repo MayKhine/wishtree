@@ -17,21 +17,16 @@ export const WishListPage = () => {
     setTogglePopUp(!togglePopUp)
   }
 
-  const { isFetched, data } = trpc.getWishlist.useQuery(wishlistid)
+  const { isFetched, data } = trpc.getWishlist.useQuery(
+    {
+      wishListId: wishlistid!,
+    },
+    {
+      enabled: Boolean(wishlistid),
+    },
+  )
   console.log("What is in data: ", data)
 
-  //   {
-  //     name: string;
-  //     id: string;
-  //     status: WishItemStatus;
-  //     notes: string;
-  //     mostWanted: boolean;
-  //     quantity: number;
-  //     wishListId: string;
-  //     link?: (string | null) | undefined;
-  //     price?: (number | null) | undefined;
-  //     imageUrl?: (string | null) | undefined;
-  // }
   const testDataArr = [
     {
       name: "shoe",
@@ -43,7 +38,8 @@ export const WishListPage = () => {
       wishListId: "testListId",
       link: "",
       price: "",
-      imageUrl: "",
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHeDdy5MFKXZ9QkPb8UXd8nxC_4wrH0RTLZQ&s",
     },
     {
       name: "timer clock",
@@ -55,7 +51,8 @@ export const WishListPage = () => {
       wishListId: "testListId",
       link: "",
       price: "",
-      imageUrl: "",
+      imageUrl:
+        "https://assets.adidas.com/images/w_940,f_auto,q_auto/ed35421359dd4f9989b6af310075e655_9366/HQ7033_HM1.jpg",
     },
     {
       name: "test long long long longlonglonglongnalonglonglonglonglonglongme",
@@ -90,9 +87,9 @@ export const WishListPage = () => {
             </PopUp>
           )}
 
-          {testDataArr.map((item) => {
-            return <WishItem wishItem={item} />
-          })}
+          {/* {testDataArr.map((item) => {
+            return <WishItem wishItem={item} wishListCreater={true} />
+          })} */}
         </div>
       </div>
 
