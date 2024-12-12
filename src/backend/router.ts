@@ -64,7 +64,7 @@ export const makeAppRouter = ({
     getWishlist: publicProcedure
       .input(z.object({ wishListId: z.string() }))
       .query(async ({ input }) => {
-        const [err, wishList] = await wishListService.getWishItems(
+        const [err, wishList] = await wishListService.getWishList(
           input.wishListId,
         )
         if (err) throw err
