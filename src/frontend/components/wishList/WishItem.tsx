@@ -1,57 +1,68 @@
 // import * as stylex from "@stylexjs/stylex"
 import * as stylex from "@stylexjs/stylex"
-import { WishListItemType } from "src/frontend/types"
-import { Button } from "../../assets/Button"
+import { FaStar } from "react-icons/fa"
+import { WishItem as wishItemType } from "../../../backend/domain/models/WishList"
 import { ReserveButton } from "../../assets/ReserveButton"
-import { tokens } from "../../tokens.stylex"
 
+import { tokens } from "../../tokens.stylex"
 type WishItemProp = {
-  itemData: WishListItemType
+  wishItem: wishItemType
 }
-export const WishItem = ({ itemData }: WishItemProp) => {
+export const WishItem = ({ wishItem }: WishItemProp) => {
+  console.log("wish item: ", wishItem)
   return (
     <div {...stylex.props(styles.base)}>
-      <div {...stylex.props(styles.wishListContainer)}>
-        <div {...stylex.props(styles.header)}>
-          <h3>{itemData.name}</h3>
-
-          <ReserveButton
-            text={itemData.status}
-            onClickFn={() => {
-              console.log("Reserver this item for the user")
-            }}
+      <div {...stylex.props(styles.productImg)}>
+        {wishItem.mostWanted && (
+          <FaStar
+            {...stylex.props(styles.star)}
+            size={"1.5rem"}
+            strokeWidth={"2.5rem"}
+            // stroke={tokens.tealGreen}
+            fill={"gold"}
           />
-        </div>
-        <p>{itemData.notes}</p>
-        <p>${itemData.price}</p>
-        {/* <p>{itemData.status}</p> */}
-        <p>Quantity: {itemData.quantity}</p>
+        )}
+        <img />
       </div>
+      <div {...stylex.props(styles.line)} />
+      <div {...stylex.props(styles.name)}>{wishItem.name}</div>
     </div>
   )
 }
 
 const styles = stylex.create({
-  wishListContainer: {
-    // margin: "1rem",
-    backgroundColor: "#eef4ed",
-    borderRadius: ".5rem",
-    // margin: "1rem",
-    padding: "1rem",
-    // width: "100%",
-    // maxWidth: "50rem",
-    // minWidth: "25rem",
-    // display: 'flex'
-  },
   base: {
-    width: "100%",
+    backgroundColor: tokens.offWhite,
+    border: "2px solid #465362",
+    borderRadius: ".5rem",
+    cursor: "pointer",
+    display: "flex",
+    flexDirection: "column",
+
+    width: "15rem",
+    height: "13rem",
+  },
+  productImg: {
+    height: "9rem",
+  },
+  line: {
+    height: "2px",
+    backgroundColor: "black",
   },
 
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: tokens.offWhite,
-    alignItems: "center",
+  name: {
+    height: "4rem",
+    fontWeight: "600",
+    alignContent: "center",
+    marginLeft: ".5rem",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    marginRight: ".5rem",
+  },
+  star: {
+    position: "absolute",
+    zIndex: "1",
+    marginLeft: "13rem",
+    marginTop: ".5rem",
   },
 })

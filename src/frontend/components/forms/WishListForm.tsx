@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
 import { useEffect, useState } from "react"
 import { v4 as uuidV4 } from "uuid"
+import { AddImgButton } from "../../assets/AddImgButton"
 import { Button } from "../../assets/Button"
 import { InputError } from "../../assets/InputError"
 import { RemoveButton } from "../../assets/RemoveButton"
@@ -59,7 +60,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
 
   const [coverImg, setCoverImg] = useState<string | null>()
   const [coverImgButtonText, setCoverImgButtonText] =
-    useState("Add Cover Image")
+    useState("+ Add Cover Image")
 
   const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCoverImg(URL.createObjectURL(event.target.files[0]))
@@ -71,6 +72,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
   }
   const removeimgButtonHandler = () => {
     setCoverImg("")
+    setCoverImgButtonText("+ Add Cover Image")
   }
 
   return (
@@ -130,7 +132,11 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
                   <RemoveButton onClickFn={removeimgButtonHandler} />
                 </div>
               )}
-              <Button onClickFn={imgButtonHandler} text={coverImgButtonText} />
+              {/* <Button onClickFn={imgButtonHandler} text={coverImgButtonText} /> */}
+              <AddImgButton
+                onClickFn={imgButtonHandler}
+                text={coverImgButtonText}
+              />
             </div>
           </div>
           <div {...stylex.props(styles.buttonsContainer)}>
@@ -158,7 +164,7 @@ const styles = stylex.create({
     alignItems: "center",
     fontWeight: "600",
     fontSize: "1rem",
-    width: "55rem",
+    minWidth: "55rem",
     flexWrap: "wrap",
     padding: "3rem",
     borderRadius: "1rem",
@@ -173,8 +179,8 @@ const styles = stylex.create({
     flexDirection: "row",
     gap: "2rem",
   },
-  leftDiv: { width: "100%" },
-  rightDiv: { minWidth: "25rem" },
+  leftDiv: { width: "100%", backgroundColor: "white" },
+  rightDiv: { width: "100%", backgroundColor: "white" },
 
   buttonsContainer: {
     display: "flex",
@@ -189,24 +195,23 @@ const styles = stylex.create({
 
   imgPreview: {
     border: "0px solid black",
-    width: "calc(100% - 1.5rem)",
+    width: "calc(100% - 2rem)",
     height: "18rem",
     objectFit: "contain",
     borderRadius: ".3rem",
   },
   imgPreviewDiv: {
     border: "2px solid #82A3A1",
-    // width: "100%",
-    // width: "95%",
-    height: "21rem",
+    height: "22rem",
     objectFit: "contain",
-    backgroundColor: "lightgray",
+    // backgroundColor: "lightgray",
     borderRadius: ".3rem",
     display: "flex",
     flexDirection: "column",
     alignContent: "center",
     justifyContent: "center",
     marginBottom: "1rem",
+    width: "27rem",
   },
   imgPreviewDiv2: {
     // marginLeft: "1.5rem",

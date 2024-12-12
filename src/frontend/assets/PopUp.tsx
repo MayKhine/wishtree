@@ -9,8 +9,8 @@ export const PopUp = ({ children }: PopUpType) => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: "rgba(221, 221, 221, 0.6)",
-    color: tokens.darkestBlue,
+    backgroundColor: "rgba(130, 163, 161, 0.4)",
+    // color: tokens.tealGreen,
     // height: "100vh",
     zIndex: "1",
     left: 0,

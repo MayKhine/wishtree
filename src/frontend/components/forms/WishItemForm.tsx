@@ -1,7 +1,8 @@
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
-import { FaRegStar, FaStar } from "react-icons/fa"
+import { FaStar } from "react-icons/fa"
 import { v4 as uuidV4 } from "uuid"
+import { AddImgButton } from "../../assets/AddImgButton"
 import { Button } from "../../assets/Button"
 import { InputError } from "../../assets/InputError"
 import { RemoveButton } from "../../assets/RemoveButton"
@@ -54,7 +55,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
 
   const [productImg, setProductImg] = useState<string | null>()
   const [productImgButtonText, setProductImgButtonText] =
-    useState("Add Cover Image")
+    useState("+ Upload Image")
 
   const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProductImg(URL.createObjectURL(event.target.files[0]))
@@ -66,6 +67,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
   }
   const removeimgButtonHandler = () => {
     setProductImg("")
+    setProductImgButtonText("+ Upload Image")
   }
 
   return (
@@ -184,7 +186,11 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                   <RemoveButton onClickFn={removeimgButtonHandler} />
                 </div>
               )}
-              <Button
+              {/* <Button
+                onClickFn={imgButtonHandler}
+                text={productImgButtonText}
+              /> */}
+              <AddImgButton
                 onClickFn={imgButtonHandler}
                 text={productImgButtonText}
               />
@@ -228,7 +234,7 @@ const styles = stylex.create({
   formDiv: {
     display: "flex",
     flexDirection: "row",
-    gap: "2rem",
+    gap: "3rem",
   },
   leftDiv: { width: "100%", backgroundColor: "white" },
   rightDiv: { width: "100%", backgroundColor: "white" },
@@ -253,9 +259,9 @@ const styles = stylex.create({
   },
   imgPreviewDiv: {
     border: "2px solid #82A3A1",
-    height: "21rem",
+    height: "22rem",
     objectFit: "contain",
-    backgroundColor: "lightgray",
+    // backgroundColor: "lightgray",
     borderRadius: ".3rem",
     display: "flex",
     flexDirection: "column",
@@ -266,12 +272,12 @@ const styles = stylex.create({
   },
   imgPreviewDiv2: {
     marginLeft: "1.5rem",
+    // backgroundColor: "pink",
   },
 
   starContainer: {
     display: "flex",
     justifyContent: "space-between",
-    marginRight: "2.5rem",
     alignContent: "center",
     alignItems: "center",
     marginBottom: "1rem",
@@ -279,7 +285,6 @@ const styles = stylex.create({
   pirceQuantityContainer: {
     display: "flex",
     justifyContent: "space-between",
-    marginRight: "2.5rem",
   },
   numberContainer: { display: "flex", flexDirection: "column" },
 

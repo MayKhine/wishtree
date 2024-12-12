@@ -1,11 +1,11 @@
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
 import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
 import { WishItemForm } from "../components/forms/WishItemForm"
+import { WishItem } from "../components/wishList/WishItem"
 import { trpc } from "../trpc"
 
 export const WishListPage = () => {
@@ -17,13 +17,63 @@ export const WishListPage = () => {
     setTogglePopUp(!togglePopUp)
   }
 
-  // const { isFetched, data } = trpc.getWishlist.useQuery(wishlistid)
+  const { isFetched, data } = trpc.getWishlist.useQuery(wishlistid)
+  console.log("What is in data: ", data)
 
+  //   {
+  //     name: string;
+  //     id: string;
+  //     status: WishItemStatus;
+  //     notes: string;
+  //     mostWanted: boolean;
+  //     quantity: number;
+  //     wishListId: string;
+  //     link?: (string | null) | undefined;
+  //     price?: (number | null) | undefined;
+  //     imageUrl?: (string | null) | undefined;
+  // }
+  const testDataArr = [
+    {
+      name: "shoe",
+      id: "123a",
+      status: "open",
+      notes: "red shoe, size 8",
+      mostWanted: false,
+      quantity: 1,
+      wishListId: "testListId",
+      link: "",
+      price: "",
+      imageUrl: "",
+    },
+    {
+      name: "timer clock",
+      id: "123a",
+      status: "open",
+      notes: "a duck timer clock",
+      mostWanted: true,
+      quantity: 1,
+      wishListId: "testListId",
+      link: "",
+      price: "",
+      imageUrl: "",
+    },
+    {
+      name: "test long long long longlonglonglongnalonglonglonglonglonglongme",
+      id: "123a",
+      status: "open",
+      notes: "a duck timer clock",
+      mostWanted: true,
+      quantity: 1,
+      wishListId: "testListId",
+      link: "",
+      price: "",
+      imageUrl: "",
+    },
+  ]
   return (
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        {" "}
         <div {...stylex.props(styles.header)}> Todo: Wishlist title</div>
         <div {...stylex.props(styles.wishItemContainer)}>
           <AddWishItemButton onClickFn={addANewWish} />
@@ -39,6 +89,10 @@ export const WishListPage = () => {
               />
             </PopUp>
           )}
+
+          {testDataArr.map((item) => {
+            return <WishItem wishItem={item} />
+          })}
         </div>
       </div>
 
