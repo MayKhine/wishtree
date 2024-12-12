@@ -5,13 +5,12 @@ import { PopUp } from "../assets/PopUp"
 import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
 import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
-import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 
 export const HomePage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
   const [openWishListForm, setOpenWishListForm] = useState(false)
-  console.log("Data: ", data)
+  console.log("Home page: data: ", data)
   const closeWishListForm = () => {
     setOpenWishListForm(false)
   }

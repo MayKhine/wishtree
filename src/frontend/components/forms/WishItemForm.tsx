@@ -6,13 +6,17 @@ import { AddImgButton } from "../../assets/AddImgButton"
 import { Button } from "../../assets/Button"
 import { InputError } from "../../assets/InputError"
 import { RemoveButton } from "../../assets/RemoveButton"
-import { stdStyles, tokens } from "../../tokens.stylex"
 
+import { stdStyles, tokens } from "../../tokens.stylex"
+import { trpc } from "../../trpc"
 type WishItemFormType = {
   togglePopUp: () => void
   wishListID: string
 }
 export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
+  // const { data } = trpc.getWishlist.useQuery({ wishListId: wishListID })
+  // console.log("WIsh list : ", data)
+
   const addNewWishItemToList = () => {
     console.log("work on adding this wish to this list id: ", wishListID)
     console.log("Wish Item: ", wishItem)
@@ -255,13 +259,13 @@ const styles = stylex.create({
   imgPreview: {
     border: "0px solid black",
     width: "calc(100% - 2rem)",
-    height: "18rem",
+    height: "19rem",
     objectFit: "contain",
     borderRadius: ".3rem",
   },
   imgPreviewDiv: {
     border: "2px solid #82A3A1",
-    height: "22rem",
+    height: "23rem",
     objectFit: "contain",
     // backgroundColor: "lightgray",
     borderRadius: ".3rem",
@@ -287,6 +291,7 @@ const styles = stylex.create({
   pirceQuantityContainer: {
     display: "flex",
     justifyContent: "space-between",
+    marginBottom: "1rem",
   },
   numberContainer: { display: "flex", flexDirection: "column" },
 
