@@ -1,82 +1,40 @@
 import * as stylex from "@stylexjs/stylex"
-import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 import { MenuBar } from "../assets/MenuBar"
-import { CreateWishListButton } from "../components/createWishListForm/CreateWishListButton"
-import { Wish } from "../components/wishes/Wish"
+import { PopUp } from "../assets/PopUp"
+import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
+import { WishListForm } from "../components/forms/WishListForm"
+import { WishList } from "../components/wishList/WishList"
 import { tokens } from "../tokens.stylex"
+import { trpc } from "../trpc"
 
 export const HomePage = () => {
-  // const testDate = new Date("11/01/2024")
-  // // const testData = {
-  //   listId: 123,
-  //   listName: "My 30th birthday",
-  //   listPrivacy: "private",
-  //   listNotes: "no  notes",
-  //   listDate: testDate,
-  //   listItems: [
-  //     {
-  //       name: "shoe",
-  //       addedDate: testDate,
-  //       link: "www.shoelink.com",
-  //       price: 22.3,
-  //       // color: "red",
-  //       status: "open",
-  //       notes: "Item desc",
-  //       quantity: 1,
-  //       image: "donot know yet",
-  //       mostWanted: true,
-  //     },
-  //     {
-  //       name: "cube box",
-  //       addedDate: testDate,
-  //       link: "",
-  //       price: 22,
-  //       // color: "red",
-  //       status: "booked",
-  //       notes: "any cube box is fine",
-  //       quantity: 4,
-  //       image: "donot know yet",
-  //       mostWanted: false,
-  //     },
-  //   ],
-  // // }
-  const navigate = useNavigate()
-
-  const getDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem("wishlist")
-    return storedData ? JSON.parse(storedData) : []
+  const { data } = trpc.getMyWishLists.useQuery()
+  const [openWishListForm, setOpenWishListForm] = useState(false)
+  console.log("Data: ", data)
+  const closeWishListForm = () => {
+    setOpenWishListForm(false)
   }
-  // localStorage.clear()
-
-  const dataFromLocalStorage = getDataFromLocalStorage()
-  console.log("Local data: ", dataFromLocalStorage)
-
   return (
-    <div {...stylex.props(styles.base)}>
+    <div>
       <MenuBar />
-      <div {...stylex.props(styles.wishes)}>
-        <CreateWishListButton
-          onClickFn={() => {
-            navigate("/createwishlist")
-          }}
-        />
-
-        {dataFromLocalStorage?.listId && (
-          <div
-            {...stylex.props(styles.wishesContainer)}
-            onClick={() => {
-              navigate(`/wishlist/${dataFromLocalStorage.listId}`)
+      <div {...stylex.props(styles.base)}>
+        <div {...stylex.props(styles.header)}> My Wishlists</div>
+        <div {...stylex.props(styles.wishesContainer)}>
+          <CreateWishListButton
+            onClickFn={() => {
+              setOpenWishListForm(true)
             }}
-          >
-            <Wish
-              listId={dataFromLocalStorage.listId}
-              listName={dataFromLocalStorage.listName}
-              listDate={dataFromLocalStorage.listDate}
-              listPrivacy={dataFromLocalStorage.listPrivacy}
-              listNotes={dataFromLocalStorage.listNotes}
-            />
-          </div>
-        )}
+          />
+          {openWishListForm && (
+            <PopUp>
+              <WishListForm closeWishListForm={closeWishListForm} />
+            </PopUp>
+          )}
+          {data?.map((wishList) => {
+            return <WishList title={wishList.title} wishlistID={wishList.id} />
+          })}
+        </div>
       </div>
     </div>
   )
@@ -84,23 +42,18 @@ export const HomePage = () => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: "#DDDDDD",
-    // display: "flex",
-    // flexDirection: "column",
+    // backgroundColor: "gray",
+    marginLeft: "1rem",
+    marginRight: "1rem",
   },
-  wishes: {
-    backgroundColor: tokens.blue,
-    // display: "grid",
-    // gridTemplateRows: "10rem",
-    display: "flex",
-
-    // flexDirection: "row",
-    // width: "100%",
-    gap: "1rem",
-    // flexShrink: 0,
-    // flexWrap: "nowrap",
+  header: {
+    marginTop: "2rem",
+    fontSize: "1.5rem",
+    fontWeight: "600",
+    marginBottom: "1rem",
   },
   wishesContainer: {
-    width: "10rem",
+    display: "flex",
+    gap: "1.5rem",
   },
 })

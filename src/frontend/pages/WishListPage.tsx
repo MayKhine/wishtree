@@ -1,96 +1,117 @@
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { WishListType } from "src/frontend/types"
-import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
-import { NewWishItemForm } from "../components/wishes/NewWishItemForm"
-import { WishList } from "../components/wishList/WishList"
-import { tokens } from "../tokens.stylex"
+import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
+import { WishItemForm } from "../components/forms/WishItemForm"
+import { WishItem } from "../components/wishList/WishItem"
+import { trpc } from "../trpc"
 
-type WishListPageType = {
-  wishListData?: WishListType
-}
-export const WishListPage = ({ wishListData }: WishListPageType) => {
+export const WishListPage = () => {
   const { wishlistid } = useParams<{ wishlistid: string }>()
+  console.log("what is wishlistID: ", wishlistid)
   const [togglePopUp, setTogglePopUp] = useState(false)
-  console.log("Wish List ID: ", wishlistid)
-  const testDate = new Date("11/01/2024")
-
-  const testData = {
-    listId: 123,
-    listName: "My 30th birthday",
-    listNotes: "balh blah",
-    listPrivacy: "public",
-    listDate: new Date(),
-    listItems: [
-      {
-        name: "shoe",
-        addedDate: testDate,
-        link: "www.shoelink.com",
-        price: 22.3,
-        // color: "red",
-        status: "open",
-        notes: "Item desc",
-        quantity: 1,
-        image: "donot know yet",
-        mostWanted: true,
-      },
-      {
-        name: "cube box",
-        addedDate: testDate,
-        link: "",
-        price: 22,
-        // color: "red",
-        status: "booked",
-        notes: "any cube box is fine",
-        quantity: 4,
-        image: "donot know yet",
-        mostWanted: false,
-      },
-    ],
-  } satisfies WishListType
 
   const addANewWish = () => {
-    console.log("Add a new wish to this list: ", testData.listId)
     setTogglePopUp(!togglePopUp)
   }
+
+  const { isFetched, data } = trpc.getWishlist.useQuery(
+    {
+      wishListId: wishlistid!,
+    },
+    {
+      enabled: Boolean(wishlistid),
+    },
+  )
+  console.log("What is in data: ", data)
+
+  const testDataArr = [
+    {
+      name: "shoe",
+      id: "123a",
+      status: "open",
+      notes: "red shoe, size 8",
+      mostWanted: false,
+      quantity: 1,
+      wishListId: "testListId",
+      link: "",
+      price: "",
+      imageUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHeDdy5MFKXZ9QkPb8UXd8nxC_4wrH0RTLZQ&s",
+    },
+    {
+      name: "timer clock",
+      id: "123a",
+      status: "open",
+      notes: "a duck timer clock",
+      mostWanted: true,
+      quantity: 1,
+      wishListId: "testListId",
+      link: "",
+      price: "",
+      imageUrl:
+        "https://assets.adidas.com/images/w_940,f_auto,q_auto/ed35421359dd4f9989b6af310075e655_9366/HQ7033_HM1.jpg",
+    },
+    {
+      name: "test long long long longlonglonglongnalonglonglonglonglonglongme",
+      id: "123a",
+      status: "open",
+      notes: "a duck timer clock",
+      mostWanted: true,
+      quantity: 1,
+      wishListId: "testListId",
+      link: "",
+      price: "",
+      imageUrl: "",
+    },
+  ]
   return (
     <div>
       <MenuBar />
-      <div>
-        <h2> {testData.listName} </h2>
-      </div>
-      <div {...stylex.props(styles.newWishContainer)}>
-        <Button text="+ A new wish" onClickFn={addANewWish} />
-        {togglePopUp && (
-          <PopUp>
-            <NewWishItemForm
-              listId={testData.listId}
-              togglePopUp={() => {
-                console.log("what is toggle popup ", togglePopUp)
-                setTogglePopUp(!togglePopUp)
-              }}
-            />
-          </PopUp>
-        )}
+      <div {...stylex.props(styles.base)}>
+        <div {...stylex.props(styles.header)}> Todo: Wishlist title</div>
+        <div {...stylex.props(styles.wishItemContainer)}>
+          <AddWishItemButton onClickFn={addANewWish} />
+
+          {togglePopUp && (
+            <PopUp>
+              <WishItemForm
+                wishListID={wishlistid}
+                togglePopUp={() => {
+                  console.log("what is toggle popup ", togglePopUp)
+                  setTogglePopUp(!togglePopUp)
+                }}
+              />
+            </PopUp>
+          )}
+
+          {/* {testDataArr.map((item) => {
+            return <WishItem wishItem={item} wishListCreater={true} />
+          })} */}
+        </div>
       </div>
 
-      <WishList data={testData} />
+      {/* <WishList data={testData} /> */}
     </div>
   )
 }
 
 const styles = stylex.create({
-  base: { backgroundColor: "gray" },
-  newWishContainer: {
-    backgroundColor: tokens.blue,
+  base: {
+    //  backgroundColor: "gray",
+    marginLeft: "1rem",
+    marginRight: "1rem",
+  },
+  header: {
+    marginTop: "2rem",
+    fontSize: "1.5rem",
+    fontWeight: "600",
+    marginBottom: "1rem",
+  },
+  wishItemContainer: {
     display: "flex",
-    flexDirection: "row",
-    // justifyContent: "flex-end",
-    // width: "60rem",
-    // paddingRight: "1rem",
-    paddingLeft: "1rem",
+    gap: "1.5rem",
   },
 })
