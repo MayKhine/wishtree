@@ -35,23 +35,29 @@ export const makeWishListStorageAdapter = (
     return [null, fromDbWishList(dbWishList)]
   }
 
-  const getWishListsByUserId = async (userId: string) => {
+  const getWishListsByUserId = async (
+    userId: string,
+  ): Promise<ErrorType<WishList[], Error>> => {
     const items = await sqliteConnection.all<DBWishList>(sql`
       SELECT id, title, description, eventDate, userId 
       FROM WishList
       WHERE userId = ${userId}
     `)
-    return items.map(fromDbWishList)
+    const result = items.map(fromDbWishList)
+
+    return [null, result] as const
   }
 
-  const getWishItems = async (wishListId: string) => {
+  const getWishItems = async (
+    wishListId: string,
+  ): Promise<ErrorType<WishItem[], Error>> => {
     const items = await sqliteConnection.all<DBWishItem>(sql`
       SELECT id, name, notes, price, link, imageUrl, status, mostWanted, quantity, wishListId 
       FROM WishItem
       WHERE wishListId = ${wishListId};
     `)
-
-    return items.map(fromDbWishItem)
+    const result = items.map(fromDbWishItem)
+    return [null, result] as const
   }
 
   const upsertWishItem = async (wishItem: WishItem) => {
@@ -88,7 +94,7 @@ export const makeWishListStorageAdapter = (
     upsertDbWishList,
     getWishList,
     getWishItems,
-    getWishListsByUserId: getWishListsByUserId,
+    getWishListsByUserId,
     upsertWishItem,
   }
 }
