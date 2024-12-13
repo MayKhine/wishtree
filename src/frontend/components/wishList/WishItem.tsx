@@ -4,24 +4,20 @@ import { CgMoreO } from "react-icons/cg"
 import { FaStar } from "react-icons/fa"
 import { WishItem as wishItemType } from "../../../backend/domain/models/WishList"
 // import { ReserveButton } from "../../assets/ReserveButton"
-
 import { useState } from "react"
+// import { useNavigate } from "react-router-dom"
 import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
+import { PopUp } from "../../assets/PopUp"
 import { tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
+import { WishItemDetail } from "./WishItemDetail"
 type WishItemProp = {
   wishItem: wishItemType
   wishListCreater: boolean
-  // setToggleDropDownMenu: () => void
-  // toggleDropDownMenu: boolean
 }
-export const WishItem = ({
-  wishItem,
-  wishListCreater,
-  // setToggleDropDownMenu,
-  // toggleDropDownMenu,
-}: WishItemProp) => {
+export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
+  // const navigate = useNavigate()
   const utils = trpc.useUtils()
 
   const { mutateAsync } = trpc.deleteWishItem.useMutation({
@@ -29,6 +25,8 @@ export const WishItem = ({
       utils.getWishItems.invalidate()
     },
   })
+  const [toggleWishItemDetail, setToggleWishItemDetail] =
+    useState<boolean>(false)
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
 
   const wishItemClickHandler = () => {
@@ -37,18 +35,33 @@ export const WishItem = ({
       wishItem.name,
     )
     setToggleDropDownMenu(false)
+    // navigate(`/wishlist/${wishItem.wishListId}/${wishItem.id}`)
+    setToggleWishItemDetail(true)
   }
 
-  const wishItemMoreClickHandler = (event: React.MouseEvent<SVGElement>) => {
-    event.stopPropagation() // Prevent the event from propagating to the whole div
-    console.log("Hi you cicked on the more options", wishItem.name)
-    setToggleDropDownMenu(!toggleDropDownMenu)
-  }
+  const wishItemMoreClickHandler = () =>
+    // event: React.MouseEvent<SVGElement>
+    {
+      // event.stopPropagation() // Prevent the event from propagating to the whole div
+      console.log("Hi you cicked on the more options", wishItem.name)
+      setToggleDropDownMenu(!toggleDropDownMenu)
+    }
 
-  const deleteItem = async () => {
+  const deleteItemHandler = async () => {
     await mutateAsync({ wishItemId: wishItem.id })
   }
 
+  const editItemHandler = () => {
+    console.log("WishItem > TODO: edit item")
+  }
+
+  const shareItemHandler = () => {
+    console.log("WishItem > todo: Share ")
+  }
+
+  const receivedItemHandler = () => {
+    console.log("WishItem > Todo: received this item")
+  }
   return (
     <div {...stylex.props(styles.base)}>
       <div {...stylex.props(styles.productImg)}>
@@ -73,7 +86,12 @@ export const WishItem = ({
                     console.log("clciked on  clear pop up")
                   }}
                 />
-                <DropDownWishItemMenu />
+                <DropDownWishItemMenu
+                  onDeleteFn={deleteItemHandler}
+                  onShareFn={shareItemHandler}
+                  onEditFn={editItemHandler}
+                  onReceivedFn={receivedItemHandler}
+                />
               </div>
             )}
           </div>
@@ -97,7 +115,20 @@ export const WishItem = ({
       <div {...stylex.props(styles.name)} onClick={wishItemClickHandler}>
         {wishItem.name}
       </div>
-      <div onClick={deleteItem}> Delete</div>
+
+      {toggleWishItemDetail && (
+        <div>
+          {" "}
+          <PopUp
+            onCancleFn={() => {
+              setToggleWishItemDetail(false)
+            }}
+          >
+            {/* <WishItemDetail wishItemData={wishItem} /> */}
+          </PopUp>
+          <WishItemDetail wishItemData={wishItem} />
+        </div>
+      )}
     </div>
   )
 }
