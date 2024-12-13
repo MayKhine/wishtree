@@ -134,17 +134,19 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
       </div>
 
       {toggleWishItemDetail && (
-        <div>
+        <div {...stylex.props(styles.wishItemDetailContainer)}>
           <PopUp
             onCancleFn={() => {
               setToggleWishItemDetail(false)
             }}
-          >
-            {/* <WishItemDetail wishItemData={wishItem} /> */}
-          </PopUp>
+          ></PopUp>
           <WishItemDetail
             wishItemData={wishItem}
             wishListCreater={wishListCreater}
+            onDeleteFn={deleteItemHandler}
+            onShareFn={shareItemHandler}
+            onEditFn={editItemHandler}
+            onReceivedFn={receivedItemHandler}
           />
         </div>
       )}
@@ -224,5 +226,16 @@ const styles = stylex.create({
     backgroundColor: tokens.offWhite,
     height: "1.5rem",
     cursor: "pointer",
+  },
+  wishItemDetailContainer: {
+    width: "100%",
+    height: "100%",
+    // backgroundColor: "red",
+    position: "fixed",
+    left: 0,
+    top: 0,
+    zIndex: 1,
+    display: "flex",
+    justifyContent: "center",
   },
 })
