@@ -169,7 +169,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
           <div {...stylex.props(stdStyles.inputsContainer)}>
             <label aria-label="notes">Notes</label>
             <textarea
-              {...stylex.props(stdStyles.inputTextArea)}
+              {...stylex.props(styles.inputTextArea)}
               onChange={inputChangeHandler}
               id="notes"
             />
@@ -244,6 +244,23 @@ const styles = stylex.create({
     flexWrap: "wrap",
     padding: "3rem",
     borderRadius: "1rem",
+    position: "fixed",
+    zIndex: 11,
+    alignSelf: "center",
+    justifySelf: "center",
+
+    // backgroundColor: tokens.offWhite,
+    // fontWeight: "600",
+    // fontSize: "1rem",
+    // borderRadius: "1rem",
+    // minWidth: "55rem",
+    // width: "70%",
+    // height: "70%",
+    // display: "flex",
+    // flexDirection: "column",
+    // alignSelf: "center",
+    // position: "fixed",
+    // zIndex: "11",
   },
 
   header: {
@@ -272,13 +289,13 @@ const styles = stylex.create({
   imgPreview: {
     border: "0px solid black",
     width: "calc(100% - 2rem)",
-    height: "19rem",
+    height: "18rem",
     objectFit: "contain",
     borderRadius: ".3rem",
   },
   imgPreviewDiv: {
     border: "2px solid #82A3A1",
-    height: "23rem",
+    height: "22rem",
     objectFit: "contain",
     // backgroundColor: "lightgray",
     borderRadius: ".3rem",
@@ -321,5 +338,15 @@ const styles = stylex.create({
     borderRadius: ".3rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
+  },
+  inputTextArea: {
+    fontSize: "1rem",
+    padding: "1rem",
+    borderRadius: ".3rem",
+    width: "25rem",
+    height: "15rem",
+    border: "2px solid #82A3A1",
+    fontFamily: '"Funnel Sans", sans-serif',
+    resize: "none",
   },
 })

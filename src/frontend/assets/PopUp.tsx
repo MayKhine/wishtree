@@ -1,5 +1,5 @@
 import * as stylex from "@stylexjs/stylex"
-import { tokens } from "../tokens.stylex"
+// import { tokens } from "../tokens.stylex"
 type PopUpProps = {
   children?: React.ReactNode
   onCancleFn?: () => void
@@ -17,7 +17,7 @@ const styles = stylex.create({
     backgroundColor: "rgba(130, 163, 161, 0.4)",
     // color: tokens.tealGreen,
     // height: "100vh",
-    zIndex: "10",
+    zIndex: 10,
     left: 0,
     top: 0,
     position: "fixed",

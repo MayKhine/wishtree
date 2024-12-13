@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
+import { ClearPopUp } from "../assets/ClearPopUp"
 import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
 import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
@@ -89,14 +90,19 @@ export const WishListPage = () => {
           <AddWishItemButton onClickFn={addANewWish} />
 
           {togglePopUp && wishlistid && (
-            <PopUp>
+            <div {...stylex.props(styles.wishItemFormContainer)}>
+              <PopUp
+                onCancleFn={() => {
+                  setTogglePopUp(false)
+                }}
+              ></PopUp>
               <WishItemForm
                 wishListID={wishlistid}
                 togglePopUp={() => {
                   setTogglePopUp(!togglePopUp)
                 }}
               />
-            </PopUp>
+            </div>
           )}
 
           {wishItems?.map((item) => {
@@ -128,5 +134,16 @@ const styles = stylex.create({
     display: "flex",
     gap: "1.5rem",
     flexWrap: "wrap",
+  },
+  wishItemFormContainer: {
+    width: "100vw",
+    height: "100vh",
+    position: "absolute",
+    // backgroundColor: "red",
+    left: 0,
+    top: 0,
+    zIndex: 1,
+    display: "flex",
+    justifyContent: "center",
   },
 })

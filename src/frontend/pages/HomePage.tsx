@@ -26,9 +26,14 @@ export const HomePage = () => {
             }}
           />
           {openWishListForm && (
-            <PopUp>
+            <div {...stylex.props(styles.wishListFormContainer)}>
+              <PopUp
+                onCancleFn={() => {
+                  closeWishListForm()
+                }}
+              ></PopUp>
               <WishListForm closeWishListForm={closeWishListForm} />
-            </PopUp>
+            </div>
           )}
           {data?.map((wishList) => {
             return (
@@ -60,5 +65,16 @@ const styles = stylex.create({
   wishesContainer: {
     display: "flex",
     gap: "1.5rem",
+  },
+  wishListFormContainer: {
+    width: "100vw",
+    height: "100vh",
+    position: "absolute",
+    // backgroundColor: "red",
+    left: 0,
+    top: 0,
+    zIndex: 1,
+    display: "flex",
+    justifyContent: "center",
   },
 })
