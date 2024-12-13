@@ -75,7 +75,7 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
                   // strokeWidth={"1"}
                   stroke={tokens.tealGreen}
                   // fill={"pink"}
-                />{" "}
+                />
               </div>
             )}
             {toggleDropDownMenu && (
@@ -95,13 +95,25 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
               </div>
             )}
           </div>
-          {wishItem.mostWanted && (
+          {wishItem.mostWanted && wishListCreater && (
             <FaStar
               {...stylex.props(styles.star)}
               size={"1.5rem"}
               strokeWidth={"2.5rem"}
               // stroke={tokens.tealGreen}
               fill={"gold"}
+              cursor={"pointer"}
+            />
+          )}
+
+          {wishItem.mostWanted && !wishListCreater && (
+            <FaStar
+              {...stylex.props(styles.star)}
+              size={"1.5rem"}
+              strokeWidth={"2.5rem"}
+              // stroke={tokens.tealGreen}
+              fill={"gold"}
+              cursor={"pointer"}
             />
           )}
         </div>
@@ -118,7 +130,6 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
 
       {toggleWishItemDetail && (
         <div>
-          {" "}
           <PopUp
             onCancleFn={() => {
               setToggleWishItemDetail(false)
@@ -126,7 +137,10 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
           >
             {/* <WishItemDetail wishItemData={wishItem} /> */}
           </PopUp>
-          <WishItemDetail wishItemData={wishItem} />
+          <WishItemDetail
+            wishItemData={wishItem}
+            wishListCreater={wishListCreater}
+          />
         </div>
       )}
     </div>
