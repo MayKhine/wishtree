@@ -31,7 +31,13 @@ export const HomePage = () => {
             </PopUp>
           )}
           {data?.map((wishList) => {
-            return <WishList title={wishList.title} wishlistID={wishList.id} />
+            return (
+              <WishList
+                key={wishList.id}
+                title={wishList.title}
+                wishlistID={wishList.id}
+              />
+            )
           })}
         </div>
       </div>
