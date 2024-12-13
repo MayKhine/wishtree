@@ -90,7 +90,7 @@ describe("wla", () => {
     expect(wishList).toEqual(wl)
   })
 
-  test("add items", async () => {
+  test.only("add items", async () => {
     const connection = makeConnection()
     const wishListADapter = makeWishListStorageAdapter(connection)
 
@@ -119,6 +119,53 @@ describe("wla", () => {
 
     const wlis = await wishListADapter.getWishItems("1")
 
-    expect(wlis).toEqual([wli])
+    expect(wlis).toEqual([null, [wli]])
+  })
+
+  test("delete item", async () => {
+    const connection = makeConnection()
+    const wishListADapter = makeWishListStorageAdapter(connection)
+
+    await wishListADapter.upsertDbWishList({
+      id: "12listid",
+      title: "test wish list",
+      description: "",
+      userId: "12user",
+    })
+
+    await wishListADapter.upsertWishItem({
+      id: "12itemid",
+      name: "shoe",
+      notes: "blah ",
+      mostWanted: true,
+      quantity: 1,
+      price: 2,
+      status: "open",
+      wishListId: "12listid",
+    })
+
+    const itemResult = await wishListADapter.getWishItem("12itemid")
+
+    expect(itemResult).toEqual([
+      null,
+      {
+        id: "12itemid",
+        name: "shoe",
+        notes: "blah ",
+        mostWanted: true,
+        quantity: 1,
+        price: 2,
+        status: "open",
+        wishListId: "12listid",
+        imageUrl: null,
+        link: null,
+      },
+    ])
+
+    await wishListADapter.deleteWishItem("12itemid")
+
+    const itemResult2 = await wishListADapter.getWishItem("12itemid")
+
+    expect(itemResult2).toEqual(["NotFound", null])
   })
 })

@@ -82,12 +82,33 @@ export const makeWishListService = (wishListStore: WishListStoreAdapter) => {
     return [null, undefined] as const
   }
 
+  const deleteWishItem = async (
+    wishItemId: string,
+    maybeUser: User | undefined,
+  ) => {
+    const [error, wishItem] = await wishListStore.getWishItem(wishItemId)
+    if (error) {
+      return [error, null] as const
+    }
+
+    const [belongToUserErr] = await wishListBelongsToUser(
+      wishItem.wishListId,
+      maybeUser,
+    )
+    if (belongToUserErr) return [belongToUserErr, null] as const
+
+    await wishListStore.deleteWishItem(wishItemId)
+
+    return [null, undefined]
+  }
+
   return {
     getMyWishLists,
     getWishItems: wishListStore.getWishItems,
     getWishList: wishListStore.getWishList,
     upsertWishList,
     upsertWishItem,
+    deleteWishItem,
   }
 }
 
@@ -103,4 +124,8 @@ export type WishListStoreAdapter = {
   getWishListsByUserId: (
     userId: string,
   ) => Promise<ErrorType<Array<WishList>, Error>>
+  getWishItem: (
+    wishItemId: string,
+  ) => Promise<ErrorType<WishItem, Error | "NotFound">>
+  deleteWishItem: (withItemId: string) => Promise<void>
 }
