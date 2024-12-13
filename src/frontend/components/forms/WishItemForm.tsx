@@ -14,12 +14,18 @@ type WishItemFormType = {
   wishListID: string
 }
 export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
-  // const { data } = trpc.getWishlist.useQuery({ wishListId: wishListID })
-  // console.log("WIsh list : ", data)
+  const utils = trpc.useUtils()
+  const { mutateAsync } = trpc.upsertWishItem.useMutation({
+    onSuccess: () => {
+      utils.getWishItems.invalidate()
+    },
+  })
 
-  const addNewWishItemToList = () => {
+  const addNewWishItemToList = async () => {
     console.log("work on adding this wish to this list id: ", wishListID)
     console.log("Wish Item: ", wishItem)
+    await mutateAsync(wishItem)
+    togglePopUp()
   }
 
   const [wishItem, setWishItem] = useState({
@@ -77,11 +83,11 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
   return (
     <div {...stylex.props(styles.base)}>
       <div {...stylex.props(styles.header)}>
-        <h3> Create Wish</h3>
+        <h3> Create A Wish</h3>
       </div>
       <div {...stylex.props(styles.formDiv)}>
         <div {...stylex.props(styles.leftDiv)}>
-          <div {...stylex.props(stdStyles.inputsContainer)}>
+          {/* <div {...stylex.props(stdStyles.inputsContainer)}>
             <label aria-label="wishListTitle">Wishlist</label>
             <input
               {...stylex.props(stdStyles.input)}
@@ -91,7 +97,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
               id="wishListTitle"
             />
             {error && <InputError errorMsg="Please enter a wishlist title" />}
-          </div>
+          </div> */}
           <div {...stylex.props(stdStyles.inputsContainer)}>
             <label aria-label="name">Wishitem</label>
             <input
@@ -133,7 +139,12 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                   {...stylex.props(styles.priceInput)}
                   type="number"
                   id="price"
-                  onChange={inputChangeHandler}
+                  onChange={(e) => {
+                    setWishItem({
+                      ...wishItem,
+                      price: Number.parseFloat(e.target.value),
+                    })
+                  }}
                   min={0}
                 />
               </div>
@@ -142,8 +153,12 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                 <input
                   {...stylex.props(styles.quantityInput)}
                   type="number"
-                  id="quantity"
-                  onChange={inputChangeHandler}
+                  onChange={(e) => {
+                    setWishItem({
+                      ...wishItem,
+                      quantity: Number.parseInt(e.target.value),
+                    })
+                  }}
                   value={wishItem.quantity}
                   min={1}
                 />
