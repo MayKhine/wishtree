@@ -9,11 +9,19 @@ import { useState } from "react"
 import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
 import { tokens } from "../../tokens.stylex"
+import { trpc } from "../../trpc"
 type WishItemProp = {
   wishItem: wishItemType
   wishListCreater: boolean
 }
 export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
+  const utils = trpc.useUtils()
+
+  const { mutateAsync } = trpc.deleteWishItem.useMutation({
+    onSuccess: () => {
+      utils.getWishItems.invalidate()
+    },
+  })
   const [dropDownMenu, setDropDownMenu] = useState<boolean>(false)
 
   const wishItemClickHandler = () => {
@@ -27,6 +35,10 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
     event.stopPropagation() // Prevent the event from propagating to the whole div
     console.log("Hi you cicked on the more options")
     setDropDownMenu(!dropDownMenu)
+  }
+
+  const deleteItem = async () => {
+    await mutateAsync({ wishItemId: wishItem.id })
   }
 
   return (
@@ -71,6 +83,7 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
       </div>
       <div {...stylex.props(styles.line)} />
       <div {...stylex.props(styles.name)}>{wishItem.name}</div>
+      <div onClick={deleteItem}> Delete</div>
     </div>
   )
 }

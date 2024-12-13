@@ -37,46 +37,47 @@ export const WishListPage = () => {
   console.log("WishList Page data:", wishlistid, data)
   console.log("WishList Page data:", wishItems)
 
-  const testDataArr = [
-    {
-      name: "shoe",
-      id: "123a",
-      status: "open",
-      notes: "red shoe, size 8",
-      mostWanted: false,
-      quantity: 1,
-      wishListId: "testListId",
-      link: "",
-      price: "",
-      imageUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHeDdy5MFKXZ9QkPb8UXd8nxC_4wrH0RTLZQ&s",
-    },
-    {
-      name: "timer clock",
-      id: "123a",
-      status: "open",
-      notes: "a duck timer clock",
-      mostWanted: true,
-      quantity: 1,
-      wishListId: "testListId",
-      link: "",
-      price: "",
-      imageUrl:
-        "https://assets.adidas.com/images/w_940,f_auto,q_auto/ed35421359dd4f9989b6af310075e655_9366/HQ7033_HM1.jpg",
-    },
-    {
-      name: "test long long long longlonglonglongnalonglonglonglonglonglongme",
-      id: "123a",
-      status: "open",
-      notes: "a duck timer clock",
-      mostWanted: true,
-      quantity: 1,
-      wishListId: "testListId",
-      link: "",
-      price: "",
-      imageUrl: "",
-    },
-  ]
+  // const testDataArr = [
+  //   {
+  //     name: "shoe",
+  //     id: "123a",
+  //     status: "open",
+  //     notes: "red shoe, size 8",
+  //     mostWanted: false,
+  //     quantity: 1,
+  //     wishListId: "testListId",
+  //     link: "",
+  //     price: "",
+  //     imageUrl:
+  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHeDdy5MFKXZ9QkPb8UXd8nxC_4wrH0RTLZQ&s",
+  //   },
+  //   {
+  //     name: "timer clock",
+  //     id: "123a",
+  //     status: "open",
+  //     notes: "a duck timer clock",
+  //     mostWanted: true,
+  //     quantity: 1,
+  //     wishListId: "testListId",
+  //     link: "",
+  //     price: "",
+  //     imageUrl:
+  //       "https://assets.adidas.com/images/w_940,f_auto,q_auto/ed35421359dd4f9989b6af310075e655_9366/HQ7033_HM1.jpg",
+  //   },
+  //   {
+  //     name: "test long long long longlonglonglongnalonglonglonglonglonglongme",
+  //     id: "123a",
+  //     status: "open",
+  //     notes: "a duck timer clock",
+  //     mostWanted: true,
+  //     quantity: 1,
+  //     wishListId: "testListId",
+  //     link: "",
+  //     price: "",
+  //     imageUrl: "",
+  //   },
+  // ]
+
   return (
     <div>
       <MenuBar />
@@ -97,7 +98,9 @@ export const WishListPage = () => {
           )}
 
           {wishItems?.map((item) => {
-            return <WishItem wishItem={item} wishListCreater={true} />
+            return (
+              <WishItem key={item.id} wishItem={item} wishListCreater={true} />
+            )
           })}
         </div>
       </div>
