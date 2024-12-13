@@ -103,6 +103,17 @@ export const makeAppRouter = ({
         const [err] = await wishListService.upsertWishItem(input, ctx.user)
         if (err) throw err
       }),
+
+    deleteWishItem: publicProcedure
+      .use(authMiddleware(userService))
+      .input(z.object({ wishItemId: z.string() }))
+      .mutation(async ({ input, ctx }) => {
+        const [err] = await wishListService.deleteWishItem(
+          input.wishItemId,
+          ctx.user,
+        )
+        if (err) throw err
+      }),
   })
 }
 
