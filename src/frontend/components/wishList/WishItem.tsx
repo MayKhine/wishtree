@@ -13,8 +13,15 @@ import { trpc } from "../../trpc"
 type WishItemProp = {
   wishItem: wishItemType
   wishListCreater: boolean
+  // setToggleDropDownMenu: () => void
+  // toggleDropDownMenu: boolean
 }
-export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
+export const WishItem = ({
+  wishItem,
+  wishListCreater,
+  // setToggleDropDownMenu,
+  // toggleDropDownMenu,
+}: WishItemProp) => {
   const utils = trpc.useUtils()
 
   const { mutateAsync } = trpc.deleteWishItem.useMutation({
@@ -22,17 +29,20 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
       utils.getWishItems.invalidate()
     },
   })
-  const [dropDownMenu, setDropDownMenu] = useState<boolean>(false)
+  const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
 
   const wishItemClickHandler = () => {
-    console.log("Hi you clicked on wish item, go to that individual page")
-    setDropDownMenu(false)
+    console.log(
+      "Hi you clicked on wish item, go to that individual page",
+      wishItem.name,
+    )
+    setToggleDropDownMenu(false)
   }
 
   const wishItemMoreClickHandler = (event: React.MouseEvent<SVGElement>) => {
     event.stopPropagation() // Prevent the event from propagating to the whole div
-    console.log("Hi you cicked on the more options")
-    setDropDownMenu(!dropDownMenu)
+    console.log("Hi you cicked on the more options", wishItem.name)
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const deleteItem = async () => {
@@ -40,25 +50,31 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
   }
 
   return (
-    <div {...stylex.props(styles.base)} onClick={wishItemClickHandler}>
+    <div {...stylex.props(styles.base)}>
       <div {...stylex.props(styles.productImg)}>
         <div {...stylex.props(styles.iconsContainer)}>
           <div>
             {wishListCreater && (
-              <CgMoreO
-                onClick={wishItemMoreClickHandler}
-                size={"1.5rem"}
-                // strokeWidth={"1"}
-                // stroke={tokens.tealGreen}
-                fill={"white"}
-              />
+              <div {...stylex.props(styles.roundDiv)}>
+                <CgMoreO
+                  onClick={wishItemMoreClickHandler}
+                  size={"1.5rem"}
+                  // strokeWidth={"1"}
+                  stroke={tokens.tealGreen}
+                  // fill={"pink"}
+                />{" "}
+              </div>
             )}
-            {dropDownMenu && (
-              <ClearPopUp>
-                <div {...stylex.props(styles.dropDownMenuDiv)}>
-                  <DropDownWishItemMenu />
-                </div>
-              </ClearPopUp>
+            {toggleDropDownMenu && (
+              <div {...stylex.props(styles.dropDownMenuDiv)}>
+                <ClearPopUp
+                  onCancelFn={() => {
+                    setToggleDropDownMenu(false)
+                    console.log("clciked on  clear pop up")
+                  }}
+                />
+                <DropDownWishItemMenu />
+              </div>
             )}
           </div>
           {wishItem.mostWanted && (
@@ -71,16 +87,16 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
             />
           )}
         </div>
-        {wishItem.imageUrl?.length ? (
-          <img
-            {...stylex.props(styles.imgPreview)}
-            src={wishItem.imageUrl}
-            alt={wishItem.name}
-          />
-        ) : null}
+        <img
+          {...stylex.props(styles.imgPreview)}
+          src={wishItem.imageUrl ?? ""}
+          alt={wishItem.name}
+        />
       </div>
       <div {...stylex.props(styles.line)} />
-      <div {...stylex.props(styles.name)}>{wishItem.name}</div>
+      <div {...stylex.props(styles.name)} onClick={wishItemClickHandler}>
+        {wishItem.name}
+      </div>
       <div onClick={deleteItem}> Delete</div>
     </div>
   )
@@ -97,6 +113,8 @@ const styles = stylex.create({
     width: "15rem",
     height: "13rem",
     flexShrink: 0,
+    // position: "relative",
+    // zIndex: 0,
   },
   productImg: {
     height: "9rem",
@@ -134,22 +152,27 @@ const styles = stylex.create({
     alignContent: "flex-end",
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    // gap: ".3rem",
     margin: ".3rem",
-    zIndex: "1",
+    // zIndex: 1,
     marginLeft: "13rem",
   },
   star: { cursor: "default" },
+
   dropDownMenuDiv: {
     position: "absolute",
-    // top: "100%",
-    // left: "0",
     backgroundColor: tokens.offWhite,
     border: `2px solid ${tokens.tealGreen}`,
     borderRadius: ".5rem",
     boxShadow: "1rem 1rem 2rem rgba(0, 0, 0, 0.2)",
     padding: "8px",
-    zIndex: 100,
+    zIndex: 11,
     width: "10rem",
+    marginTop: ".2rem",
+  },
+  roundDiv: {
+    borderRadius: "50%",
+    backgroundColor: tokens.offWhite,
+    height: "1.5rem",
+    cursor: "pointer",
   },
 })
