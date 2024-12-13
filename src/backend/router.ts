@@ -11,7 +11,6 @@ export type MakeAppRouterParams = {
   userService: UserService
   wishListService: WishListService
 }
-
 export const makeAppRouter = ({
   userService,
   wishListService,

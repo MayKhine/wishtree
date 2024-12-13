@@ -5,9 +5,15 @@
 // teardown the side effect that main() has.
 // https://github.com/vitest-dev/vitest/issues/2334
 
-export const metaHotTeardown = (teardown: () => unknown) => {
-  if (import.meta.hot) {
-    import.meta.hot.on("vite:beforeFullReload", teardown);
-    import.meta.hot.dispose(teardown);
+import { ViteHotContext } from "vite/types/hot"
+
+export const metaHotTeardown = (
+  importMetaHot: ViteHotContext | undefined,
+  teardown: () => unknown,
+) => {
+  if (importMetaHot) {
+    importMetaHot.on("vite:beforeFullReload", teardown)
+    importMetaHot.dispose(teardown)
+    importMetaHot.accept(teardown)
   }
-};
+}

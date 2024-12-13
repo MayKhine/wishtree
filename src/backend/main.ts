@@ -41,6 +41,8 @@ const main = async () => {
     console.log("server listening to port", port)
   })
 
-  metaHotTeardown(() => server.close())
+  metaHotTeardown(import.meta.hot, () => {
+    server.close()
+  })
 }
 main()
