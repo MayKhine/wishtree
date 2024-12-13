@@ -2,9 +2,14 @@ import * as stylex from "@stylexjs/stylex"
 import { tokens } from "../tokens.stylex"
 type PopUpProps = {
   children?: React.ReactNode
+  onCancleFn?: () => void
 }
-export const PopUp = ({ children }: PopUpProps) => {
-  return <div {...stylex.props(styles.base)}> {children} </div>
+export const PopUp = ({ children, onCancleFn }: PopUpProps) => {
+  return (
+    <div {...stylex.props(styles.base)} onClick={onCancleFn}>
+      {children}
+    </div>
+  )
 }
 
 const styles = stylex.create({
