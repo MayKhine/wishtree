@@ -170,6 +170,9 @@ const styles = stylex.create({
     flexWrap: "wrap",
     padding: "3rem",
     borderRadius: "1rem",
+    zIndex: "11",
+    height: "50%",
+    alignSelf: "center",
   },
 
   header: {
@@ -179,7 +182,7 @@ const styles = stylex.create({
   formDiv: {
     display: "flex",
     flexDirection: "row",
-    gap: "2rem",
+    gap: "3rem",
   },
   leftDiv: { width: "100%", backgroundColor: "white" },
   rightDiv: { width: "100%", backgroundColor: "white" },

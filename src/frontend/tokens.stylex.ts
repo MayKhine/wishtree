@@ -25,7 +25,7 @@ export const stdStyles = stylex.create({
     padding: "1rem",
     borderRadius: ".3rem",
     width: "25rem",
-    height: "10rem",
+    height: "11rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
     resize: "none",
