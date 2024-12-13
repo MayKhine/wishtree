@@ -10,14 +10,13 @@ import { trpc } from "../trpc"
 
 export const WishListPage = () => {
   const { wishlistid } = useParams<{ wishlistid: string }>()
-  console.log("what is wishlistID: ", wishlistid)
   const [togglePopUp, setTogglePopUp] = useState(false)
 
   const addANewWish = () => {
     setTogglePopUp(!togglePopUp)
   }
 
-  const { isFetched, data } = trpc.getWishlist.useQuery(
+  const { data } = trpc.getWishlist.useQuery(
     {
       wishListId: wishlistid!,
     },
@@ -25,7 +24,18 @@ export const WishListPage = () => {
       enabled: Boolean(wishlistid),
     },
   )
-  console.log("What is in data: ", data)
+
+  const { data: wishItems } = trpc.getWishItems.useQuery(
+    {
+      wishListId: wishlistid!,
+    },
+    {
+      enabled: Boolean(wishlistid),
+    },
+  )
+
+  console.log("WishList Page data:", wishlistid, data)
+  console.log("WishList Page data:", wishItems)
 
   const testDataArr = [
     {
@@ -71,7 +81,7 @@ export const WishListPage = () => {
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> Todo: Wishlist title</div>
+        <div {...stylex.props(styles.header)}> {data?.title}</div>
         <div {...stylex.props(styles.wishItemContainer)}>
           <AddWishItemButton onClickFn={addANewWish} />
 
@@ -80,16 +90,15 @@ export const WishListPage = () => {
               <WishItemForm
                 wishListID={wishlistid}
                 togglePopUp={() => {
-                  console.log("what is toggle popup ", togglePopUp)
                   setTogglePopUp(!togglePopUp)
                 }}
               />
             </PopUp>
           )}
 
-          {/* {testDataArr.map((item) => {
+          {wishItems?.map((item) => {
             return <WishItem wishItem={item} wishListCreater={true} />
-          })} */}
+          })}
         </div>
       </div>
 
@@ -113,5 +122,6 @@ const styles = stylex.create({
   wishItemContainer: {
     display: "flex",
     gap: "1.5rem",
+    flexWrap: "wrap",
   },
 })

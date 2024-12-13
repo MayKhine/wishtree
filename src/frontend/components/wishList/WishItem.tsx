@@ -6,6 +6,7 @@ import { WishItem as wishItemType } from "../../../backend/domain/models/WishLis
 // import { ReserveButton } from "../../assets/ReserveButton"
 
 import { useState } from "react"
+import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
 import { tokens } from "../../tokens.stylex"
 type WishItemProp = {
@@ -13,7 +14,6 @@ type WishItemProp = {
   wishListCreater: boolean
 }
 export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
-  // console.log("wish item: ", wishItem)
   const [dropDownMenu, setDropDownMenu] = useState<boolean>(false)
 
   const wishItemClickHandler = () => {
@@ -42,9 +42,11 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
               />
             )}
             {dropDownMenu && (
-              <div {...stylex.props(styles.dropDownMenuDiv)}>
-                <DropDownWishItemMenu />
-              </div>
+              <ClearPopUp>
+                <div {...stylex.props(styles.dropDownMenuDiv)}>
+                  <DropDownWishItemMenu />
+                </div>
+              </ClearPopUp>
             )}
           </div>
           {wishItem.mostWanted && (
@@ -79,9 +81,9 @@ const styles = stylex.create({
     display: "flex",
     flexDirection: "column",
     // cursor: "pointer",
-
     width: "15rem",
     height: "13rem",
+    flexShrink: 0,
   },
   productImg: {
     height: "9rem",
