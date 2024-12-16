@@ -29,6 +29,7 @@ const styles = stylex.create({
     alignItems: "center",
     width: "15rem",
     height: "13rem",
+    flexShrink: 0,
   },
   text: {
     fontSize: "2rem",

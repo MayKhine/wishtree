@@ -33,6 +33,7 @@ const styles = stylex.create({
 
     width: "15rem",
     height: "13rem",
+    flexShrink: 0,
   },
   coverImg: {
     height: "9rem",
