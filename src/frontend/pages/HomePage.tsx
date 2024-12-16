@@ -65,6 +65,7 @@ const styles = stylex.create({
   wishesContainer: {
     display: "flex",
     gap: "1.5rem",
+    flexWrap: "wrap",
   },
   wishListFormContainer: {
     width: "100vw",
