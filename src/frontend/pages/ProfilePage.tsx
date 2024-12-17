@@ -1,8 +1,13 @@
 import * as stylex from "@stylexjs/stylex"
 import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
+import { WishList } from "../components/wishList/WishList"
 import { tokens } from "../tokens.stylex"
+import { trpc } from "../trpc"
 export const ProfilePage = () => {
+  const { data } = trpc.getMyWishLists.useQuery()
+  console.log("Profile Page: ", data)
+
   const testUser = {
     name: "May Blah blah",
     userName: "Mbler",
@@ -31,21 +36,6 @@ export const ProfilePage = () => {
             </h4>
           </div>
 
-          <div {...stylex.props(styles.userAboutMeContainer)}>
-            <h2 {...stylex.props(styles.h2)}> About Me</h2>
-            <div>
-              <h4>Birthday</h4>
-              {testUser.birthday}
-            </div>
-            <div>
-              <h4>Bio </h4>
-              {testUser.bio}
-            </div>
-            <div>
-              <h4>Socials </h4>
-              {testUser.facebook}
-            </div>
-          </div>
           <div {...stylex.props(styles.buttonsContainer)}>
             <Button
               text="Share"
@@ -61,9 +51,39 @@ export const ProfilePage = () => {
             />
           </div>
         </div>
-
-        <div {...stylex.props(styles.wishlistsDiv)}>
-          <h2> {testUser.name}'s Wishlists</h2>
+        <div {...stylex.props(styles.aboutAndWishlistContainer)}>
+          <div {...stylex.props(styles.userAboutMeContainer)}>
+            <h2 {...stylex.props(styles.h2)}> About Me</h2>
+            <div>
+              <h4>Birthday</h4>
+              {testUser.birthday}
+            </div>
+            <div>
+              <h4>Bio </h4>
+              {testUser.bio}
+            </div>
+            <div>
+              <h4>Socials </h4>
+              {testUser.facebook}
+            </div>
+          </div>
+          <div {...stylex.props(styles.wishlistsDiv)}>
+            <h2> {testUser.name}'s Wishlists</h2>
+            {data && (
+              <div {...stylex.props(styles.wishlistsContainer)}>
+                {data.map((list) => {
+                  // return <div key={list.id}> {list.title}</div>
+                  return (
+                    <WishList
+                      title={list.title}
+                      wishlistID={list.id}
+                      key={list.id}
+                    />
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -111,7 +131,7 @@ const styles = stylex.create({
     flexDirection: "column",
     justifyItems: "center",
     alignItems: "center",
-    backgroundColor: tokens.offWhiteGreen,
+    // backgroundColor: tokens.offWhiteGreen,
     marginBottom: "1rem",
   },
   userAboutMeContainer: {
@@ -121,6 +141,10 @@ const styles = stylex.create({
     // alignItems: "center",
     backgroundColor: tokens.offWhite,
     marginBottom: "1rem",
+    width: "30%",
+    marginLeft: "5rem",
+    // marginRight: "5rem",
+    maxWidth: "30rem",
   },
   h2: {
     display: "flex",
@@ -128,15 +152,24 @@ const styles = stylex.create({
   },
   h4: { margin: "0" },
   wishlistsDiv: {
-    backgroundColor: tokens.offWhiteGreen,
-    marginTop: "3rem",
+    // backgroundColor: tokens.offWhiteGreen,
     display: "flex",
     flexDirection: "column",
+    width: "100%",
+    marginRight: "5rem",
   },
   wishlistsContainer: {
-    backgroundColor: tokens.offWhite,
-    // marginTop: "5rem",
+    // backgroundColor: tokens.offWhite,
     display: "flex",
-    flexDirection: "column",
+    gap: "1.5rem",
+    flexWrap: "wrap",
+    marginTop: "1rem",
+  },
+  aboutAndWishlistContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "2rem",
+    width: "100%",
+    marginTop: "5rem",
   },
 })

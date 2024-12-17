@@ -86,9 +86,10 @@ export const WishListPage = () => {
       <MenuBar />
       <div {...stylex.props(styles.base)}>
         <div {...stylex.props(styles.header)}> {data?.title}</div>
-        <div {...stylex.props(styles.wishItemContainer)}>
+        <div>
           <AddWishItemButton onClickFn={addANewWish} />
-
+        </div>
+        <div {...stylex.props(styles.wishItemContainer)}>
           {togglePopUp && wishlistid && (
             <div {...stylex.props(styles.wishItemFormContainer)}>
               <PopUp

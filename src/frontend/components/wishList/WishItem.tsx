@@ -1,14 +1,15 @@
 // import * as stylex from "@stylexjs/stylex"
 import * as stylex from "@stylexjs/stylex"
+import { useState } from "react"
 import { CgMoreO } from "react-icons/cg"
 import { FaStar } from "react-icons/fa"
 import { WishItem as wishItemType } from "../../../backend/domain/models/WishList"
-// import { ReserveButton } from "../../assets/ReserveButton"
-import { useState } from "react"
 // import { useNavigate } from "react-router-dom"
+// import { Button } from "../../assets/Button"
 import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
 import { PopUp } from "../../assets/PopUp"
+import { ReserveButton } from "../../assets/ReserveButton"
 import { tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
 import { WishItemDetail } from "./WishItemDetail"
@@ -64,7 +65,36 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
   }
   return (
     <div {...stylex.props(styles.base)}>
-      <div {...stylex.props(styles.productImg)}>
+      <div {...stylex.props(styles.productImg)} onClick={wishItemClickHandler}>
+        <img
+          {...stylex.props(styles.imgPreview)}
+          // src={wishItem.imageUrl}
+          src={
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHeDdy5MFKXZ9QkPb8UXd8nxC_4wrH0RTLZQ&s"
+          }
+          alt={wishItem.name}
+        />
+        {/* )} */}
+      </div>
+      <div {...stylex.props(styles.rightDiv)}>
+        <div {...stylex.props(styles.rightDivWishItem)}>
+          <h3 {...stylex.props(styles.text)} onClick={wishItemClickHandler}>
+            {wishItem.name}
+          </h3>
+          {wishItem.price > 0 && (
+            <h4 {...stylex.props(styles.textNoWrap)}> ${wishItem.price}</h4>
+          )}
+          <h4 {...stylex.props(styles.textNoWrap)}>
+            Quantity: {wishItem.quantity}
+          </h4>
+          {wishItem.link && (
+            <h4 {...stylex.props(styles.textNoWrap)}>
+              <a href={wishItem.link} target="_blank">
+                Product Link
+              </a>
+            </h4>
+          )}
+        </div>
         <div {...stylex.props(styles.iconsContainer)}>
           <div>
             {wishListCreater && (
@@ -117,20 +147,16 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
             />
           )}
         </div>
-        {/* {wishItem.imageUrl?.length > 0 && ( */}
-        <img
-          {...stylex.props(styles.imgPreview)}
-          // src={wishItem.imageUrl}
-          src={
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHeDdy5MFKXZ9QkPb8UXd8nxC_4wrH0RTLZQ&s"
-          }
-          alt={wishItem.name}
-        />
-        {/* )} */}
-      </div>
-      <div {...stylex.props(styles.line)} />
-      <div {...stylex.props(styles.name)} onClick={wishItemClickHandler}>
-        {wishItem.name}
+
+        <div {...stylex.props(styles.ReserveButtonDiv)}>
+          <ReserveButton
+            text="Reserve"
+            onClickFn={() => {
+              console.log("TODO: Reserve button")
+            }}
+          />
+          {/* <Button text="Resv"  /> */}
+        </div>
       </div>
 
       {toggleWishItemDetail && (
@@ -160,53 +186,98 @@ const styles = stylex.create({
     border: "2px solid #465362",
     borderRadius: ".5rem",
     display: "flex",
-    flexDirection: "column",
-    // cursor: "pointer",
-    width: "15rem",
+    flexDirection: "row",
+    width: "35rem",
     height: "13rem",
     flexShrink: 0,
     // position: "relative",
     // zIndex: 0,
   },
   productImg: {
-    height: "9rem",
-    // backgroundColor: "pink",
     borderRadius: ".5rem",
+    height: "100%",
+    display: "flex",
+    cursor: "pointer",
   },
 
   imgPreview: {
     border: "0px solid black",
-    width: "100%",
-    height: "9rem",
     objectFit: "contain",
     borderRadius: ".5rem",
+    width: "12rem",
+    backgroundColor: "pink",
+    // padding: "1rem",
+    margin: "1rem",
   },
-  line: {
-    height: "2px",
-    backgroundColor: "black",
-  },
-
-  name: {
-    cursor: "pointer",
-
-    height: "4rem",
-    fontWeight: "600",
-    alignContent: "center",
-    marginLeft: ".5rem",
-    textOverflow: "ellipsis",
-    overflow: "hidden",
-    marginRight: ".5rem",
-  },
-  iconsContainer: {
-    position: "absolute",
+  rightDiv: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    width: "100%",
+    margin: "1rem",
+    overflow: "hidden",
+    // backgroundColor: "lightgray",
+  },
+
+  ReserveButtonDiv: {
+    position: "fixed",
+    // backgroundColor: "pink",
+    zIndex: 1,
+    display: "flex",
     alignContent: "flex-end",
+    alignSelf: "flex-end",
+    justifySelf: "flex-end",
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    margin: ".3rem",
-    // zIndex: 1,
-    marginLeft: "13rem",
+    justifyItems: "flex-end",
+    // width: "100%",
+    marginLeft: "14rem", //margin to place reserve button on the div
+    height: "2rem",
+  },
+
+  rightDivWishItem: {
+    display: "flex",
+    flexDirection: "column",
+    // cursor: "pointer",
+    // width: "19rem",
+    // backgroundColor: "lightgray",
+    // marginLeft: "1rem",
+    marginRight: ".5rem",
+    width: "100%",
+    minWidth: 0,
+
+    gap: ".5rem",
+    // alignItems: "center",
+    justifyItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    cursor: "pointer",
+    display: "-webkit-box",
+    WebkitLineClamp: "3",
+    WebkitBoxOrient: "vertical",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    // backgroundColor: tokens.offWhiteGreen,
+    // minHeight: "1.5rem",
+  },
+
+  textNoWrap: {
+    // display: "-webkit-box",
+    // WebkitLineClamp: "3",
+    // WebkitBoxOrient: "vertical",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    // backgroundColor: tokens.offWhiteGreen,
+    width: "80%",
+    // minHeight: "1.5rem",
+  },
+  iconsContainer: {
+    width: "1.5rem",
+    // backgroundColor: "pink",
+    display: "flex",
+    flexDirection: "column",
+    gap: ".3rem",
   },
   star: { cursor: "default" },
 
@@ -227,14 +298,14 @@ const styles = stylex.create({
     height: "1.5rem",
     cursor: "pointer",
   },
+
   wishItemDetailContainer: {
     width: "100%",
     height: "100%",
-    // backgroundColor: "red",
     position: "fixed",
     left: 0,
     top: 0,
-    zIndex: 1,
+    zIndex: 2,
     display: "flex",
     justifyContent: "center",
   },
