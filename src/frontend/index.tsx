@@ -5,7 +5,6 @@ import "./index.css"
 import { CreateWishListPage } from "./pages/CreateWishListPage"
 import { HomePage } from "./pages/HomePage"
 import { ProfilePage } from "./pages/ProfilePage"
-import { WishItemPage } from "./pages/WishItemPage"
 import { WishListPage } from "./pages/WishListPage"
 import { TrpcQueryContextProvider } from "./trpc"
 
@@ -21,10 +20,6 @@ root.render(
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/wishlist/:wishlistid" element={<WishListPage />} />
           <Route path="/createwishlist" element={<CreateWishListPage />} />
-          <Route
-            path="/wishlist/:wishlistid/:wishitemid"
-            element={<WishItemPage />}
-          />
         </Routes>
       </BrowserRouter>
     </TrpcQueryContextProvider>

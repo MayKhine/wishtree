@@ -1,9 +1,11 @@
 import * as stylex from "@stylexjs/stylex"
 import { tokens } from "../../tokens.stylex"
-type AddWishItemButtonType = {
+type AddWishItemButtonOldType = {
   onClickFn: () => void
 }
-export const AddWishItemButton = ({ onClickFn }: AddWishItemButtonType) => {
+export const AddWishItemButtonOld = ({
+  onClickFn,
+}: AddWishItemButtonOldType) => {
   return (
     <div {...stylex.props(styles.base)} onClick={onClickFn}>
       <p {...stylex.props(styles.text)}>+</p>
@@ -24,8 +26,8 @@ const styles = stylex.create({
     alignContent: "center",
     justifyItems: "center",
     alignItems: "center",
-    width: "35rem",
-    height: "5rem",
+    width: "15rem",
+    height: "13rem",
   },
   text: {
     fontSize: "2rem",

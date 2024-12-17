@@ -10,15 +10,26 @@ import { trpc } from "../trpc"
 export const HomePage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
   const [openWishListForm, setOpenWishListForm] = useState(false)
-  console.log("Home page: data: ", data)
   const closeWishListForm = () => {
     setOpenWishListForm(false)
+  }
+
+  // const {mutate , data:loginUserData} = trpc.loginUser.useMutation()
+  const testUser = {
+    name: "May Blah blah",
+    userName: "Mbler",
+    birthday: "12/12/1995",
+    bio: "test bio for test user",
+    facebook: "facebook.com/test",
+    numOfLists: "2",
+    numOfFollowers: "0",
+    numOfFollowings: "0",
   }
   return (
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> My Wishlists</div>
+        <div {...stylex.props(styles.header)}> {testUser.name}'s Wishlists</div>
         <div {...stylex.props(styles.wishesContainer)}>
           <CreateWishListButton
             onClickFn={() => {
@@ -71,7 +82,6 @@ const styles = stylex.create({
     width: "100vw",
     height: "100vh",
     position: "absolute",
-    // backgroundColor: "red",
     left: 0,
     top: 0,
     zIndex: 1,
