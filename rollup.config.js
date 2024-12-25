@@ -20,12 +20,13 @@ export default defineConfig({
     sourcemap: true, // Include sourcemaps for debugging
   },
   plugins: [
-    polyfillNode(),
     typescript({
-      tsconfig: "./tsconfig.json", // Path to your tsconfig file
+      tsconfig: "./tsconfig-backend.json", // Path to your tsconfig file
     }),
     resolve({ preferBuiltins: true }),
     commonjs(), // Convert CommonJS to ES modules
+    polyfillNode(),
+
     // autoNamedExports(),
     // globals(),
     // builtin(),

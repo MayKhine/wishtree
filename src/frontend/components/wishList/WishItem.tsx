@@ -21,9 +21,7 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
     setDropDownMenu(false)
   }
 
-  const wishItemMoreClickHandler = (
-    event: React.MouseEvent<HTMLDivElement>,
-  ) => {
+  const wishItemMoreClickHandler = (event: React.MouseEvent<SVGElement>) => {
     event.stopPropagation() // Prevent the event from propagating to the whole div
     console.log("Hi you cicked on the more options")
     setDropDownMenu(!dropDownMenu)
@@ -59,13 +57,13 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
             />
           )}
         </div>
-        {wishItem.imageUrl?.length > 0 && (
+        {wishItem.imageUrl?.length ? (
           <img
             {...stylex.props(styles.imgPreview)}
             src={wishItem.imageUrl}
             alt={wishItem.name}
           />
-        )}
+        ) : null}
       </div>
       <div {...stylex.props(styles.line)} />
       <div {...stylex.props(styles.name)}>{wishItem.name}</div>

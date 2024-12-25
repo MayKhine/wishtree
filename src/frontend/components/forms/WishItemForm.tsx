@@ -58,7 +58,9 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
     useState("+ Upload Image")
 
   const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setProductImg(URL.createObjectURL(event.target.files[0]))
+    const first = event.target.files?.[0]
+    if (!first) return
+    setProductImg(URL.createObjectURL(first))
     setProductImgButtonText("Change Product Image")
   }
   const imgButtonHandler = () => {
