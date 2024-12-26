@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-pnpm build && docker-compose build
+pnpm build 
+
+docker-compose build
 
 PROJECT_NAME="wish-tree"
 TAR_FILE="$PROJECT_NAME-bundle.tar"  # Tar file name

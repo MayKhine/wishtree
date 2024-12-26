@@ -40,11 +40,6 @@ export default defineConfig({
     }),
   ],
   external: [
-    // "zod",
-    // "cookie-parser",
-    // "jsonwebtoken",
-    // "bcrypt",
-    // "bcrypt-ts",
     "sqlite3",
     // Specify modules that should remain external (Node.js built-ins)
     ...builtinModules,

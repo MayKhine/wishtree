@@ -36,14 +36,18 @@ const main = async () => {
     }),
   )
 
-  // when app is deployed in a container, it'll have the frontend in this directory.
+  const pathToFrontend = "/app/frontend"
+  console.log("static serve fronted at", pathToFrontend)
+  app.use(express.static(pathToFrontend))
+
   app.get("*", (req: Request, res: Response): any => {
     // If the request starts with "/trpc", don't serve React.
     if (req.path.startsWith("/trpc")) {
       return res.status(404).send({ error: "API endpoint not found" })
     }
-
-    res.sendFile(path.join("frontend", "index.html"))
+    const pathToIndex = path.join(pathToFrontend, "index.html")
+    console.log("sendfile from", pathToIndex)
+    res.sendFile(pathToIndex)
   })
 
   const port = 4000
