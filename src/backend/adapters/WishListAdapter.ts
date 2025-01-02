@@ -87,8 +87,9 @@ export const makeWishListStorageAdapter = (
   return {
     upsertDbWishList,
     getWishList,
-    getWishItems,
-    getWishListsByUserId: getWishListsByUserId,
+    // broken types fixed on may branch
+    getWishItems: getWishItems as any,
+    getWishListsByUserId: getWishListsByUserId as any,
     upsertWishItem,
   }
 }

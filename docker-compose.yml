@@ -1,10 +1,15 @@
 version: "3.8"
 
 services:
-  frontend-nginx:
+  wishtree-server:
     image: wishtree-server
     build:
       context: ./
-    # platform: linux/arm64/v8
     ports:
-      - "12347:80"
+      - "12347:4000"
+    platform: linux/arm64/v8
+    volumes:
+      - wish-tree-server-data:/data
+    restart: unless-stopped
+volumes:
+  wish-tree-server-data:

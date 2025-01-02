@@ -63,7 +63,9 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
     useState("+ Add Cover Image")
 
   const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCoverImg(URL.createObjectURL(event.target.files[0]))
+    const first = event.target.files?.[0]
+    if (!first) return
+    setCoverImg(URL.createObjectURL(first))
     setCoverImgButtonText("Change Cover Image")
   }
   const imgButtonHandler = () => {

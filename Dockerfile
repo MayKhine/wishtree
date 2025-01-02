@@ -5,7 +5,7 @@ FROM node:20-slim
 WORKDIR /app
 
 # sqlite3 gotta be installed in the context of the arch....
-RUN npm install sqlite3
+RUN npm install sqlite3@5.1.7
 
 COPY ./dist/backend ./backend
 COPY ./dist/frontend ./frontend

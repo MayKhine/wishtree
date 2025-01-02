@@ -75,7 +75,7 @@ export const WishListPage = () => {
         <div {...stylex.props(styles.wishItemContainer)}>
           <AddWishItemButton onClickFn={addANewWish} />
 
-          {togglePopUp && (
+          {togglePopUp && wishlistid && (
             <PopUp>
               <WishItemForm
                 wishListID={wishlistid}

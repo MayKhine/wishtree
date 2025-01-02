@@ -1,6 +1,6 @@
 // import { TRPCError } from "@trpc/server"
 import { UserService } from "./services/UserService"
-import { User } from "./models/models"
+// import { User } from "./models/models"
 import { DateTime } from "luxon"
 
 export const authMiddleware = (userService: UserService) => {
@@ -24,13 +24,12 @@ export const authMiddleware = (userService: UserService) => {
     //   })
     // }
 
-
     ctx.user = {
-      birthday: DateTime.now(), 
-      id: 'qwert',
-      name: 'test', 
-      email: 'builtbymay@gmail.com'
-    } satisfies User
+      birthday: DateTime.now(),
+      id: "qwert",
+      name: "test",
+      email: "builtbymay@gmail.com",
+    }
     return next()
   }
 }
