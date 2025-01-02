@@ -163,25 +163,9 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
 }
 
 const styles = stylex.create({
-  // base: {
-  //   backgroundColor: tokens.offWhite,
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   justifyContent: "center",
-  //   alignContent: "center",
-  //   alignItems: "center",
-  //   fontWeight: "600",
-  //   fontSize: "1rem",
-  //   minWidth: "55rem",
-  //   padding: "3rem",
-  //   borderRadius: "1rem",
-  //   zIndex: "11",
-  //   height: "50%",
-  //   alignSelf: "center",
-  // },
-
   base: {
-    backgroundColor: "pink",
+    backgroundColor: tokens.offWhite,
+    border: "2px solid black",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -189,8 +173,8 @@ const styles = stylex.create({
     fontSize: "1rem",
     borderRadius: "1rem",
     zIndex: "10",
-    paddingTop: "1rem",
-    paddingBottom: "1rem",
+    paddingTop: "2rem",
+    paddingBottom: "2rem",
     alignSelf: {
       default: "flex-start",
       // "@media (min-width: 1025px) and (min-height: 500px)": "center",
@@ -208,7 +192,7 @@ const styles = stylex.create({
       // "@media (max-width: 1024px)": "100%",
       "@media (max-width: 1024px)": "auto",
     },
-    boxSizing: "border-box",
+    // boxSizing: "border-box",
   },
 
   header: {
@@ -270,15 +254,11 @@ const styles = stylex.create({
     marginBottom: "1rem",
     width: "25rem",
   },
-  imgPreviewDiv2: {
-    // marginLeft: "1.5rem",
-  },
+
   deleteButton: {
     position: "absolute",
     zIndex: "11",
     cursor: "pointer",
-    // width: "2rem",
-    // heigth: "2rem",
     marginLeft: "23rem",
     marginTop: ".2rem",
   },

@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { FaStar } from "react-icons/fa"
+import { FaDeleteLeft } from "react-icons/fa6"
 import { v4 as uuidV4 } from "uuid"
 import { AddImgButton } from "../../assets/AddImgButton"
 import { Button } from "../../assets/Button"
@@ -111,8 +112,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
           </div>
           <div {...stylex.props(styles.starContainer)}>
             <label aria-label="name">Tag as Most Wanted</label>
-            {/* <FaRegStar {...stylex.props(styles.star)} size={"2rem"} /> */}
-            {/* <FaStar {...stylex.props(styles.star)} size={"2rem"} /> */}
+
             {!wishItem.mostWanted && (
               <FaStar
                 size={"2rem"}
@@ -198,19 +198,23 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                 accept="image/*"
               />
               {productImg && productImg.length > 0 && (
-                <div {...stylex.props(styles.imgPreviewDiv2)}>
+                <div>
+                  <FaDeleteLeft
+                    {...stylex.props(styles.deleteButton)}
+                    onClick={removeimgButtonHandler}
+                    size={"1.5rem"}
+                    fill={tokens.darkBlue}
+                    // stroke={tokens.tealGreen}
+                  />
                   <img
                     {...stylex.props(styles.imgPreview)}
                     id="productImg"
                     src={productImg}
                   />
-                  <RemoveButton onClickFn={removeimgButtonHandler} />
+                  {/* <RemoveButton onClickFn={removeimgButtonHandler} /> */}
                 </div>
               )}
-              {/* <Button
-                onClickFn={imgButtonHandler}
-                text={productImgButtonText}
-              /> */}
+
               <AddImgButton
                 onClickFn={imgButtonHandler}
                 text={productImgButtonText}
@@ -234,35 +238,52 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
 
 const styles = stylex.create({
   base: {
+    // backgroundColor: tokens.offWhite,
+    // display: "flex",
+    // flexDirection: "column",
+    // justifyContent: "center",
+    // alignContent: "center",
+    // alignItems: "center",
+    // fontWeight: "600",
+    // fontSize: "1rem",
+    // minWidth: "55rem",
+    // flexWrap: "wrap",
+    // padding: "3rem",
+    // borderRadius: "1rem",
+    // position: "fixed",
+    // zIndex: 10,
+    // alignSelf: "center",
+    // justifySelf: "center",
+
     backgroundColor: tokens.offWhite,
+    // margin: "1rem",
+    border: "2px solid black",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignContent: "center",
     alignItems: "center",
     fontWeight: "600",
     fontSize: "1rem",
-    minWidth: "55rem",
-    flexWrap: "wrap",
-    padding: "3rem",
     borderRadius: "1rem",
-    position: "fixed",
-    zIndex: 11,
-    alignSelf: "center",
-    justifySelf: "center",
+    zIndex: "10",
+    paddingTop: "2rem",
+    paddingBottom: "2rem",
+    alignSelf: {
+      default: "flex-start",
+      // "@media (min-width: 1025px) and (min-height: 500px)": "center",
+      // "@media (min-width: 1025px) , (min-height: 950px)": "center", //950px => height of the form
+      "@media (min-width: 1025px) ": "center",
+    },
+    width: {
+      "@media (min-width: 1025px)": "63rem",
+      "@media (max-width: 1024px)": "100%",
+    },
 
-    // backgroundColor: tokens.offWhite,
-    // fontWeight: "600",
-    // fontSize: "1rem",
-    // borderRadius: "1rem",
-    // minWidth: "55rem",
-    // width: "70%",
-    // height: "70%",
-    // display: "flex",
-    // flexDirection: "column",
-    // alignSelf: "center",
-    // position: "fixed",
-    // zIndex: "11",
+    height: {
+      // default: "100%",
+      "@media (min-width: 1025px) and @media (min-height: 768px) ": "35rem",
+      // "@media (max-width: 1024px)": "100%",
+      "@media (max-width: 1024px)": "auto",
+    },
   },
 
   header: {
@@ -271,9 +292,20 @@ const styles = stylex.create({
 
   formDiv: {
     display: "flex",
-    flexDirection: "row",
-    gap: "3rem",
+    // flexDirection: "row",
+    // gap: "3rem",
+    flexDirection: {
+      default: "row",
+      "@media (max-width: 1024px)": "column",
+    },
+
+    // gap: "3rem",
+    gap: {
+      default: "3rem",
+      "@media (max-width: 1024px)": "1rem",
+    },
   },
+
   leftDiv: { width: "100%", backgroundColor: "white" },
   rightDiv: { width: "100%", backgroundColor: "white" },
 
@@ -290,7 +322,8 @@ const styles = stylex.create({
 
   imgPreview: {
     border: "0px solid black",
-    width: "calc(100% - 2rem)",
+    width: "100%",
+    // width: "calc(100% - 2rem)",
     height: "18rem",
     objectFit: "contain",
     borderRadius: ".3rem",
@@ -299,18 +332,14 @@ const styles = stylex.create({
     border: "2px solid #82A3A1",
     height: "22rem",
     objectFit: "contain",
-    // backgroundColor: "lightgray",
+    backgroundColor: tokens.offWhite,
     borderRadius: ".3rem",
     display: "flex",
     flexDirection: "column",
     alignContent: "center",
     justifyContent: "center",
     marginBottom: "1rem",
-    width: "27rem",
-  },
-  imgPreviewDiv2: {
-    marginLeft: "1.5rem",
-    // backgroundColor: "pink",
+    width: "25rem",
   },
 
   starContainer: {
@@ -322,6 +351,8 @@ const styles = stylex.create({
   },
   pirceQuantityContainer: {
     display: "flex",
+    flexDirection: "row",
+    // gap: "1rem",
     justifyContent: "space-between",
     marginBottom: "1rem",
   },
@@ -333,6 +364,8 @@ const styles = stylex.create({
     borderRadius: ".3rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
+    width: "9rem",
+    // width: "100%",
   },
   quantityInput: {
     fontSize: "1rem",
@@ -340,15 +373,25 @@ const styles = stylex.create({
     borderRadius: ".3rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
+    // width: "100%",
+    width: "9rem",
   },
   inputTextArea: {
     fontSize: "1rem",
     padding: "1rem",
     borderRadius: ".3rem",
-    width: "25rem",
+    width: "23rem",
     height: "15rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
     resize: "none",
+    backgroundColor: tokens.offWhite,
+  },
+  deleteButton: {
+    position: "absolute",
+    zIndex: "11",
+    cursor: "pointer",
+    marginLeft: "23rem",
+    marginTop: ".2rem",
   },
 })
