@@ -81,7 +81,7 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
           <h3 {...stylex.props(styles.text)} onClick={wishItemClickHandler}>
             {wishItem.name}
           </h3>
-          {wishItem.price > 0 && (
+          {wishItem.price && wishItem.price > 0 && (
             <h4 {...stylex.props(styles.textNoWrap)}> ${wishItem.price}</h4>
           )}
           <h4 {...stylex.props(styles.textNoWrap)}>
