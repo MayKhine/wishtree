@@ -4,6 +4,8 @@ import { sql } from "../utils/sql"
 import { SqliteConnection } from "../utils/sqliteConnection"
 import { ErrorType } from "../utils/tryCatch"
 
+const dbWishItemFields = sql`id, name, notes, price, link, imageUrl, status, mostWanted, quantity, wishListId`
+
 export const makeWishListStorageAdapter = (
   sqliteConnection: SqliteConnection,
 ): WishListStoreAdapter => {
@@ -35,23 +37,29 @@ export const makeWishListStorageAdapter = (
     return [null, fromDbWishList(dbWishList)]
   }
 
-  const getWishListsByUserId = async (userId: string) => {
+  const getWishListsByUserId = async (
+    userId: string,
+  ): Promise<ErrorType<WishList[], Error>> => {
     const items = await sqliteConnection.all<DBWishList>(sql`
       SELECT id, title, description, eventDate, userId 
       FROM WishList
       WHERE userId = ${userId}
     `)
-    return items.map(fromDbWishList)
+    const result = items.map(fromDbWishList)
+
+    return [null, result] as const
   }
 
-  const getWishItems = async (wishListId: string) => {
+  const getWishItems = async (
+    wishListId: string,
+  ): Promise<ErrorType<WishItem[], Error>> => {
     const items = await sqliteConnection.all<DBWishItem>(sql`
-      SELECT id, name, notes, price, link, imageUrl, status, mostWanted, quantity, wishListId 
+      SELECT ${dbWishItemFields} 
       FROM WishItem
       WHERE wishListId = ${wishListId};
     `)
-
-    return items.map(fromDbWishItem)
+    const result = items.map(fromDbWishItem)
+    return [null, result] as const
   }
 
   const upsertWishItem = async (wishItem: WishItem) => {
@@ -84,13 +92,32 @@ export const makeWishListStorageAdapter = (
       `)
   }
 
+  const getWishItem = async (
+    wishItemId: string,
+  ): Promise<ErrorType<WishItem, Error | "NotFound">> => {
+    const [wishItem] = await sqliteConnection.all<DBWishItem>(
+      sql`SELECT ${dbWishItemFields} FROM WishItem WHERE id = ${wishItemId};`,
+    )
+    if (!wishItem) {
+      return ["NotFound", null]
+    }
+    return [null, fromDbWishItem(wishItem)]
+  }
+
+  const deleteWishItem = async (wishItemId: string) => {
+    await sqliteConnection.run(
+      sql`DELETE FROM WishItem WHERE id = ${wishItemId};`,
+    )
+  }
+
   return {
     upsertDbWishList,
     getWishList,
-    // broken types fixed on may branch
-    getWishItems: getWishItems as any,
-    getWishListsByUserId: getWishListsByUserId as any,
+    getWishItems,
+    getWishListsByUserId,
     upsertWishItem,
+    deleteWishItem,
+    getWishItem,
   }
 }
 

@@ -1,16 +1,15 @@
 import * as stylex from "@stylexjs/stylex"
 import { tokens } from "../../tokens.stylex"
-
-type CreateWishListButtonType = {
+type AddWishItemButtonOldType = {
   onClickFn: () => void
 }
-export const CreateWishListButton = ({
+export const AddWishItemButtonOld = ({
   onClickFn,
-}: CreateWishListButtonType) => {
+}: AddWishItemButtonOldType) => {
   return (
     <div {...stylex.props(styles.base)} onClick={onClickFn}>
       <p {...stylex.props(styles.text)}>+</p>
-      <p {...stylex.props(styles.text2)}>Create wish list</p>
+      <p {...stylex.props(styles.text2)}>Add Wish Item</p>
     </div>
   )
 }
@@ -29,7 +28,6 @@ const styles = stylex.create({
     alignItems: "center",
     width: "15rem",
     height: "13rem",
-    flexShrink: 0,
   },
   text: {
     fontSize: "2rem",

@@ -1,10 +1,10 @@
 import * as stylex from "@stylexjs/stylex"
 import { useEffect, useState } from "react"
+import { FaDeleteLeft } from "react-icons/fa6"
 import { v4 as uuidV4 } from "uuid"
 import { AddImgButton } from "../../assets/AddImgButton"
 import { Button } from "../../assets/Button"
 import { InputError } from "../../assets/InputError"
-import { RemoveButton } from "../../assets/RemoveButton"
 import { stdStyles, tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
 
@@ -125,16 +125,22 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
                 accept="image/*"
               />
               {coverImg && coverImg.length > 0 && (
-                <div {...stylex.props(styles.imgPreviewDiv2)}>
+                <div>
+                  <FaDeleteLeft
+                    {...stylex.props(styles.deleteButton)}
+                    onClick={removeimgButtonHandler}
+                    size={"1.5rem"}
+                    fill={tokens.darkBlue}
+                    // stroke={tokens.tealGreen}
+                  />
                   <img
                     {...stylex.props(styles.imgPreview)}
                     id="coverImg"
                     src={coverImg}
                   />
-                  <RemoveButton onClickFn={removeimgButtonHandler} />
+                  {/* <RemoveButton onClickFn={removeimgButtonHandler} /> */}
                 </div>
               )}
-              {/* <Button onClickFn={imgButtonHandler} text={coverImgButtonText} /> */}
               <AddImgButton
                 onClickFn={imgButtonHandler}
                 text={coverImgButtonText}
@@ -159,17 +165,34 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
 const styles = stylex.create({
   base: {
     backgroundColor: tokens.offWhite,
+    border: "2px solid black",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignContent: "center",
     alignItems: "center",
     fontWeight: "600",
     fontSize: "1rem",
-    minWidth: "55rem",
-    flexWrap: "wrap",
-    padding: "3rem",
     borderRadius: "1rem",
+    zIndex: "10",
+    paddingTop: "2rem",
+    paddingBottom: "2rem",
+    alignSelf: {
+      default: "flex-start",
+      // "@media (min-width: 1025px) and (min-height: 500px)": "center",
+      // "@media (min-width: 1025px) , (min-height: 950px)": "center", //950px => height of the form
+      "@media (min-width: 1025px) ": "center",
+    },
+    width: {
+      "@media (min-width: 1025px)": "63rem",
+      "@media (max-width: 1024px)": "100%",
+    },
+
+    height: {
+      // default: "100%",
+      "@media (min-width: 1025px) and @media (min-height: 768px) ": "35rem",
+      // "@media (max-width: 1024px)": "100%",
+      "@media (max-width: 1024px)": "auto",
+    },
+    // boxSizing: "border-box",
   },
 
   header: {
@@ -178,17 +201,31 @@ const styles = stylex.create({
 
   formDiv: {
     display: "flex",
-    flexDirection: "row",
-    gap: "2rem",
+    flexDirection: {
+      default: "row",
+      "@media (max-width: 1024px)": "column",
+    },
+
+    // gap: "3rem",
+    gap: {
+      default: "3rem",
+      "@media (max-width: 1024px)": "1rem",
+    },
   },
-  leftDiv: { width: "100%", backgroundColor: "white" },
-  rightDiv: { width: "100%", backgroundColor: "white" },
+
+  leftDiv: {
+    width: "100%",
+    // backgroundColor: "white",
+  },
+  rightDiv: {
+    width: "100%",
+    // backgroundColor: "white",
+  },
 
   buttonsContainer: {
     display: "flex",
     flexDirection: "row",
     gap: "1rem",
-    // justifyContent: "space-between",
   },
 
   imgInput: {
@@ -197,7 +234,8 @@ const styles = stylex.create({
 
   imgPreview: {
     border: "0px solid black",
-    width: "calc(100% - 2rem)",
+    // width: "calc(100% - 2rem)",
+    width: "100%",
     height: "18rem",
     objectFit: "contain",
     borderRadius: ".3rem",
@@ -207,16 +245,21 @@ const styles = stylex.create({
     height: "22rem",
     objectFit: "contain",
     // backgroundColor: "lightgray",
+    backgroundColor: tokens.offWhite,
     borderRadius: ".3rem",
     display: "flex",
     flexDirection: "column",
     alignContent: "center",
     justifyContent: "center",
     marginBottom: "1rem",
-    width: "27rem",
+    width: "25rem",
   },
-  imgPreviewDiv2: {
-    // marginLeft: "1.5rem",
-    marginLeft: "1.5rem",
+
+  deleteButton: {
+    position: "absolute",
+    zIndex: "11",
+    cursor: "pointer",
+    marginLeft: "23rem",
+    marginTop: ".2rem",
   },
 })

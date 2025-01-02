@@ -1,10 +1,15 @@
 import * as stylex from "@stylexjs/stylex"
-import { tokens } from "../tokens.stylex"
-type PopUpType = {
+// import { tokens } from "../tokens.stylex"
+type PopUpProps = {
   children?: React.ReactNode
+  onCancleFn?: () => void
 }
-export const PopUp = ({ children }: PopUpType) => {
-  return <div {...stylex.props(styles.base)}> {children} </div>
+export const PopUp = ({ children, onCancleFn }: PopUpProps) => {
+  return (
+    <div {...stylex.props(styles.base)} onClick={onCancleFn}>
+      {children}
+    </div>
+  )
 }
 
 const styles = stylex.create({
@@ -12,7 +17,7 @@ const styles = stylex.create({
     backgroundColor: "rgba(130, 163, 161, 0.4)",
     // color: tokens.tealGreen,
     // height: "100vh",
-    zIndex: "1",
+    zIndex: 10,
     left: 0,
     top: 0,
     position: "fixed",

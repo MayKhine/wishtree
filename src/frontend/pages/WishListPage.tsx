@@ -10,14 +10,13 @@ import { trpc } from "../trpc"
 
 export const WishListPage = () => {
   const { wishlistid } = useParams<{ wishlistid: string }>()
-  console.log("what is wishlistID: ", wishlistid)
   const [togglePopUp, setTogglePopUp] = useState(false)
 
   const addANewWish = () => {
     setTogglePopUp(!togglePopUp)
   }
 
-  const { isFetched, data } = trpc.getWishlist.useQuery(
+  const { data } = trpc.getWishlist.useQuery(
     {
       wishListId: wishlistid!,
     },
@@ -25,75 +24,51 @@ export const WishListPage = () => {
       enabled: Boolean(wishlistid),
     },
   )
-  console.log("What is in data: ", data)
 
-  const testDataArr = [
+  const { data: wishItems } = trpc.getWishItems.useQuery(
     {
-      name: "shoe",
-      id: "123a",
-      status: "open",
-      notes: "red shoe, size 8",
-      mostWanted: false,
-      quantity: 1,
-      wishListId: "testListId",
-      link: "",
-      price: "",
-      imageUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHeDdy5MFKXZ9QkPb8UXd8nxC_4wrH0RTLZQ&s",
+      wishListId: wishlistid!,
     },
     {
-      name: "timer clock",
-      id: "123a",
-      status: "open",
-      notes: "a duck timer clock",
-      mostWanted: true,
-      quantity: 1,
-      wishListId: "testListId",
-      link: "",
-      price: "",
-      imageUrl:
-        "https://assets.adidas.com/images/w_940,f_auto,q_auto/ed35421359dd4f9989b6af310075e655_9366/HQ7033_HM1.jpg",
+      enabled: Boolean(wishlistid),
     },
-    {
-      name: "test long long long longlonglonglongnalonglonglonglonglonglongme",
-      id: "123a",
-      status: "open",
-      notes: "a duck timer clock",
-      mostWanted: true,
-      quantity: 1,
-      wishListId: "testListId",
-      link: "",
-      price: "",
-      imageUrl: "",
-    },
-  ]
+  )
+
+  console.log("WishList Page data:", wishlistid, data)
+  console.log("WishList Page data:", wishItems)
+
   return (
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> Todo: Wishlist title</div>
-        <div {...stylex.props(styles.wishItemContainer)}>
+        <div {...stylex.props(styles.header)}> {data?.title}</div>
+        <div {...stylex.props(styles.AddWishItemButtonDiv)}>
           <AddWishItemButton onClickFn={addANewWish} />
-
+        </div>
+        <div {...stylex.props(styles.wishItemContainer)}>
           {togglePopUp && wishlistid && (
-            <PopUp>
+            <div {...stylex.props(styles.wishItemFormContainer)}>
+              <PopUp
+                onCancleFn={() => {
+                  setTogglePopUp(false)
+                }}
+              ></PopUp>
               <WishItemForm
                 wishListID={wishlistid}
                 togglePopUp={() => {
-                  console.log("what is toggle popup ", togglePopUp)
                   setTogglePopUp(!togglePopUp)
                 }}
               />
-            </PopUp>
+            </div>
           )}
 
-          {/* {testDataArr.map((item) => {
-            return <WishItem wishItem={item} wishListCreater={true} />
-          })} */}
+          {wishItems?.map((item) => {
+            return (
+              <WishItem key={item.id} wishItem={item} wishListCreater={true} />
+            )
+          })}
         </div>
       </div>
-
-      {/* <WishList data={testData} /> */}
     </div>
   )
 }
@@ -113,5 +88,20 @@ const styles = stylex.create({
   wishItemContainer: {
     display: "flex",
     gap: "1.5rem",
+    flexWrap: "wrap",
+  },
+  wishItemFormContainer: {
+    width: "100vw",
+    height: "100vh",
+    position: "absolute",
+    // backgroundColor: "red",
+    left: 0,
+    top: 0,
+    zIndex: 2,
+    display: "flex",
+    justifyContent: "center",
+  },
+  AddWishItemButtonDiv: {
+    marginBottom: "2rem",
   },
 })

@@ -5,21 +5,31 @@ import { PopUp } from "../assets/PopUp"
 import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
 import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
-import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 
 export const HomePage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
   const [openWishListForm, setOpenWishListForm] = useState(false)
-  console.log("Data: ", data)
   const closeWishListForm = () => {
     setOpenWishListForm(false)
+  }
+
+  // const {mutate , data:loginUserData} = trpc.loginUser.useMutation()
+  const testUser = {
+    name: "May Blah blah",
+    userName: "Mbler",
+    birthday: "12/12/1995",
+    bio: "test bio for test user",
+    facebook: "facebook.com/test",
+    numOfLists: "2",
+    numOfFollowers: "0",
+    numOfFollowings: "0",
   }
   return (
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> My Wishlists</div>
+        <div {...stylex.props(styles.header)}> {testUser.name}'s Wishlists</div>
         <div {...stylex.props(styles.wishesContainer)}>
           <CreateWishListButton
             onClickFn={() => {
@@ -27,12 +37,23 @@ export const HomePage = () => {
             }}
           />
           {openWishListForm && (
-            <PopUp>
+            <div {...stylex.props(styles.wishListFormContainer)}>
+              <PopUp
+                onCancleFn={() => {
+                  closeWishListForm()
+                }}
+              ></PopUp>
               <WishListForm closeWishListForm={closeWishListForm} />
-            </PopUp>
+            </div>
           )}
           {data?.map((wishList) => {
-            return <WishList title={wishList.title} wishlistID={wishList.id} />
+            return (
+              <WishList
+                key={wishList.id}
+                title={wishList.title}
+                wishlistID={wishList.id}
+              />
+            )
           })}
         </div>
       </div>
@@ -55,5 +76,31 @@ const styles = stylex.create({
   wishesContainer: {
     display: "flex",
     gap: "1.5rem",
+    flexWrap: "wrap",
   },
+  wishListFormContainer: {
+    width: "100vw",
+    height: "100vh",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 1,
+    display: "flex",
+    justifyContent: "center",
+  },
+
+  // wishListFormContainer: {
+  //   width: {
+  //     default: "100vw",
+  //     "@media (min-width: 1025px)": "100%",
+  //     "@media (min-width: 600px)": "100%",
+  //   },
+  //   height: "100vh",
+  //   position: "absolute",
+  //   left: 0,
+  //   top: 0,
+  //   zIndex: 1,
+  //   display: "flex",
+  //   justifyContent: "center",
+  // },
 })
