@@ -1,7 +1,6 @@
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { ClearPopUp } from "../assets/ClearPopUp"
 import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
 import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
@@ -86,7 +85,7 @@ export const WishListPage = () => {
       <MenuBar />
       <div {...stylex.props(styles.base)}>
         <div {...stylex.props(styles.header)}> {data?.title}</div>
-        <div>
+        <div {...stylex.props(styles.AddWishItemButtonDiv)}>
           <AddWishItemButton onClickFn={addANewWish} />
         </div>
         <div {...stylex.props(styles.wishItemContainer)}>
@@ -146,5 +145,8 @@ const styles = stylex.create({
     zIndex: 1,
     display: "flex",
     justifyContent: "center",
+  },
+  AddWishItemButtonDiv: {
+    marginBottom: "2rem",
   },
 })

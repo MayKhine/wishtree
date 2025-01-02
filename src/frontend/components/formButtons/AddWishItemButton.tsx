@@ -6,8 +6,8 @@ type AddWishItemButtonType = {
 export const AddWishItemButton = ({ onClickFn }: AddWishItemButtonType) => {
   return (
     <div {...stylex.props(styles.base)} onClick={onClickFn}>
-      <p {...stylex.props(styles.text)}>+</p>
-      <p {...stylex.props(styles.text2)}>Add Wish Item</p>
+      {/* <p {...stylex.props(styles.text)}>+</p> */}
+      <p {...stylex.props(styles.text2)}>+ Add A New Wish</p>
     </div>
   )
 }
@@ -16,7 +16,7 @@ const styles = stylex.create({
   base: {
     backgroundColor: tokens.offWhite,
     border: "2px solid #465362",
-    borderRadius: ".5rem",
+    borderRadius: "5rem",
     cursor: "pointer",
     display: "flex",
     flexDirection: "column",
@@ -25,7 +25,7 @@ const styles = stylex.create({
     justifyItems: "center",
     alignItems: "center",
     width: "35rem",
-    height: "5rem",
+    height: "3rem",
   },
   text: {
     fontSize: "2rem",
