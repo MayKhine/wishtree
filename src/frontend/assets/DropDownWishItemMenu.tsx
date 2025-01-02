@@ -4,7 +4,7 @@ import { tokens } from "../tokens.stylex"
 type DropDownWishItemMenuProps = {
   onDeleteFn: () => void
   onShareFn: () => void
-  onReceivedFn: () => void
+  onReceivedFn?: () => void
   onEditFn: () => void
 }
 export const DropDownWishItemMenu = ({
@@ -15,9 +15,11 @@ export const DropDownWishItemMenu = ({
 }: DropDownWishItemMenuProps) => {
   return (
     <div {...stylex.props(styles.base)}>
-      <div {...stylex.props(styles.menuButton)} onClick={onReceivedFn}>
-        Received as a gift
-      </div>
+      {onReceivedFn && (
+        <div {...stylex.props(styles.menuButton)} onClick={onReceivedFn}>
+          Received as a gift
+        </div>
+      )}
       <div {...stylex.props(styles.menuButton)} onClick={onShareFn}>
         Share
       </div>

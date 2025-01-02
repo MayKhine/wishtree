@@ -27,7 +27,6 @@ export const ProfilePage = () => {
         </div>
         <div>
           <div {...stylex.props(styles.userInfoContainer)}>
-            {/* <div> {testUser.name}</div> */}
             <h2>{testUser.name}</h2>
             <div> @{testUser.userName}</div>
             <h4>

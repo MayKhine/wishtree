@@ -155,7 +155,6 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
               console.log("TODO: Reserve button")
             }}
           />
-          {/* <Button text="Resv"  /> */}
         </div>
       </div>
 
@@ -190,9 +189,6 @@ const styles = stylex.create({
     height: "13rem",
     flexShrink: 0,
     width: "35rem",
-    // minWidth: "35rem",
-    // width: "40%",
-    // maxWidth: "50rem",
   },
   productImg: {
     borderRadius: ".5rem",
@@ -275,7 +271,6 @@ const styles = stylex.create({
   },
   iconsContainer: {
     width: "1.5rem",
-    // backgroundColor: "pink",
     display: "flex",
     flexDirection: "column",
     gap: ".3rem",
@@ -295,7 +290,11 @@ const styles = stylex.create({
   },
   roundDiv: {
     borderRadius: "50%",
-    backgroundColor: tokens.offWhite,
+    // backgroundColor: tokens.offWhite,
+    backgroundColor: {
+      default: tokens.offWhite,
+      ":hover": tokens.tealGreen,
+    },
     height: "1.5rem",
     cursor: "pointer",
   },

@@ -88,4 +88,19 @@ const styles = stylex.create({
     display: "flex",
     justifyContent: "center",
   },
+
+  // wishListFormContainer: {
+  //   width: {
+  //     default: "100vw",
+  //     "@media (min-width: 1025px)": "100%",
+  //     "@media (min-width: 600px)": "100%",
+  //   },
+  //   height: "100vh",
+  //   position: "absolute",
+  //   left: 0,
+  //   top: 0,
+  //   zIndex: 1,
+  //   display: "flex",
+  //   justifyContent: "center",
+  // },
 })

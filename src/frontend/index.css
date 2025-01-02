@@ -10,6 +10,9 @@ body {
   font-style: normal;
   font-size: 16px;
   line-height: 1.5;
+  background-color: #d4dfdc;
+  /* box-sizing: border-box; */
+  /* overflow-x: hidden; */
 }
 
 p,
@@ -19,12 +22,6 @@ h3,
 h4,
 input {
   margin: 0%;
-  /* font-family: "Funnel Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
-  line-height: 1.5; */
 }
 
 a {
