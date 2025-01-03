@@ -11,8 +11,8 @@ body {
   font-size: 16px;
   line-height: 1.5;
   background-color: #d4dfdc;
-  /* box-sizing: border-box; */
-  /* overflow-x: hidden; */
+
+  /* color: red; */
 }
 
 p,
@@ -22,6 +22,7 @@ h3,
 h4,
 input {
   margin: 0%;
+  /* color: red; */
 }
 
 a {

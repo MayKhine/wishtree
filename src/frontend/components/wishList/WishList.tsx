@@ -20,14 +20,17 @@ export const WishList = ({ title, wishlistID }: WishListProps) => {
 
   const deleteListHandler = async () => {
     console.log("WishItem > TODO: edit list")
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const editListHandler = () => {
     console.log("WishItem > TODO: edit list")
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const shareListHandler = () => {
     console.log("WishItem > todo: share list ")
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
   return (
     <div
@@ -46,18 +49,21 @@ export const WishList = ({ title, wishlistID }: WishListProps) => {
             <CgMoreO size={"1.5rem"} />
           </div>
           {toggleDropDownMenu && (
-            <div {...stylex.props(styles.dropDownMenuDiv)}>
-              <ClearPopUp
-                onCancelFn={() => {
-                  setToggleDropDownMenu(!toggleDropDownMenu)
-                  console.log("clciked on  clear pop up")
-                }}
-              />
-              <DropDownWishItemMenu
-                onDeleteFn={deleteListHandler}
-                onShareFn={shareListHandler}
-                onEditFn={editListHandler}
-              />
+            <div>
+              <div {...stylex.props(styles.triangle)}></div>
+              <div {...stylex.props(styles.dropDownMenuDiv)}>
+                <ClearPopUp
+                  onCancelFn={() => {
+                    setToggleDropDownMenu(!toggleDropDownMenu)
+                    console.log("clciked on  clear pop up")
+                  }}
+                />
+                <DropDownWishItemMenu
+                  onDeleteFn={deleteListHandler}
+                  onShareFn={shareListHandler}
+                  onEditFn={editListHandler}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -86,17 +92,27 @@ const styles = stylex.create({
     height: "13rem",
     flexShrink: 0,
   },
+  triangle: {
+    width: "0",
+    height: "0",
+    borderLeft: ".3rem solid transparent",
+    borderRight: ".3rem solid transparent",
+    borderBottom: `.5rem solid ${tokens.tealGreen}`,
+    marginLeft: ".5rem",
+    marginTop: ".2rem",
+  },
 
   dropDownMenuDiv: {
     position: "absolute",
-    backgroundColor: tokens.offWhite,
-    border: `2px solid ${tokens.tealGreen}`,
+    backgroundColor: tokens.tealGreen,
+    // border: `2px solid ${tokens.tealGreen}`,
     borderRadius: ".5rem",
     boxShadow: "1rem 1rem 2rem rgba(0, 0, 0, 0.2)",
     padding: "8px",
     zIndex: 11,
     width: "10rem",
-    marginTop: "1.8rem",
+    // marginTop: "1.8rem",
+    marginLeft: "-6rem",
   },
   coverImg: {
     height: "9rem",

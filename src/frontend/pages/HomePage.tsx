@@ -36,8 +36,20 @@ export const HomePage = () => {
               setOpenWishListForm(true)
             }}
           />
+
+          {/* {openWishListForm && (
+            <div {...stylex.props(styles.display767px)}>
+              <WishListForm closeWishListForm={closeWishListForm} />
+            </div>
+          )} */}
+
           {openWishListForm && (
-            <div {...stylex.props(styles.wishListFormContainer)}>
+            <div
+              {...stylex.props(
+                // styles.displayOver767px,
+                styles.wishListFormContainer,
+              )}
+            >
               <PopUp
                 onCancleFn={() => {
                   closeWishListForm()
@@ -46,6 +58,7 @@ export const HomePage = () => {
               <WishListForm closeWishListForm={closeWishListForm} />
             </div>
           )}
+
           {data?.map((wishList) => {
             return (
               <WishList
@@ -63,9 +76,17 @@ export const HomePage = () => {
 
 const styles = stylex.create({
   base: {
-    // backgroundColor: "gray",
-    marginLeft: "1rem",
-    marginRight: "1rem",
+    // background: "pink",
+    margin: {
+      default: "3rem",
+      "@media (max-width: 767px)": "1rem",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
+    justifyItems: {
+      default: "none",
+      "@media (max-width: 767px)": "center",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
   },
   header: {
     marginTop: "2rem",
@@ -77,6 +98,12 @@ const styles = stylex.create({
     display: "flex",
     gap: "1.5rem",
     flexWrap: "wrap",
+    // backgroundColor: "gray",
+    justifyContent: {
+      default: "none",
+      "@media (max-width: 767px)": "center",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
   },
   wishListFormContainer: {
     width: "100vw",
@@ -89,18 +116,16 @@ const styles = stylex.create({
     justifyContent: "center",
   },
 
-  // wishListFormContainer: {
-  //   width: {
-  //     default: "100vw",
-  //     "@media (min-width: 1025px)": "100%",
-  //     "@media (min-width: 600px)": "100%",
+  // display767px: {
+  //   display: {
+  //     default: "none",
+  //     "@media (max-width: 767px)": "block",
   //   },
-  //   height: "100vh",
-  //   position: "absolute",
-  //   left: 0,
-  //   top: 0,
-  //   zIndex: 1,
-  //   display: "flex",
-  //   justifyContent: "center",
+  // },
+  // displayOver767px: {
+  //   display: {
+  //     default: "block",
+  //     "@media (max-width: 767px)": "none",
+  //   },
   // },
 })

@@ -34,11 +34,15 @@ export const DropDownWishItemMenu = ({
 }
 
 const styles = stylex.create({
-  base: { cursor: "pointer", position: "relative", zIndex: 100 },
+  base: {
+    cursor: "pointer",
+    position: "relative",
+    zIndex: 100,
+  },
   menuButton: {
     color: {
       default: "black",
-      ":Hover": tokens.tealGreen,
+      ":Hover": tokens.offWhite,
     },
   },
 })
