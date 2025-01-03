@@ -24,8 +24,15 @@ const styles = stylex.create({
     alignContent: "center",
     justifyItems: "center",
     alignItems: "center",
-    width: "35rem",
     height: "3rem",
+    marginBottom: "2rem",
+    // width: "35rem",
+
+    width: {
+      default: "35rem",
+      "@media (max-width: 767px)": "22rem",
+      "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
   },
   text: {
     fontSize: "2rem",

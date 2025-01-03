@@ -164,7 +164,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: tokens.offWhite,
+    backgroundColor: tokens.offWhiteGreen,
     border: "2px solid black",
     display: "flex",
     flexDirection: "column",
@@ -175,10 +175,12 @@ const styles = stylex.create({
     zIndex: "10",
     paddingTop: "2rem",
     paddingBottom: "2rem",
+    marginTop: {
+      default: 0,
+      "@media (max-width: 1024px) ": "5rem",
+    },
     alignSelf: {
       default: "flex-start",
-      // "@media (min-width: 1025px) and (min-height: 500px)": "center",
-      // "@media (min-width: 1025px) , (min-height: 950px)": "center", //950px => height of the form
       "@media (min-width: 1025px) ": "center",
     },
     width: {
@@ -189,7 +191,6 @@ const styles = stylex.create({
     height: {
       // default: "100%",
       "@media (min-width: 1025px) and @media (min-height: 768px) ": "35rem",
-      // "@media (max-width: 1024px)": "100%",
       "@media (max-width: 1024px)": "auto",
     },
     // boxSizing: "border-box",
@@ -252,14 +253,22 @@ const styles = stylex.create({
     alignContent: "center",
     justifyContent: "center",
     marginBottom: "1rem",
-    width: "25rem",
+    // width: "25rem",
+    width: {
+      default: "25rem",
+      "@media (max-width: 767px)": "20rem",
+    },
   },
 
   deleteButton: {
     position: "absolute",
     zIndex: "11",
     cursor: "pointer",
-    marginLeft: "23rem",
+    // marginLeft: "23rem",
+    marginLeft: {
+      default: "23rem",
+      "@media (max-width: 767px)": "18rem",
+    },
     marginTop: ".2rem",
   },
 })

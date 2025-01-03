@@ -42,9 +42,7 @@ export const WishListPage = () => {
       <MenuBar />
       <div {...stylex.props(styles.base)}>
         <div {...stylex.props(styles.header)}> {data?.title}</div>
-        <div {...stylex.props(styles.AddWishItemButtonDiv)}>
-          <AddWishItemButton onClickFn={addANewWish} />
-        </div>
+        <AddWishItemButton onClickFn={addANewWish} />
         <div {...stylex.props(styles.wishItemContainer)}>
           {togglePopUp && wishlistid && (
             <div {...stylex.props(styles.wishItemFormContainer)}>
@@ -75,9 +73,16 @@ export const WishListPage = () => {
 
 const styles = stylex.create({
   base: {
-    //  backgroundColor: "gray",
-    marginLeft: "1rem",
-    marginRight: "1rem",
+    margin: {
+      default: "3rem",
+      "@media (max-width: 767px)": "1rem",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
+    justifyItems: {
+      default: "none",
+      "@media (max-width: 767px)": "center",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
   },
   header: {
     marginTop: "2rem",
@@ -89,6 +94,12 @@ const styles = stylex.create({
     display: "flex",
     gap: "1.5rem",
     flexWrap: "wrap",
+    // backgroundColor: "pink",
+    justifyContent: {
+      default: "none",
+      "@media (max-width: 767px)": "center",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
   },
   wishItemFormContainer: {
     width: "100vw",
@@ -100,8 +111,5 @@ const styles = stylex.create({
     zIndex: 2,
     display: "flex",
     justifyContent: "center",
-  },
-  AddWishItemButtonDiv: {
-    marginBottom: "2rem",
   },
 })

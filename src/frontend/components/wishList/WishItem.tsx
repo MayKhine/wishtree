@@ -1,11 +1,8 @@
-// import * as stylex from "@stylexjs/stylex"
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { CgMoreO } from "react-icons/cg"
 import { FaStar } from "react-icons/fa"
 import { WishItem as wishItemType } from "../../../backend/domain/models/WishList"
-// import { useNavigate } from "react-router-dom"
-// import { Button } from "../../assets/Button"
 import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
 import { PopUp } from "../../assets/PopUp"
@@ -50,19 +47,28 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
 
   const deleteItemHandler = async () => {
     await mutateAsync({ wishItemId: wishItem.id })
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const editItemHandler = () => {
     console.log("WishItem > TODO: edit item")
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const shareItemHandler = () => {
     console.log("WishItem > todo: Share ")
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const receivedItemHandler = () => {
     console.log("WishItem > Todo: received this item")
+    setToggleDropDownMenu(!toggleDropDownMenu)
   }
+
+  // if (Number(wishItem.price) > 0) {
+  //   console.log(" greater than 0 : ", Number(wishItem.price))
+  // }
+  const priceNum = Number(wishItem.price) > 0 ? Number(wishItem.price) : ""
   return (
     <div {...stylex.props(styles.base)}>
       <div {...stylex.props(styles.productImg)} onClick={wishItemClickHandler}>
@@ -81,8 +87,8 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
           <h3 {...stylex.props(styles.text)} onClick={wishItemClickHandler}>
             {wishItem.name}
           </h3>
-          {wishItem.price && wishItem.price > 0 && (
-            <h4 {...stylex.props(styles.textNoWrap)}> ${wishItem.price}</h4>
+          {priceNum && priceNum > 0 && (
+            <h4 {...stylex.props(styles.textNoWrap)}> ${priceNum}</h4>
           )}
           <h4 {...stylex.props(styles.textNoWrap)}>
             Quantity: {wishItem.quantity}
@@ -109,19 +115,23 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
               </div>
             )}
             {toggleDropDownMenu && (
-              <div {...stylex.props(styles.dropDownMenuDiv)}>
-                <ClearPopUp
-                  onCancelFn={() => {
-                    setToggleDropDownMenu(false)
-                    console.log("clciked on  clear pop up")
-                  }}
-                />
-                <DropDownWishItemMenu
-                  onDeleteFn={deleteItemHandler}
-                  onShareFn={shareItemHandler}
-                  onEditFn={editItemHandler}
-                  onReceivedFn={receivedItemHandler}
-                />
+              <div>
+                <div {...stylex.props(styles.triangle)}></div>
+                <div {...stylex.props(styles.dropDownMenuDiv)}>
+                  <ClearPopUp
+                    onCancelFn={() => {
+                      setToggleDropDownMenu(false)
+                      console.log("clciked on  clear pop up")
+                    }}
+                  />
+
+                  <DropDownWishItemMenu
+                    onDeleteFn={deleteItemHandler}
+                    onShareFn={shareItemHandler}
+                    onEditFn={editItemHandler}
+                    onReceivedFn={receivedItemHandler}
+                  />
+                </div>{" "}
               </div>
             )}
           </div>
@@ -148,14 +158,14 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
           )}
         </div>
 
-        <div {...stylex.props(styles.ReserveButtonDiv)}>
+        {/* <div {...stylex.props(styles.ReserveButtonDiv)}>
           <ReserveButton
             text="Reserve"
             onClickFn={() => {
               console.log("TODO: Reserve button")
             }}
           />
-        </div>
+        </div> */}
       </div>
 
       {toggleWishItemDetail && (
@@ -185,34 +195,60 @@ const styles = stylex.create({
     border: "2px solid #465362",
     borderRadius: ".5rem",
     display: "flex",
-    flexDirection: "row",
-    height: "13rem",
     flexShrink: 0,
-    width: "35rem",
+    flexDirection: {
+      default: "row",
+      "@media (max-width: 767px)": "column",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
+    width: {
+      default: "35rem",
+      "@media (max-width: 767px)": "22rem",
+      "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
+    minHeight: "13rem",
   },
   productImg: {
-    borderRadius: ".5rem",
+    // borderRadius: ".5rem",
     height: "100%",
     display: "flex",
     cursor: "pointer",
+    // backgroundColor: "red",
+    alignSelf: "center",
   },
 
   imgPreview: {
-    border: "0px solid black",
     objectFit: "contain",
     borderRadius: ".5rem",
-    width: "12rem",
+    // width: "12rem",
+    width: {
+      default: "12rem",
+      "@media (max-width: 767px)": "20rem",
+      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
+    },
     backgroundColor: "pink",
     // padding: "1rem",
+    border: `2px solid ${tokens.grayTeal}`,
     margin: "1rem",
   },
   rightDiv: {
     display: "flex",
     flexDirection: "row",
-    width: "100%",
+    // backgroundColor: "pink",
+    width: {
+      default: "100rem",
+      "@media (max-width: 767px)": "20rem",
+    },
     margin: "1rem",
-    overflow: "hidden",
-    // backgroundColor: "lightgray",
+    marginTop: {
+      "@media (max-width: 767px)": "0rem",
+    },
+    marginLeft: {
+      default: "0rem",
+      "@media (max-width: 767px)": "1rem",
+    },
+
+    height: "13rem",
   },
 
   ReserveButtonDiv: {
@@ -227,25 +263,25 @@ const styles = stylex.create({
     alignItems: "flex-end",
     justifyItems: "flex-end",
     // width: "100%",
-    marginLeft: "14rem", //margin to place reserve button on the div
     height: "2rem",
+    // marginLeft: "14rem", //margin to place reserve button on the div
+    marginLeft: {
+      default: "14rem",
+      // "@media (max-width: 767px)": "22rem",
+      "@media (min-width: 768px) and  (max-width: 1024px)": "4rem",
+    },
   },
 
   rightDivWishItem: {
     display: "flex",
     flexDirection: "column",
-    // cursor: "pointer",
-    // width: "19rem",
-    // backgroundColor: "lightgray",
-    // marginLeft: "1rem",
     marginRight: ".5rem",
     width: "100%",
     minWidth: 0,
-
     gap: ".5rem",
-    // alignItems: "center",
     justifyItems: "center",
     justifyContent: "center",
+    // overflow: "hidden",
   },
   text: {
     cursor: "pointer",
@@ -254,8 +290,6 @@ const styles = stylex.create({
     WebkitBoxOrient: "vertical",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    // backgroundColor: tokens.offWhiteGreen,
-    // minHeight: "1.5rem",
   },
 
   textNoWrap: {
@@ -277,16 +311,26 @@ const styles = stylex.create({
   },
   star: { cursor: "default" },
 
+  triangle: {
+    width: "0",
+    height: "0",
+    borderLeft: ".3rem solid transparent",
+    borderRight: ".3rem solid transparent",
+    borderBottom: `.5rem solid ${tokens.tealGreen}`,
+    marginLeft: ".5rem",
+    marginTop: ".2rem",
+  },
   dropDownMenuDiv: {
     position: "absolute",
-    backgroundColor: tokens.offWhite,
-    border: `2px solid ${tokens.tealGreen}`,
+    backgroundColor: tokens.tealGreen,
+    // border: `2px solid ${tokens.tealGreen}`,
     borderRadius: ".5rem",
     boxShadow: "1rem 1rem 2rem rgba(0, 0, 0, 0.2)",
     padding: "8px",
     zIndex: 11,
     width: "10rem",
-    marginTop: ".2rem",
+    // marginTop: ".2rem",
+    marginLeft: "-6rem",
   },
   roundDiv: {
     borderRadius: "50%",

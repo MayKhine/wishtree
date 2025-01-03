@@ -228,7 +228,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                 togglePopUp()
               }}
             />
-            <Button text="Create Wishlist" onClickFn={addNewWishItemToList} />
+            <Button text="Add Wish" onClickFn={addNewWishItemToList} />
           </div>
         </div>
       </div>
@@ -238,24 +238,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
 
 const styles = stylex.create({
   base: {
-    // backgroundColor: tokens.offWhite,
-    // display: "flex",
-    // flexDirection: "column",
-    // justifyContent: "center",
-    // alignContent: "center",
-    // alignItems: "center",
-    // fontWeight: "600",
-    // fontSize: "1rem",
-    // minWidth: "55rem",
-    // flexWrap: "wrap",
-    // padding: "3rem",
-    // borderRadius: "1rem",
-    // position: "fixed",
-    // zIndex: 10,
-    // alignSelf: "center",
-    // justifySelf: "center",
-
-    backgroundColor: tokens.offWhite,
+    backgroundColor: tokens.offWhiteGreen,
     // margin: "1rem",
     border: "2px solid black",
     display: "flex",
@@ -267,10 +250,12 @@ const styles = stylex.create({
     zIndex: "10",
     paddingTop: "2rem",
     paddingBottom: "2rem",
+    marginTop: {
+      default: 0,
+      "@media (max-width: 1024px) ": "5rem",
+    },
     alignSelf: {
       default: "flex-start",
-      // "@media (min-width: 1025px) and (min-height: 500px)": "center",
-      // "@media (min-width: 1025px) , (min-height: 950px)": "center", //950px => height of the form
       "@media (min-width: 1025px) ": "center",
     },
     width: {
@@ -306,8 +291,8 @@ const styles = stylex.create({
     },
   },
 
-  leftDiv: { width: "100%", backgroundColor: "white" },
-  rightDiv: { width: "100%", backgroundColor: "white" },
+  leftDiv: { width: "100%" },
+  rightDiv: { width: "100%" },
 
   buttonsContainer: {
     display: "flex",
@@ -339,7 +324,11 @@ const styles = stylex.create({
     alignContent: "center",
     justifyContent: "center",
     marginBottom: "1rem",
-    width: "25rem",
+    // width: "25rem",
+    width: {
+      default: "25rem",
+      "@media (max-width: 767px)": "20rem",
+    },
   },
 
   starContainer: {
@@ -351,7 +340,7 @@ const styles = stylex.create({
   },
   pirceQuantityContainer: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: { default: "row", "@media (max-width: 767px)": "column" },
     // gap: "1rem",
     justifyContent: "space-between",
     marginBottom: "1rem",
@@ -364,8 +353,9 @@ const styles = stylex.create({
     borderRadius: ".3rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
-    width: "9rem",
-    // width: "100%",
+
+    width: { default: "9rem", "@media (max-width: 767px)": "18rem" },
+    backgroundColor: tokens.offWhite,
   },
   quantityInput: {
     fontSize: "1rem",
@@ -373,14 +363,19 @@ const styles = stylex.create({
     borderRadius: ".3rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
-    // width: "100%",
-    width: "9rem",
+    // width: "9rem",
+    width: { default: "9rem", "@media (max-width: 767px)": "18rem" },
+    backgroundColor: tokens.offWhite,
   },
   inputTextArea: {
     fontSize: "1rem",
     padding: "1rem",
     borderRadius: ".3rem",
-    width: "23rem",
+    // width: "23rem",
+    width: {
+      default: "23rem",
+      "@media (max-width: 767px)": "18rem",
+    },
     height: "15rem",
     border: "2px solid #82A3A1",
     fontFamily: '"Funnel Sans", sans-serif',
@@ -391,7 +386,10 @@ const styles = stylex.create({
     position: "absolute",
     zIndex: "11",
     cursor: "pointer",
-    marginLeft: "23rem",
+    marginLeft: {
+      default: "23rem",
+      "@media (max-width: 767px)": "18rem",
+    },
     marginTop: ".2rem",
   },
 })
