@@ -47,22 +47,22 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
 
   const deleteItemHandler = async () => {
     await mutateAsync({ wishItemId: wishItem.id })
-    setToggleDropDownMenu(!toggleDropDownMenu)
+    // setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const editItemHandler = () => {
     console.log("WishItem > TODO: edit item")
-    setToggleDropDownMenu(!toggleDropDownMenu)
+    // setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const shareItemHandler = () => {
     console.log("WishItem > todo: Share ")
-    setToggleDropDownMenu(!toggleDropDownMenu)
+    // setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const receivedItemHandler = () => {
     console.log("WishItem > Todo: received this item")
-    setToggleDropDownMenu(!toggleDropDownMenu)
+    // setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   // if (Number(wishItem.price) > 0) {
@@ -349,6 +349,17 @@ const styles = stylex.create({
     position: "fixed",
     left: 0,
     top: 0,
+    // zIndex: 2,
+    // display: "flex",
+    // justifyContent: "center",
+    // width: "100vw",
+    // height: "100vh",
+    // position: "absolute",
+    // position: "relative",
+    // position: "fixed",
+    // backgroundColor: "red",
+    // left: 0,
+    // top: 0,
     zIndex: 2,
     display: "flex",
     justifyContent: "center",

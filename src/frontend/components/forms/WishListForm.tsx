@@ -189,11 +189,8 @@ const styles = stylex.create({
     },
 
     height: {
-      // default: "100%",
-      "@media (min-width: 1025px) and @media (min-height: 768px) ": "35rem",
       "@media (max-width: 1024px)": "auto",
     },
-    // boxSizing: "border-box",
   },
 
   header: {

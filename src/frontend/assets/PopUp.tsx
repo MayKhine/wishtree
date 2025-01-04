@@ -23,6 +23,7 @@ const styles = stylex.create({
     position: "fixed",
     width: "100%",
     height: "100%",
+    // height: "100vh",
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
