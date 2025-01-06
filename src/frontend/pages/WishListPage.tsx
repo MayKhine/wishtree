@@ -43,7 +43,7 @@ export const WishListPage = () => {
         <div {...stylex.props(styles.header)}> {data?.title}</div>
         <AddWishItemButton onClickFn={addANewWish} />
         <div {...stylex.props(styles.wishItemContainer)}>
-          {togglePopUp && wishlistid && window.innerWidth > 2000 && (
+          {togglePopUp && wishlistid && (
             <div {...stylex.props(styles.wishItemFormContainer)}>
               <PopUp
                 onCancleFn={() => {
@@ -75,12 +75,10 @@ const styles = stylex.create({
     margin: {
       default: "3rem",
       "@media (max-width: 767px)": "1rem",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     justifyItems: {
       default: "none",
       "@media (max-width: 767px)": "center",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     // backgroundColor: "lightyellow",
     // height: "100%",
@@ -103,18 +101,17 @@ const styles = stylex.create({
     justifyContent: {
       default: "none",
       "@media (max-width: 767px)": "center",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
   },
   wishItemFormContainer: {
-    // width: "100vw",
-    // height: "100vh",
+    width: "100%",
+    height: "100%",
     position: "absolute",
     // backgroundColor: "red",
     left: 0,
     top: 0,
     zIndex: 2,
-    // display: "flex",
+    display: "flex",
     justifyContent: "center",
   },
 })

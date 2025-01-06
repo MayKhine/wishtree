@@ -219,7 +219,7 @@ const styles = stylex.create({
     // height: "auto",
   },
   productImg: (wishItemNoteLength: number) => ({
-    height: "20rem",
+    height: "15rem",
     display: "flex",
     // cursor: "pointer",
     alignSelf: "center",
@@ -237,7 +237,7 @@ const styles = stylex.create({
       default: "12rem",
       "@media (max-width: 767px)": "20rem",
     },
-    backgroundColor: "pink",
+    backgroundColor: tokens.tealGreen,
     border: `2px solid ${tokens.grayTeal}`,
     margin: "1rem",
   },

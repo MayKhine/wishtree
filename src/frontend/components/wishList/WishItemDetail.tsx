@@ -153,7 +153,7 @@ const styles = stylex.create({
   },
   leftDiv: {
     // width: "100%",
-    backgroundColor: "lightgray",
+    // backgroundColor: "lightgray",
     // padding: "2rem",
     display: "flex",
     alignContent: "center",
@@ -163,18 +163,18 @@ const styles = stylex.create({
     // flexShrink: 0,
   },
   imgPreview: {
-    border: "0px solid black",
+    border: `2px solid ${tokens.grayTeal}`,
     // width: "100%",
     // height: "100%",
     width: "20rem",
     height: "20rem",
     objectFit: "contain",
     borderRadius: ".5rem",
-    backgroundColor: "gray",
+    backgroundColor: tokens.offWhiteGreen,
   },
   rightDiv: {
     width: "100%",
-    backgroundColor: "pink",
+    // backgroundColor: "pink",
     // padding: "2rem",
     display: "flex",
     // flexDirection: "row",
@@ -196,7 +196,7 @@ const styles = stylex.create({
     justifyItems: "flex-end",
     alignContent: "flex-end",
     justifyContent: "flex-end",
-    backgroundColor: "gray",
+    // backgroundColor: "gray",
     gap: ".5rem",
     marginBottom: "1rem",
   },
@@ -211,7 +211,7 @@ const styles = stylex.create({
   },
 
   itemDetailContainer: {
-    backgroundColor: "white",
+    // backgroundColor: "white",
     flexWrap: "wrap",
 
     // flexGrow: "1",
