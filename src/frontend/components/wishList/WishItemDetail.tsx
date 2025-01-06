@@ -110,6 +110,8 @@ export const WishItemDetail = ({
   )
 }
 
+// disable the outside scroll bar
+//only on the inside scroll bar
 const styles = stylex.create({
   base: {
     backgroundColor: tokens.offWhite,
@@ -154,8 +156,8 @@ const styles = stylex.create({
     minHeight: {
       "@media (min-width: 767px) and (min-height: 600px )": "30rem",
     },
-    // maxHeight: "90vh",
-    // overflowY: "auto",
+    maxHeight: "90vh",
+    overflowY: "auto",
   },
   leftDiv: {
     // width: "100%",
