@@ -2,6 +2,7 @@ import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { CgMoreO } from "react-icons/cg"
 import { FaStar } from "react-icons/fa"
+import { number } from "zod"
 import { WishItem as wishItemType } from "../../../backend/domain/models/WishList"
 import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
@@ -28,13 +29,9 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
 
   const wishItemClickHandler = () => {
-    console.log(
-      "Hi you clicked on wish item, go to that individual page",
-      wishItem.name,
-    )
     setToggleDropDownMenu(false)
     // navigate(`/wishlist/${wishItem.wishListId}/${wishItem.id}`)
-    setToggleWishItemDetail(true)
+    setToggleWishItemDetail(!toggleWishItemDetail)
   }
 
   const wishItemMoreClickHandler = () =>
@@ -69,9 +66,13 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
   //   console.log(" greater than 0 : ", Number(wishItem.price))
   // }
   const priceNum = Number(wishItem.price) > 0 ? Number(wishItem.price) : ""
+  const wishItemNoteLength = wishItem.notes.length
   return (
     <div {...stylex.props(styles.base)}>
-      <div {...stylex.props(styles.productImg)} onClick={wishItemClickHandler}>
+      <div
+        {...stylex.props(styles.productImg(wishItemNoteLength))}
+        onClick={wishItemClickHandler}
+      >
         <img
           {...stylex.props(styles.imgPreview)}
           // src={wishItem.imageUrl}
@@ -84,7 +85,10 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
       </div>
       <div {...stylex.props(styles.rightDiv)}>
         <div {...stylex.props(styles.rightDivWishItem)}>
-          <h3 {...stylex.props(styles.text)} onClick={wishItemClickHandler}>
+          <h3
+            {...stylex.props(styles.text(wishItemNoteLength))}
+            onClick={wishItemClickHandler}
+          >
             {wishItem.name}
           </h3>
           {priceNum && priceNum > 0 && (
@@ -100,7 +104,14 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
               </a>
             </h4>
           )}
+
+          {toggleWishItemDetail && wishItem.notes.length > 0 && (
+            <div {...stylex.props(styles.wishItemDetailContainerUnder767px)}>
+              {wishItem.notes}
+            </div>
+          )}
         </div>
+
         <div {...stylex.props(styles.iconsContainer)}>
           <div>
             {wishListCreater && (
@@ -167,9 +178,8 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
           />
         </div> */}
       </div>
-
       {toggleWishItemDetail && (
-        <div {...stylex.props(styles.wishItemDetailContainer)}>
+        <div {...stylex.props(styles.wishItemDetailContainerOver767px)}>
           <PopUp
             onCancleFn={() => {
               setToggleWishItemDetail(false)
@@ -199,7 +209,6 @@ const styles = stylex.create({
     flexDirection: {
       default: "row",
       "@media (max-width: 767px)": "column",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     width: {
       default: "35rem",
@@ -207,27 +216,28 @@ const styles = stylex.create({
       "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     minHeight: "13rem",
+    // height: "auto",
   },
-  productImg: {
-    // borderRadius: ".5rem",
-    height: "100%",
+  productImg: (wishItemNoteLength: number) => ({
+    height: "20rem",
     display: "flex",
-    cursor: "pointer",
-    // backgroundColor: "red",
+    // cursor: "pointer",
     alignSelf: "center",
-  },
+    cursor: {
+      default: "pointer",
+      "@media (max-width: 767px)":
+        wishItemNoteLength > 0 ? "pointer" : "cursor",
+    },
+  }),
 
   imgPreview: {
     objectFit: "contain",
     borderRadius: ".5rem",
-    // width: "12rem",
     width: {
       default: "12rem",
       "@media (max-width: 767px)": "20rem",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     backgroundColor: "pink",
-    // padding: "1rem",
     border: `2px solid ${tokens.grayTeal}`,
     margin: "1rem",
   },
@@ -248,7 +258,10 @@ const styles = stylex.create({
       "@media (max-width: 767px)": "1rem",
     },
 
-    height: "13rem",
+    // height: "13rem",
+    minHeight: "10rem",
+    height: "auto",
+    // overflow: "hidden",
   },
 
   ReserveButtonDiv: {
@@ -283,14 +296,18 @@ const styles = stylex.create({
     justifyContent: "center",
     // overflow: "hidden",
   },
-  text: {
-    cursor: "pointer",
+  text: (wishItemNoteLength: number) => ({
+    cursor: {
+      default: "pointer",
+      "@media (max-width: 767px)":
+        wishItemNoteLength > 0 ? "pointer" : "cursor",
+    },
     display: "-webkit-box",
     WebkitLineClamp: "3",
     WebkitBoxOrient: "vertical",
     textOverflow: "ellipsis",
     overflow: "hidden",
-  },
+  }),
 
   textNoWrap: {
     // display: "-webkit-box",
@@ -343,25 +360,26 @@ const styles = stylex.create({
     cursor: "pointer",
   },
 
-  wishItemDetailContainer: {
+  wishItemDetailContainerOver767px: {
     width: "100%",
     height: "100%",
     position: "fixed",
     left: 0,
     top: 0,
-    // zIndex: 2,
-    // display: "flex",
-    // justifyContent: "center",
-    // width: "100vw",
-    // height: "100vh",
-    // position: "absolute",
-    // position: "relative",
-    // position: "fixed",
-    // backgroundColor: "red",
-    // left: 0,
-    // top: 0,
     zIndex: 2,
-    display: "flex",
     justifyContent: "center",
+    display: {
+      default: "flex",
+      "@media (max-width: 767px)": "none",
+    },
+  },
+  wishItemDetailContainerUnder767px: {
+    display: {
+      default: "none",
+      "@media (max-width: 767px)": "flex",
+    },
+    flexWrap: "wrap",
+    // backgroundColor: "yellow",
+    width: "100%",
   },
 })

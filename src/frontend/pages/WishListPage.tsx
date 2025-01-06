@@ -36,7 +36,6 @@ export const WishListPage = () => {
 
   console.log("WishList Page data:", wishlistid, data)
   console.log("WishList Page data:", wishItems)
-
   return (
     <div>
       <MenuBar />
@@ -44,7 +43,7 @@ export const WishListPage = () => {
         <div {...stylex.props(styles.header)}> {data?.title}</div>
         <AddWishItemButton onClickFn={addANewWish} />
         <div {...stylex.props(styles.wishItemContainer)}>
-          {togglePopUp && wishlistid && (
+          {togglePopUp && wishlistid && window.innerWidth > 2000 && (
             <div {...stylex.props(styles.wishItemFormContainer)}>
               <PopUp
                 onCancleFn={() => {
@@ -83,6 +82,12 @@ const styles = stylex.create({
       "@media (max-width: 767px)": "center",
       // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
+    // backgroundColor: "lightyellow",
+    // height: "100%",
+    // overflowY: "hidden",
+    // backgroundColor: {
+    //   "@media (max-width: 767px)": "red",
+    // },
   },
   header: {
     marginTop: "2rem",
@@ -102,14 +107,14 @@ const styles = stylex.create({
     },
   },
   wishItemFormContainer: {
-    width: "100vw",
-    height: "100vh",
+    // width: "100vw",
+    // height: "100vh",
     position: "absolute",
     // backgroundColor: "red",
     left: 0,
     top: 0,
     zIndex: 2,
-    display: "flex",
+    // display: "flex",
     justifyContent: "center",
   },
 })

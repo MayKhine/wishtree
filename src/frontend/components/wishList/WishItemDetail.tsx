@@ -115,6 +115,7 @@ export const WishItemDetail = ({
 const styles = stylex.create({
   base: {
     backgroundColor: tokens.offWhite,
+
     border: "2px solid black",
 
     fontWeight: "600",
@@ -127,23 +128,14 @@ const styles = stylex.create({
       "@media (max-width: 1024px)": "column",
     },
     padding: "2rem",
-    // paddingTop: "2rem",
-    // paddingBottom: "2rem",
-    // position: "fixed",
+
     zIndex: "11",
-    // alignSelf: "center",
-    // width: "70%",
-    // height: "70%",
+
     marginTop: {
       default: 0,
-      "@media (max-width: 1024px) ": "5rem",
     },
-    alignSelf: {
-      default: "flex-start",
-      // "@media (min-width: 1025px) ": "center",
-      "@media (min-width: 1025px) ": "center",
-    },
-    // minWidth: "55rem",
+
+    alignSelf: "center",
     minWidth: {
       "@media (min-width: 1025px)": "55rem",
     },
@@ -181,15 +173,20 @@ const styles = stylex.create({
     backgroundColor: "gray",
   },
   rightDiv: {
-    // width: "100%",
+    width: "100%",
     backgroundColor: "pink",
     // padding: "2rem",
     display: "flex",
+    // flexDirection: "row",
     flexDirection: "column",
-    flexWrap: "wrap",
+    // flexWrap: "wrap",
     marginLeft: {
       default: "2rem",
       "@media (max-width: 1024px)": "0rem",
+    },
+    marginTop: {
+      default: "0rem",
+      "@media (max-width: 1024px)": "2rem",
     },
   },
   icons: {
