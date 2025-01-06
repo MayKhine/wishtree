@@ -131,7 +131,6 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
                     onClick={removeimgButtonHandler}
                     size={"1.5rem"}
                     fill={tokens.darkBlue}
-                    // stroke={tokens.tealGreen}
                   />
                   <img
                     {...stylex.props(styles.imgPreview)}
@@ -267,5 +266,7 @@ const styles = stylex.create({
       "@media (max-width: 767px)": "18rem",
     },
     marginTop: ".2rem",
+    // backgroundColor: tokens.offWhite,
+    // background
   },
 })

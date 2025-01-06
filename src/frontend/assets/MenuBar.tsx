@@ -47,14 +47,13 @@ const styles = stylex.create({
     alignItems: "center",
     paddingTop: "1rem",
     paddingBottom: "1rem",
-    // backgroundColor: tokens.tealGreen,
   },
   logo: {
     fontWeight: "800",
     fontSize: "2rem",
     paddingLeft: "1rem",
     cursor: "pointer",
-    color: tokens.darkBlue,
+    // color: tokens.darkBlue,
   },
   menuButtonsContainer: {
     display: "flex",
@@ -74,7 +73,10 @@ const styles = stylex.create({
     justifyContent: "center",
     fontSize: "1.5rem",
     fontWeight: "800",
-    color: tokens.offWhite,
+    color: {
+      default: tokens.offWhite,
+      ":hover": tokens.tealGreen,
+    },
     cursor: "pointer",
   },
 })

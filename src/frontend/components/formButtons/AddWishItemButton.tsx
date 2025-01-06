@@ -6,7 +6,6 @@ type AddWishItemButtonType = {
 export const AddWishItemButton = ({ onClickFn }: AddWishItemButtonType) => {
   return (
     <div {...stylex.props(styles.base)} onClick={onClickFn}>
-      {/* <p {...stylex.props(styles.text)}>+</p> */}
       <p {...stylex.props(styles.text2)}>+ Add A New Wish</p>
     </div>
   )
@@ -14,7 +13,10 @@ export const AddWishItemButton = ({ onClickFn }: AddWishItemButtonType) => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: tokens.offWhite,
+    backgroundColor: {
+      default: tokens.offWhite,
+      ":hover": tokens.tealGreen,
+    },
     border: "2px solid #465362",
     borderRadius: "5rem",
     cursor: "pointer",
@@ -41,5 +43,9 @@ const styles = stylex.create({
   text2: {
     fontSize: "1rem",
     fontWeight: "600",
+    color: {
+      default: tokens.darkBlue,
+      // ":hover": tokens.tealGreen,
+    },
   },
 })

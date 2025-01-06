@@ -6,6 +6,7 @@ import { PopUp } from "../assets/PopUp"
 import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
 import { WishItemForm } from "../components/forms/WishItemForm"
 import { WishItem } from "../components/wishList/WishItem"
+import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 
 export const WishListPage = () => {
@@ -80,12 +81,6 @@ const styles = stylex.create({
       default: "none",
       "@media (max-width: 767px)": "center",
     },
-    // backgroundColor: "lightyellow",
-    // height: "100%",
-    // overflowY: "hidden",
-    // backgroundColor: {
-    //   "@media (max-width: 767px)": "red",
-    // },
   },
   header: {
     marginTop: "2rem",
@@ -97,7 +92,6 @@ const styles = stylex.create({
     display: "flex",
     gap: "1.5rem",
     flexWrap: "wrap",
-    // backgroundColor: "pink",
     justifyContent: {
       default: "none",
       "@media (max-width: 767px)": "center",
@@ -107,7 +101,6 @@ const styles = stylex.create({
     width: "100%",
     height: "100%",
     position: "absolute",
-    // backgroundColor: "red",
     left: 0,
     top: 0,
     zIndex: 2,

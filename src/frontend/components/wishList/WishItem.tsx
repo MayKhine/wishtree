@@ -2,12 +2,11 @@ import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { CgMoreO } from "react-icons/cg"
 import { FaStar } from "react-icons/fa"
-import { number } from "zod"
 import { WishItem as wishItemType } from "../../../backend/domain/models/WishList"
 import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
 import { PopUp } from "../../assets/PopUp"
-import { ReserveButton } from "../../assets/ReserveButton"
+// import { ReserveButton } from "../../assets/ReserveButton"
 import { tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
 import { WishItemDetail } from "./WishItemDetail"
@@ -99,7 +98,11 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
           </h4>
           {wishItem.link && (
             <h4 {...stylex.props(styles.textNoWrap)}>
-              <a href={wishItem.link} target="_blank">
+              <a
+                href={wishItem.link}
+                {...stylex.props(styles.productLink)}
+                target="_blank"
+              >
                 Product Link
               </a>
             </h4>
@@ -217,6 +220,7 @@ const styles = stylex.create({
     },
     minHeight: "13rem",
     // height: "auto",
+    // color: tokens.darkBlue,
   },
   productImg: (wishItemNoteLength: number) => ({
     height: "15rem",
@@ -310,15 +314,10 @@ const styles = stylex.create({
   }),
 
   textNoWrap: {
-    // display: "-webkit-box",
-    // WebkitLineClamp: "3",
-    // WebkitBoxOrient: "vertical",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    // backgroundColor: tokens.offWhiteGreen,
     width: "80%",
-    // minHeight: "1.5rem",
   },
   iconsContainer: {
     width: "1.5rem",
@@ -381,5 +380,13 @@ const styles = stylex.create({
     flexWrap: "wrap",
     // backgroundColor: "yellow",
     width: "100%",
+  },
+  productLink: {
+    textDecoration: "none",
+    color: {
+      default: tokens.darkBlue,
+      ":hover": tokens.tealGreen,
+      ":visited": tokens.grayTeal,
+    },
   },
 })
