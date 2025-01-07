@@ -40,7 +40,7 @@ export const MenuBar = () => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: "white",
+    backgroundColor: tokens.offWhite,
     display: "flex",
     justifyContent: "space-between",
     alignContent: "center",

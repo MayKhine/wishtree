@@ -1,7 +1,9 @@
 import stylex from "@stylexjs/stylex"
+// import { FaFaceGrinStars, FaGift, FaShare } from "react-icons/fa"
 import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
 import { tokens } from "../tokens.stylex"
+
 export const LandingPage = () => {
   const createUserAcc = () => {
     console.log("Create user acc")
@@ -16,7 +18,8 @@ export const LandingPage = () => {
             <div {...stylex.props(styles.heroTextSec)}>
               <div {...stylex.props(styles.textSec)}>
                 <div> START YOUR WISH LIST</div>
-                <h2> Give the Gifts They Love, Get the Gifts You Love! </h2>
+                <h1> Give the Gifts They Love, </h1>
+                <h1> Get the Gifts You Love!</h1>
                 <div {...stylex.props(styles.italicText)}>
                   Whether it's birthdays, holidays, or just for fun - create,
                   share, and fulfill wish lists effortlessly—so every occasion
@@ -41,32 +44,50 @@ export const LandingPage = () => {
       </div>
       <div {...stylex.props(styles.bg2)}>
         <div {...stylex.props(styles.keyFeaturesSec)}>
-          <h2> WishTree Key Features</h2>
-          <div>Easy wish list creation</div>
-          <div>Share with your friends and family </div>
-          <div>Reserve the wish item to avoid gifting the same gift</div>
+          <div {...stylex.props(styles.featureHeader)}>
+            WishTree Key Features
+          </div>
+          <div {...stylex.props(styles.featureText)}>
+            Easy wish list creation
+          </div>
+          <div {...stylex.props(styles.featureText)}>
+            Share with your friends and family
+          </div>
+          <div {...stylex.props(styles.featureText)}>
+            Reserve the wish item to avoid gifting the same gift
+          </div>
         </div>
       </div>
       <div {...stylex.props(styles.bg3)}>
         <div {...stylex.props(styles.howSec)}>
-          <h2> How WishTree works</h2>
+          <div {...stylex.props(styles.featureHeader)}>How WishTree works </div>
           <div {...stylex.props(styles.stepContainer)}>
             <div {...stylex.props(styles.stepDiv)}>
-              <div>1</div>
-              <div>Create an account or log in </div>
+              {/* <div>
+                <FaGift />
+              </div> */}
+              <div {...stylex.props(styles.howTextBig)}>1. Create </div>
+              <div {...stylex.props(styles.stepDetailText)}>
+                Create your account and first wish list{" "}
+              </div>
             </div>
             <div {...stylex.props(styles.stepDiv)}>
-              <div>2</div>
-              <div>Create your first wish list </div>
+              {/* <FaShare /> */}
+              <div {...stylex.props(styles.howTextBig)}>2. Share</div>
+              <div {...stylex.props(styles.stepDetailText)}>
+                Share your wish list with your loved ones{" "}
+              </div>
             </div>
             <div {...stylex.props(styles.stepDiv)}>
-              <div>3</div>
-              <div> Share your wish list with your loved ones </div>
+              {/* <FaFaceGrinStars /> */}
+              <div {...stylex.props(styles.howTextBig)}>3. Enjoy</div>
+              <div {...stylex.props(styles.stepDetailText)}>
+                Enjoy receiving the gifts you've always wanted!
+              </div>
             </div>
-            <div {...stylex.props(styles.stepDiv)}>
-              <div>4</div>
-              <div> Enjoy receiving the gifts you've always wanted! </div>
-            </div>
+          </div>
+          <div {...stylex.props(styles.buttonDiv)}>
+            <Button text="Let's get STARTED!" onClickFn={createUserAcc} />
           </div>
         </div>
       </div>
@@ -83,7 +104,7 @@ const styles = stylex.create({
     backgroundColor: tokens.offWhiteGreen,
   },
   bg2: {
-    backgroundColor: tokens.offWhite,
+    // backgroundColor: tokens.tealGreen,
   },
   bg3: {
     backgroundColor: tokens.tealGreen,
@@ -92,10 +113,14 @@ const styles = stylex.create({
     // backgroundColor: "orange",
     display: "flex",
     flexDirection: "column",
-    // margin: {
-    //   default: "3rem",
-    //   "@media (max-width: 767px)": "1rem",
-    // },
+    paddingTop: {
+      default: "3rem",
+      "@media (max-width: 767px)": "1rem",
+    },
+    paddingBottom: {
+      default: "3rem",
+      "@media (max-width: 767px)": "1rem",
+    },
     // justifyItems: {
     //   default: "none",
     //   "@media (max-width: 767px)": "center",
@@ -110,7 +135,6 @@ const styles = stylex.create({
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    // backgroundColor: "orange",
   },
   heroTextSec: {
     alignSelf: "center",
@@ -148,41 +172,51 @@ const styles = stylex.create({
     alignSelf: "center",
   },
   keyFeaturesSec: {
-    // background: "lightgreen",
     padding: { default: "3rem ", "@media (max-width: 767px)": "2rem" },
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // alignContent: "center",
-    // justifyContent: "center",
+  },
+  featureHeader: {
+    fontWeight: "600",
+    fontSize: "1.5rem",
+    marginBottom: "1rem",
+  },
+  featureText: {
+    color: tokens.grayTeal,
+    fontWeight: "400",
+    fontSize: "1.5rem",
+    margin: ".2rem",
   },
   howSec: {
-    // background: "lightgray",
     padding: { default: "3rem ", "@media (max-width: 767px)": "2rem" },
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    // backgroundColor: "pink",
   },
+  howTextBig: { fontWeight: "400", fontSize: "1.5rem" },
   stepContainer: {
     display: "flex",
     flexDirection: "row",
-    gap: "1rem",
+    gap: "2rem",
     flexWrap: "wrap",
-    backgroundColor: "yellow",
+    // backgroundColor: "yellow",
     alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
   },
   stepDiv: {
+    height: "5rem",
     display: "flex",
     flexDirection: "column",
-    // minWidth: "20rem",
-    // maxWidth: "20rem",
-    width: { default: "15rem", "@media (max-width: 767px)": "100%" },
-    backgroundColor: "pink",
+    width: { default: "18rem", "@media (max-width: 767px)": "100%" },
+    // backgroundColor: "pink",
     alignContent: "center",
     alignItems: "center",
-    // padding: ".5rem",
-    // justifyContent: "center",
+  },
+  stepDetailText: {
+    textAlign: "center",
+    fontWeight: "600",
   },
 })
