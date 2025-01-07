@@ -1,18 +1,25 @@
 import stylex from "@stylexjs/stylex"
+import { useState } from "react"
 import { FaGifts, FaShare } from "react-icons/fa"
 import { ImHappy2 } from "react-icons/im"
 import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
+import { PopUp } from "../assets/PopUp"
+import { UserAccountForm } from "../components/forms/UserAccountForm"
 import { tokens } from "../tokens.stylex"
 
 export const LandingPage = () => {
   const createUserAcc = () => {
     console.log("Create user acc")
+    setUserAccCreation(true)
   }
+
+  const [userAccCreation, setUserAccCreation] = useState(false)
+
   return (
-    <div {...stylex.props(styles.page)}>
+    <div>
       <MenuBar />
-      {/* <div {...stylex.props(styles.base)}> */}
+
       <div {...stylex.props(styles.bg1)}>
         <div {...stylex.props(styles.base)}>
           <div {...stylex.props(styles.heroSec)}>
@@ -31,6 +38,16 @@ export const LandingPage = () => {
                     text="CREATE YOUR ACCOUNT"
                     onClickFn={createUserAcc}
                   />
+                  {userAccCreation && (
+                    <div {...stylex.props(styles.userAccFormContainer)}>
+                      <PopUp
+                        onCancleFn={() => {
+                          setUserAccCreation(false)
+                        }}
+                      ></PopUp>
+                      <UserAccountForm />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -92,7 +109,16 @@ export const LandingPage = () => {
             </div>
           </div>
           <div {...stylex.props(styles.buttonDiv)}>
-            <Button text="Let's get STARTED!" onClickFn={createUserAcc} />
+            <Button
+              text="Let's get STARTED!"
+              onClickFn={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                })
+                createUserAcc()
+              }}
+            />
           </div>
         </div>
       </div>
@@ -102,8 +128,16 @@ export const LandingPage = () => {
 }
 
 const styles = stylex.create({
-  page: {
-    // margin: "0",
+  userAccFormContainer: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    // position: "relative",
+    left: 0,
+    top: 0,
+    zIndex: 15,
+    display: "flex",
+    justifyContent: "center",
   },
   bg1: {
     backgroundColor: tokens.offWhiteGreen,

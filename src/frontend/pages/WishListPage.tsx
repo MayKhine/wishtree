@@ -103,7 +103,7 @@ const styles = stylex.create({
     position: "absolute",
     left: 0,
     top: 0,
-    zIndex: 2,
+    zIndex: 15,
     display: "flex",
     justifyContent: "center",
   },
