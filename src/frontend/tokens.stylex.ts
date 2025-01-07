@@ -3,9 +3,7 @@ import * as stylex from "@stylexjs/stylex"
 export const tokens = stylex.defineVars({
   offWhite: "#FFFFFA",
   offWhiteGreen: "#eef4ed",
-  blue: "#8da9c4",
-  lightGreen: "#C0DFA1",
-  green: "#9FC490",
+
   tealGreen: "#82A3A1",
   grayTeal: "#465362",
   darkBlue: "#011936",

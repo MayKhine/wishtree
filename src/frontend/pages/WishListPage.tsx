@@ -6,6 +6,7 @@ import { PopUp } from "../assets/PopUp"
 import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
 import { WishItemForm } from "../components/forms/WishItemForm"
 import { WishItem } from "../components/wishList/WishItem"
+import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 
 export const WishListPage = () => {
@@ -36,7 +37,6 @@ export const WishListPage = () => {
 
   console.log("WishList Page data:", wishlistid, data)
   console.log("WishList Page data:", wishItems)
-
   return (
     <div>
       <MenuBar />
@@ -76,12 +76,10 @@ const styles = stylex.create({
     margin: {
       default: "3rem",
       "@media (max-width: 767px)": "1rem",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     justifyItems: {
       default: "none",
       "@media (max-width: 767px)": "center",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
   },
   header: {
@@ -94,21 +92,18 @@ const styles = stylex.create({
     display: "flex",
     gap: "1.5rem",
     flexWrap: "wrap",
-    // backgroundColor: "pink",
     justifyContent: {
       default: "none",
       "@media (max-width: 767px)": "center",
-      // "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
   },
   wishItemFormContainer: {
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
     position: "absolute",
-    // backgroundColor: "red",
     left: 0,
     top: 0,
-    zIndex: 2,
+    zIndex: 15,
     display: "flex",
     justifyContent: "center",
   },

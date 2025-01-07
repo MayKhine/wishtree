@@ -21,10 +21,9 @@ const styles = stylex.create({
     fontWeight: "600",
     padding: "1rem",
     // backgroundColor: "pink",
-    color: { default: "black", ":hover": tokens.tealGreen },
+    color: { default: tokens.darkBlue, ":hover": tokens.tealGreen },
     cursor: "pointer",
-    // minWidth: "5.5rem",
-    // width: "100%",
+
     display: "flex",
     justifyContent: "center",
   },

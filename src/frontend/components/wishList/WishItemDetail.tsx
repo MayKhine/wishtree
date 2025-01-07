@@ -110,42 +110,84 @@ export const WishItemDetail = ({
   )
 }
 
+// disable the outside scroll bar
+//only on the inside scroll bar
 const styles = stylex.create({
   base: {
     backgroundColor: tokens.offWhite,
+
+    border: "2px solid black",
+
     fontWeight: "600",
     fontSize: "1rem",
     borderRadius: "1rem",
-    minWidth: "55rem",
-    width: "70%",
-    height: "70%",
     display: "flex",
-    flexDirection: "row",
-    alignSelf: "center",
-    position: "fixed",
+    // flexDirection: "row",
+    flexDirection: {
+      default: "row",
+      "@media (max-width: 1024px)": "column",
+    },
+    padding: "2rem",
+
     zIndex: "11",
+
+    marginTop: {
+      default: 0,
+    },
+
+    alignSelf: "center",
+    minWidth: {
+      "@media (min-width: 1025px)": "55rem",
+    },
+    maxWidth: "75rem",
+    width: {
+      "@media (min-width: 1025px)": "70%",
+      "@media (max-width: 1024px)": "100%",
+    },
+    height: "auto",
+    minHeight: {
+      "@media (min-width: 767px) and (min-height: 600px )": "30rem",
+    },
+    maxHeight: "90vh",
+    overflowY: "auto",
   },
   leftDiv: {
-    width: "35%",
+    // width: "100%",
     // backgroundColor: "lightgray",
-    padding: "3rem",
+    // padding: "2rem",
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center",
     // borderRadius: "4rem",
-    flexShrink: 0,
+    // flexShrink: 0,
   },
   imgPreview: {
-    border: "0px solid black",
-    width: "100%",
-    height: "100%",
+    border: `2px solid ${tokens.grayTeal}`,
+    // width: "100%",
+    // height: "100%",
+    width: "20rem",
+    height: "20rem",
     objectFit: "contain",
     borderRadius: ".5rem",
-    // backgroundColor: "gray",
+    backgroundColor: tokens.offWhiteGreen,
   },
   rightDiv: {
     width: "100%",
     // backgroundColor: "pink",
-    padding: "3rem",
+    // padding: "2rem",
     display: "flex",
+    // flexDirection: "row",
     flexDirection: "column",
+    // flexWrap: "wrap",
+    marginLeft: {
+      default: "2rem",
+      "@media (max-width: 1024px)": "0rem",
+    },
+    marginTop: {
+      default: "0rem",
+      "@media (max-width: 1024px)": "2rem",
+    },
   },
   icons: {
     display: "flex",
@@ -155,22 +197,10 @@ const styles = stylex.create({
     alignContent: "flex-end",
     justifyContent: "flex-end",
     // backgroundColor: "gray",
-    width: "100%",
     gap: ".5rem",
     marginBottom: "1rem",
   },
 
-  dropDownMenuDiv: {
-    position: "absolute",
-    backgroundColor: tokens.offWhite,
-    border: `2px solid ${tokens.tealGreen}`,
-    borderRadius: ".5rem",
-    boxShadow: "1rem 1rem 2rem rgba(0, 0, 0, 0.2)",
-    padding: "8px",
-    zIndex: 11,
-    width: "10rem",
-    marginTop: ".2rem",
-  },
   buttonsContainer: {
     display: "flex",
     flexDirection: "column",
@@ -179,12 +209,19 @@ const styles = stylex.create({
     alignSelf: "flex-end",
     marginTop: "auto",
   },
+
   itemDetailContainer: {
-    // backgroundColor: "pink",
-    flexGrow: "1",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
+    // backgroundColor: "white",
+    flexWrap: "wrap",
+
+    // flexGrow: "1",
+    // display: "flex",
+    // flexDirection: "column",
+    // justifyContent: "center",
+    // textOverflow: "ellipsis",
+    // overflow: "hidden",
+    // height: "auto",
+    // width: "auto",
   },
   productLink: {
     color: {

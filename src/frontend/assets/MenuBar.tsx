@@ -40,21 +40,24 @@ export const MenuBar = () => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: "white",
+    // backgroundColor: tokens.offWhite,
+    backgroundColor: "rgba(255, 255, 250, 0.7)",
     display: "flex",
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
     paddingTop: "1rem",
     paddingBottom: "1rem",
-    // backgroundColor: tokens.tealGreen,
+    position: "sticky",
+    top: "0",
+    zIndex: "14",
   },
   logo: {
     fontWeight: "800",
     fontSize: "2rem",
     paddingLeft: "1rem",
     cursor: "pointer",
-    color: tokens.darkBlue,
+    // color: tokens.darkBlue,
   },
   menuButtonsContainer: {
     display: "flex",
@@ -74,7 +77,10 @@ const styles = stylex.create({
     justifyContent: "center",
     fontSize: "1.5rem",
     fontWeight: "800",
-    color: tokens.offWhite,
+    color: {
+      default: tokens.offWhite,
+      ":hover": tokens.tealGreen,
+    },
     cursor: "pointer",
   },
 })

@@ -14,6 +14,7 @@ type WishItemFormType = {
   togglePopUp: () => void
   wishListID: string
 }
+
 export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
   const utils = trpc.useUtils()
   const { mutateAsync } = trpc.upsertWishItem.useMutation({
@@ -23,8 +24,12 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
   })
 
   const addNewWishItemToList = async () => {
-    console.log("work on adding this wish to this list id: ", wishListID)
     console.log("Wish Item: ", wishItem)
+
+    if (wishItem.name.length === 0) {
+      setError(true)
+      return
+    }
     await mutateAsync(wishItem)
     togglePopUp()
   }
@@ -109,6 +114,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
               id="name"
               onChange={inputChangeHandler}
             />
+            {error && <InputError errorMsg="Please enter a wish." />}
           </div>
           <div {...stylex.props(styles.starContainer)}>
             <label aria-label="name">Tag as Most Wanted</label>
@@ -265,7 +271,7 @@ const styles = stylex.create({
 
     height: {
       // default: "100%",
-      "@media (min-width: 1025px) and @media (min-height: 768px) ": "35rem",
+      // "@media (min-width: 1025px) and @media (min-height: 768px) ": "38rem",
       // "@media (max-width: 1024px)": "100%",
       "@media (max-width: 1024px)": "auto",
     },
