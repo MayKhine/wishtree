@@ -115,17 +115,4 @@ const styles = stylex.create({
     display: "flex",
     justifyContent: "center",
   },
-
-  // display767px: {
-  //   display: {
-  //     default: "none",
-  //     "@media (max-width: 767px)": "block",
-  //   },
-  // },
-  // displayOver767px: {
-  //   display: {
-  //     default: "block",
-  //     "@media (max-width: 767px)": "none",
-  //   },
-  // },
 })

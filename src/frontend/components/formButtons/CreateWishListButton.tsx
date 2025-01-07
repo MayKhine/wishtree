@@ -17,15 +17,10 @@ export const CreateWishListButton = ({
 
 const styles = stylex.create({
   base: {
-    // backgroundColor: tokens.offWhite,
     backgroundColor: {
       default: tokens.offWhite,
       ":hover": tokens.tealGreen,
     },
-    // color: {
-    //   default: tokens.darkBlue,
-    //   ":hover": tokens.darkBlue,
-    // },
     border: `2px solid ${tokens.grayTeal}`,
     borderRadius: ".5rem",
     cursor: "pointer",
@@ -42,9 +37,11 @@ const styles = stylex.create({
   text: {
     fontSize: "2rem",
     fontWeight: "600",
+    margin: "0%",
   },
   text2: {
     fontSize: "1rem",
     fontWeight: "600",
+    margin: "0%",
   },
 })

@@ -111,22 +111,20 @@ const styles = stylex.create({
     padding: "8px",
     zIndex: 11,
     width: "10rem",
-    // marginTop: "1.8rem",
     marginLeft: "-6rem",
   },
   coverImg: {
     height: "9rem",
-    backgroundColor: "gray",
+    borderRadius: ".3rem",
+    backgroundColor: tokens.grayTeal,
   },
 
   imgPreview: {
-    border: "0px solid black",
     objectFit: "contain",
     borderRadius: ".5rem",
     borderEndStartRadius: "0rem",
     borderEndEndRadius: "0rem",
     width: "15rem",
-    backgroundColor: "pink",
     cursor: "pointer",
   },
 
