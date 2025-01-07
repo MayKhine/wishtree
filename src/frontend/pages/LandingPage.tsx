@@ -1,5 +1,6 @@
 import stylex from "@stylexjs/stylex"
-// import { FaFaceGrinStars, FaGift, FaShare } from "react-icons/fa"
+import { FaGifts, FaShare } from "react-icons/fa"
+import { ImHappy2 } from "react-icons/im"
 import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
 import { tokens } from "../tokens.stylex"
@@ -63,23 +64,27 @@ export const LandingPage = () => {
           <div {...stylex.props(styles.featureHeader)}>How WishTree works </div>
           <div {...stylex.props(styles.stepContainer)}>
             <div {...stylex.props(styles.stepDiv)}>
-              {/* <div>
-                <FaGift />
-              </div> */}
+              <div>
+                <FaGifts size={"3rem"} />
+              </div>
               <div {...stylex.props(styles.howTextBig)}>1. Create </div>
               <div {...stylex.props(styles.stepDetailText)}>
                 Create your account and first wish list{" "}
               </div>
             </div>
             <div {...stylex.props(styles.stepDiv)}>
-              {/* <FaShare /> */}
+              <div>
+                <FaShare size={"3rem"} />
+              </div>{" "}
               <div {...stylex.props(styles.howTextBig)}>2. Share</div>
               <div {...stylex.props(styles.stepDetailText)}>
                 Share your wish list with your loved ones{" "}
               </div>
             </div>
             <div {...stylex.props(styles.stepDiv)}>
-              {/* <FaFaceGrinStars /> */}
+              <div>
+                <ImHappy2 size={"3rem"} />
+              </div>
               <div {...stylex.props(styles.howTextBig)}>3. Enjoy</div>
               <div {...stylex.props(styles.stepDetailText)}>
                 Enjoy receiving the gifts you've always wanted!
@@ -193,7 +198,7 @@ const styles = stylex.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // backgroundColor: "pink",
+    // height: "auto",
   },
   howTextBig: { fontWeight: "400", fontSize: "1.5rem" },
   stepContainer: {
@@ -207,13 +212,13 @@ const styles = stylex.create({
     justifyContent: "center",
   },
   stepDiv: {
-    height: "5rem",
+    marginTop: "1rem",
     display: "flex",
     flexDirection: "column",
     width: { default: "18rem", "@media (max-width: 767px)": "100%" },
-    // backgroundColor: "pink",
     alignContent: "center",
     alignItems: "center",
+    height: "auto",
   },
   stepDetailText: {
     textAlign: "center",

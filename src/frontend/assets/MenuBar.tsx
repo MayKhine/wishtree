@@ -40,13 +40,17 @@ export const MenuBar = () => {
 
 const styles = stylex.create({
   base: {
-    backgroundColor: tokens.offWhite,
+    // backgroundColor: tokens.offWhite,
+    backgroundColor: "rgba(255, 255, 250, 0.7)",
     display: "flex",
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
     paddingTop: "1rem",
     paddingBottom: "1rem",
+    position: "sticky",
+    top: "0",
+    zIndex: "14",
   },
   logo: {
     fontWeight: "800",
