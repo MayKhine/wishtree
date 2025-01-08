@@ -45,7 +45,11 @@ export const LandingPage = () => {
                           setUserAccCreation(false)
                         }}
                       ></PopUp>
-                      <UserAccountForm />
+                      <UserAccountForm
+                        closeUserAccontForm={() => {
+                          setUserAccCreation(false)
+                        }}
+                      />
                     </div>
                   )}
                 </div>
@@ -92,7 +96,7 @@ export const LandingPage = () => {
             <div {...stylex.props(styles.stepDiv)}>
               <div>
                 <FaShare size={"3rem"} />
-              </div>{" "}
+              </div>
               <div {...stylex.props(styles.howTextBig)}>2. Share</div>
               <div {...stylex.props(styles.stepDetailText)}>
                 Share your wish list with your loved ones{" "}
@@ -226,6 +230,7 @@ const styles = stylex.create({
     fontWeight: "400",
     fontSize: "1.5rem",
     margin: ".2rem",
+    textAlign: "center",
   },
   howSec: {
     padding: { default: "3rem ", "@media (max-width: 767px)": "2rem" },

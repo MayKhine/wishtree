@@ -9,8 +9,10 @@ export const InputError = ({ errorMsg }: InputErrorType) => {
 const styles = stylex.create({
   base: {
     color: "red",
-    fontSize: ".9rem",
+    fontSize: ".8rem",
     height: "1.5rem",
+    fontWeight: "200",
+
     // backgroundColor: "pink",
     // width: "100%",
   },
