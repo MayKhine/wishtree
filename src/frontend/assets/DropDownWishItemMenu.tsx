@@ -2,10 +2,10 @@ import * as stylex from "@stylexjs/stylex"
 import { tokens } from "../tokens.stylex"
 
 type DropDownWishItemMenuProps = {
-  onDeleteFn: () => void
-  onShareFn: () => void
+  onDeleteFn?: () => void
+  onShareFn?: () => void
   onReceivedFn?: () => void
-  onEditFn: () => void
+  onEditFn?: () => void
 }
 export const DropDownWishItemMenu = ({
   onDeleteFn,

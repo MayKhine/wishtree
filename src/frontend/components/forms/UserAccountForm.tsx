@@ -29,14 +29,12 @@ export const UserAccountForm = () => {
     const emailParser = z.string().email()
     const isValidEmail = emailParser.safeParse(userAccInfo.email).success
 
-    console.log("useremail: ", userAccInfo.email)
-
     if (
       userAccInfo.name.length > 0 &&
       userAccInfo.email.length > 0 &&
       isValidEmail &&
       userAccInfo.password.length > 5 &&
-      userAccInfo.password.length < 20
+      userAccInfo.password.length <= 20
     ) {
       console.log("SUccess: create account")
       console.log("TOdo : create account ")
@@ -109,12 +107,12 @@ export const UserAccountForm = () => {
             <div {...stylex.props(styles.headerSubTextSec)}>
               Already have an account?
               <div
-                {...stylex.props(styles.login)}
+                {...stylex.props(styles.signin)}
                 onClick={() => {
                   navigate("/signin")
                 }}
               >
-                Log in here!
+                SIGN IN
               </div>
             </div>
           </div>
@@ -180,16 +178,13 @@ export const UserAccountForm = () => {
               </div>
             )}
 
-            <div>
-              Your account has been successfully created. Let's start your wish
-              tree!
-            </div>
+            <div>Your account has been successfully created.</div>
+            <div>Let's start your wish tree!</div>
             <div {...stylex.props(styles.buttonDiv)}>
-              {" "}
               <Button
                 text="Continue"
                 onClickFn={() => {
-                  console.log("TODO : got to log in page")
+                  navigate("/signin")
                 }}
               />
             </div>
@@ -247,7 +242,7 @@ const styles = stylex.create({
     display: "flex",
     gap: ".5rem",
   },
-  login: {
+  signin: {
     color: {
       default: tokens.tealGreen,
       ":hover": tokens.darkBlue,

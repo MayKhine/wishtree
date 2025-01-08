@@ -1,8 +1,10 @@
 import * as stylex from "@stylexjs/stylex"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import * as z from "zod"
 import { Button } from "../assets/Button"
 import { tokens } from "../tokens.stylex"
+
 export const SignInPage = () => {
   const navigate = useNavigate()
 
@@ -12,14 +14,35 @@ export const SignInPage = () => {
   const [pswErr, setPswErr] = useState("")
 
   const signIn = () => {
+    const emailParser = z.string().email()
+    const isValidEmail = emailParser.safeParse(email).success
+
+    if (isValidEmail && psw.length > 5 && psw.length <= 20) {
+      console.log("Success: Todo: Call be sign in func", email, psw)
+
+      navigate("/home")
+      return
+    }
+
     if (email.length == 0) {
-      setEmailErr("Email err")
+      setEmailErr("Email is required. Please enter your email. ")
     }
-    if (psw.length == 0) {
-      setPswErr("Psw err")
+
+    if (email.length > 0) {
+      if (!isValidEmail) {
+        setEmailErr("Please type in a valid email address.")
+      }
     }
-    console.log("Todo: Call be sign in func", email, psw)
+
+    if (psw.length <= 5) {
+      setPswErr("Password is too short. It must be at least 5 characters long.")
+    }
+
+    if (psw.length > 20) {
+      setPswErr("Password is too long. It must not exceed 20 characters.")
+    }
   }
+
   return (
     <div {...stylex.props(styles.base)}>
       <div
@@ -44,10 +67,13 @@ export const SignInPage = () => {
               id="email"
               required
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (emailErr.length > 0) {
+                  setEmailErr("")
+                }
                 setEmail(event.target.value)
               }}
             />
-            {/* <div {...stylex.props(styles.err)}> {nameErr}</div> */}
+            <div {...stylex.props(styles.err)}> {emailErr}</div>
           </div>
           <div>
             <label aria-label="password">Password</label>
@@ -57,13 +83,27 @@ export const SignInPage = () => {
               id="password"
               required
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (pswErr.length > 0) {
+                  setPswErr("")
+                }
                 setPsw(event.target.value)
               }}
             />
-            {/* <div {...stylex.props(styles.err)}> {nameErr}</div> */}
+            <div {...stylex.props(styles.err)}> {pswErr}</div>
           </div>
           <div {...stylex.props(styles.forgotPsw)}> Forgot Password?</div>
-          <Button text="Sing In" onClickFn={signIn} />
+          <Button text="Sign In" onClickFn={signIn} />
+        </div>
+        <div {...stylex.props(styles.signUpDiv)}>
+          <div>Need an account?</div>
+          <div
+            {...stylex.props(styles.signup)}
+            onClick={() => {
+              navigate("/signin")
+            }}
+          >
+            SIGN UP
+          </div>
         </div>
       </div>
     </div>
@@ -124,5 +164,27 @@ const styles = stylex.create({
     marginTop: ".5rem",
     marginBottom: "1.5rem",
     cursor: "pointer",
+  },
+  err: {
+    color: "red",
+    fontSize: ".8rem",
+    fontWeight: "200",
+  },
+
+  signup: {
+    color: {
+      default: tokens.tealGreen,
+      ":hover": tokens.darkBlue,
+    },
+    cursor: "pointer",
+  },
+  signUpDiv: {
+    gap: ".2rem",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    justifyItems: "center",
+    alignItems: "center",
+    marginTop: ".5rem",
   },
 })
