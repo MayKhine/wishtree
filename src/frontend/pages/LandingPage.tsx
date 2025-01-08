@@ -46,9 +46,9 @@ export const LandingPage = () => {
                         }}
                       ></PopUp>
                       <UserAccountForm
-                        closeUserAccontForm={() => {
-                          setUserAccCreation(false)
-                        }}
+                      // closeUserAccontForm={() => {
+                      //   setUserAccCreation(false)
+                      // }}
                       />
                     </div>
                   )}

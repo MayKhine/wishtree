@@ -7,12 +7,11 @@ import * as z from "zod"
 import { Button } from "../../assets/Button"
 import { tokens } from "../../tokens.stylex"
 
-type UserAccountFormType = {
-  closeUserAccontForm: () => void
-}
-export const UserAccountForm = ({
-  closeUserAccontForm,
-}: UserAccountFormType) => {
+// type UserAccountFormType = {
+//   closeUserAccontForm: () => void
+// }
+
+export const UserAccountForm = () => {
   const navigate = useNavigate()
 
   const [userAccInfo, setUserAccInfo] = useState({
@@ -104,8 +103,7 @@ export const UserAccountForm = ({
   return (
     <div {...stylex.props(styles.base)}>
       {!accCreateSuccess && (
-        <div>
-          {" "}
+        <div {...stylex.props(styles.createAccSec)}>
           <div {...stylex.props(styles.headerSec)}>
             <h3> Create Account</h3>
             <div {...stylex.props(styles.headerSubTextSec)}>
@@ -113,7 +111,7 @@ export const UserAccountForm = ({
               <div
                 {...stylex.props(styles.login)}
                 onClick={() => {
-                  navigate("/profile")
+                  navigate("/signin")
                 }}
               >
                 Log in here!
@@ -205,7 +203,7 @@ export const UserAccountForm = ({
 const styles = stylex.create({
   base: {
     backgroundColor: tokens.offWhiteGreen,
-    border: "2px solid black",
+    border: `2px solid ${tokens.darkBlue}`,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -235,6 +233,11 @@ const styles = stylex.create({
       "@media (max-width: 1024px)": "auto",
     },
   },
+  createAccSec: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
   headerSec: {
     display: "flex",
     flexDirection: "column",
@@ -259,6 +262,7 @@ const styles = stylex.create({
     justifyContent: "center",
     justifyItems: "center",
     alignItems: "center",
+    // backgroundColor: "pink",
   },
 
   input: {
