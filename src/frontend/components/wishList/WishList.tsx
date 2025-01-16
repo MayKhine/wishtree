@@ -4,7 +4,10 @@ import { CgMoreO } from "react-icons/cg"
 import { useNavigate } from "react-router-dom"
 import { ClearPopUp } from "../../assets/ClearPopUp"
 import { DropDownWishItemMenu } from "../../assets/DropDownWishItemMenu"
+import { PopUp } from "../../assets/PopUp"
 import { tokens } from "../../tokens.stylex"
+import { trpc } from "../../trpc"
+import { WishListForm } from "../forms/WishListForm"
 
 type WishListProps = {
   title: string
@@ -17,15 +20,25 @@ export const WishList = ({ title, wishlistID }: WishListProps) => {
   }
 
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
+  const [toggleWishListForm, setToggleWishListForm] = useState<boolean>(false)
+  const { data } = trpc.getWishlist.useQuery({ wishListId: wishlistID })
+
+  const formData = {
+    id: data?.id ? data.id : "",
+    title: data?.title ? data.title : "",
+    description: data?.description ? data.description : "",
+    eventDate: data?.eventDate ? data.eventDate : "",
+  }
 
   const deleteListHandler = async () => {
-    console.log("WishItem > TODO: edit list")
+    console.log("WishItem > TODO: delete list")
     setToggleDropDownMenu(!toggleDropDownMenu)
   }
 
   const editListHandler = () => {
     console.log("WishItem > TODO: edit list")
     setToggleDropDownMenu(!toggleDropDownMenu)
+    setToggleWishListForm(true)
   }
 
   const shareListHandler = () => {
@@ -37,6 +50,26 @@ export const WishList = ({ title, wishlistID }: WishListProps) => {
       {...stylex.props(styles.base)}
       // onClick={wishListClick}
     >
+      {toggleWishListForm && (
+        <div
+          {...stylex.props(
+            // styles.displayOver767px,
+            styles.wishListFormContainer,
+          )}
+        >
+          <PopUp
+            onCancleFn={() => {
+              setToggleWishListForm(false)
+            }}
+          ></PopUp>
+          <WishListForm
+            closeWishListForm={() => {
+              setToggleWishListForm(false)
+            }}
+            formData={formData}
+          />
+        </div>
+      )}
       <div {...stylex.props(styles.coverImg)}>
         <div {...stylex.props(styles.iconsContainer)}>
           <div
@@ -163,5 +196,15 @@ const styles = stylex.create({
     overflow: "hidden",
     marginRight: ".5rem",
     cursor: "pointer",
+  },
+  wishListFormContainer: {
+    width: "100vw",
+    height: "100vh",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 15,
+    display: "flex",
+    justifyContent: "center",
   },
 })

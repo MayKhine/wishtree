@@ -195,7 +195,10 @@ const styles = stylex.create({
     fontSize: "1.2rem",
   },
   buttonDiv: {
-    width: "25rem",
+    // maxWith: "20rem",
+    // width: "25rem",
+    width: "100%",
+    maxWidth: "25rem",
     marginTop: "2rem",
   },
   treeImg: {

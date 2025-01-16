@@ -219,8 +219,6 @@ const styles = stylex.create({
       "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     minHeight: "13rem",
-    // height: "auto",
-    // color: tokens.darkBlue,
   },
   productImg: (wishItemNoteLength: number) => ({
     height: "15rem",

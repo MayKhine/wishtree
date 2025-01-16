@@ -6,10 +6,9 @@ import { PopUp } from "../assets/PopUp"
 import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
 import { WishItemForm } from "../components/forms/WishItemForm"
 import { WishItem } from "../components/wishList/WishItem"
-import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 
-export const WishListPage = () => {
+export const SingleWishListPage = () => {
   const { wishlistid } = useParams<{ wishlistid: string }>()
   const [togglePopUp, setTogglePopUp] = useState(false)
 
@@ -35,8 +34,6 @@ export const WishListPage = () => {
     },
   )
 
-  console.log("WishList Page data:", wishlistid, data)
-  console.log("WishList Page data:", wishItems)
   return (
     <div>
       <MenuBar />

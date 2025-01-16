@@ -7,11 +7,11 @@ import * as z from "zod"
 import { Button } from "../../assets/Button"
 import { tokens } from "../../tokens.stylex"
 
-// type UserAccountFormType = {
-//   closeUserAccontForm: () => void
-// }
+type UserAccountFormType = {
+  onSignIn?: () => void
+}
 
-export const UserAccountForm = () => {
+export const UserAccountForm = ({ onSignIn }: UserAccountFormType) => {
   const navigate = useNavigate()
 
   const [userAccInfo, setUserAccInfo] = useState({
@@ -109,6 +109,9 @@ export const UserAccountForm = () => {
               <div
                 {...stylex.props(styles.signin)}
                 onClick={() => {
+                  if (onSignIn) {
+                    onSignIn()
+                  }
                   navigate("/signin")
                 }}
               >

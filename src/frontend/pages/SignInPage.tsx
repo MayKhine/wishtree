@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import * as z from "zod"
 import { Button } from "../assets/Button"
+import { UserAccountForm } from "../components/forms/UserAccountForm"
 import { tokens } from "../tokens.stylex"
 
 export const SignInPage = () => {
@@ -12,6 +13,7 @@ export const SignInPage = () => {
   const [emailErr, setEmailErr] = useState("")
   const [psw, setPsw] = useState("")
   const [pswErr, setPswErr] = useState("")
+  const [userAccCreation, setUserAccCreation] = useState(false)
 
   const signIn = () => {
     const emailParser = z.string().email()
@@ -20,7 +22,7 @@ export const SignInPage = () => {
     if (isValidEmail && psw.length > 5 && psw.length <= 20) {
       console.log("Success: Todo: Call be sign in func", email, psw)
 
-      navigate("/home")
+      navigate("/wishlists")
       return
     }
 
@@ -53,59 +55,74 @@ export const SignInPage = () => {
       >
         WishTree
       </div>
-      <div {...stylex.props(styles.loginSec)}>
-        <div {...stylex.props(styles.welcome)}>
-          <h2>Welcome!</h2>
-          <div>Sign In</div>
-        </div>
-        <div>
-          <div {...stylex.props(styles.inputsContainer)}>
-            <label aria-label="email">Email</label>
-            <input
-              {...stylex.props(styles.input)}
-              type="text"
-              id="email"
-              required
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                if (emailErr.length > 0) {
-                  setEmailErr("")
-                }
-                setEmail(event.target.value)
-              }}
-            />
-            <div {...stylex.props(styles.err)}> {emailErr}</div>
+      {!userAccCreation && (
+        <div {...stylex.props(styles.loginContainer)}>
+          <div {...stylex.props(styles.loginSec)}>
+            <div {...stylex.props(styles.welcome)}>
+              <h2>Welcome!</h2>
+              <div>Sign In</div>
+            </div>
+            <div>
+              <div {...stylex.props(styles.inputsContainer)}>
+                <label aria-label="email">Email</label>
+                <input
+                  {...stylex.props(styles.input)}
+                  type="text"
+                  id="email"
+                  required
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    if (emailErr.length > 0) {
+                      setEmailErr("")
+                    }
+                    setEmail(event.target.value)
+                  }}
+                />
+                <div {...stylex.props(styles.err)}> {emailErr}</div>
+              </div>
+              <div>
+                <label aria-label="password">Password</label>
+                <input
+                  {...stylex.props(styles.input)}
+                  type="password"
+                  id="password"
+                  required
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    if (pswErr.length > 0) {
+                      setPswErr("")
+                    }
+                    setPsw(event.target.value)
+                  }}
+                />
+                <div {...stylex.props(styles.err)}> {pswErr}</div>
+              </div>
+              <div {...stylex.props(styles.forgotPsw)}> Forgot Password?</div>
+              <Button text="Sign In" onClickFn={signIn} />
+            </div>
+            <div {...stylex.props(styles.signUpDiv)}>
+              <div>Need an account?</div>
+              <div
+                {...stylex.props(styles.signup)}
+                onClick={() => {
+                  // navigate("/signup")
+                  console.log("Pop up user account creation")
+                  setUserAccCreation(true)
+                }}
+              >
+                SIGN UP
+              </div>
+            </div>
           </div>
-          <div>
-            <label aria-label="password">Password</label>
-            <input
-              {...stylex.props(styles.input)}
-              type="password"
-              id="password"
-              required
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                if (pswErr.length > 0) {
-                  setPswErr("")
-                }
-                setPsw(event.target.value)
-              }}
-            />
-            <div {...stylex.props(styles.err)}> {pswErr}</div>
-          </div>
-          <div {...stylex.props(styles.forgotPsw)}> Forgot Password?</div>
-          <Button text="Sign In" onClickFn={signIn} />
         </div>
-        <div {...stylex.props(styles.signUpDiv)}>
-          <div>Need an account?</div>
-          <div
-            {...stylex.props(styles.signup)}
-            onClick={() => {
-              navigate("/signin")
+      )}
+      {userAccCreation && (
+        <div {...stylex.props(styles.loginContainer)}>
+          <UserAccountForm
+            onSignIn={() => {
+              setUserAccCreation(false)
             }}
-          >
-            SIGN UP
-          </div>
+          />
         </div>
-      </div>
+      )}
     </div>
   )
 }
@@ -113,9 +130,9 @@ export const SignInPage = () => {
 const styles = stylex.create({
   base: {
     backgroundColor: tokens.tealGreen,
-
-    height: "100vh",
-    // height: "auto",
+    width: "100%",
+    // height: "100%",
+    minHeight: "100vh",
   },
   logo: {
     fontWeight: "800",
@@ -124,9 +141,17 @@ const styles = stylex.create({
     cursor: "pointer",
     paddingTop: "1rem",
     paddingBottom: "1rem",
-    marginBottom: "4rem",
+    marginBottom: "2rem",
     background: tokens.offWhite,
   },
+  loginContainer: {
+    // width: "100%",
+    // backgroundColor: "pink",
+    display: "flex",
+    // alignContent: "center",
+    justifyContent: "center",
+  },
+
   loginSec: {
     border: `2px solid ${tokens.darkBlue}`,
     backgroundColor: tokens.offWhiteGreen,
@@ -186,5 +211,16 @@ const styles = stylex.create({
     justifyItems: "center",
     alignItems: "center",
     marginTop: ".5rem",
+  },
+  userAccFormContainer: {
+    // width: "100%",
+    // height: "100%",
+    // position: "absolute",
+    // position: "relative",
+    // left: 0,
+    // top: 0,
+    // zIndex: 15,
+    display: "flex",
+    justifyContent: "center",
   },
 })

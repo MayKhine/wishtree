@@ -7,14 +7,13 @@ import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
 import { trpc } from "../trpc"
 
-export const HomePage = () => {
+export const WishListsPage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
   const [openWishListForm, setOpenWishListForm] = useState(false)
   const closeWishListForm = () => {
     setOpenWishListForm(false)
   }
 
-  // const {mutate , data:loginUserData} = trpc.loginUser.useMutation()
   const testUser = {
     name: "May Blah blah",
     userName: "Mbler",
