@@ -16,7 +16,7 @@ type WishListProps = {
 export const WishList = ({ title, wishlistID }: WishListProps) => {
   const navigate = useNavigate()
   const wishListClick = () => {
-    navigate(`/wishlist/${wishlistID}`)
+    navigate(`/wishlists/${wishlistID}`)
   }
 
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)

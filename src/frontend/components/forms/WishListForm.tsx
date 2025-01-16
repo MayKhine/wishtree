@@ -24,8 +24,15 @@ export const WishListForm = ({
   closeWishListForm,
   formData,
 }: WishListFormType) => {
-  const { isSuccess, mutate: upsertWishList } =
-    trpc.upsertWishList.useMutation()
+  const utils = trpc.useUtils()
+
+  const { isSuccess, mutate: upsertWishList } = trpc.upsertWishList.useMutation(
+    {
+      onSuccess: () => {
+        utils.getMyWishLists.invalidate()
+      },
+    },
+  )
 
   useEffect(() => {
     if (!isSuccess) {

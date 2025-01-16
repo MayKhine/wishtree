@@ -6,16 +6,21 @@ import { v4 as uuidV4 } from "uuid"
 import { AddImgButton } from "../../assets/AddImgButton"
 import { Button } from "../../assets/Button"
 import { InputError } from "../../assets/InputError"
-import { RemoveButton } from "../../assets/RemoveButton"
 
+import { WishItem } from "../../../backend/domain/models/WishList"
 import { stdStyles, tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
 type WishItemFormType = {
   togglePopUp: () => void
   wishListID: string
+  itemFormData?: WishItem
 }
 
-export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
+export const WishItemForm = ({
+  togglePopUp,
+  wishListID,
+  itemFormData,
+}: WishItemFormType) => {
   const utils = trpc.useUtils()
   const { mutateAsync } = trpc.upsertWishItem.useMutation({
     onSuccess: () => {
@@ -35,15 +40,15 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
   }
 
   const [wishItem, setWishItem] = useState({
-    id: uuidV4(),
-    name: "",
-    notes: "",
-    price: 0,
-    link: "",
-    imageUrl: "",
-    mostWanted: false,
-    quantity: 1,
-    wishListId: wishListID,
+    id: itemFormData?.id ? itemFormData.id : uuidV4(),
+    name: itemFormData?.name ? itemFormData.name : "",
+    notes: itemFormData?.notes ? itemFormData.notes : "",
+    price: itemFormData?.price ? itemFormData.price : 0,
+    link: itemFormData?.link ? itemFormData.link : "",
+    imageUrl: itemFormData?.imageUrl ? itemFormData.imageUrl : "",
+    mostWanted: itemFormData?.mostWanted ? itemFormData.mostWanted : false,
+    quantity: itemFormData?.quantity ? itemFormData.quantity : 1,
+    wishListId: itemFormData?.wishListId ? itemFormData.wishListId : wishListID,
   })
 
   const [error, setError] = useState(false)
@@ -68,7 +73,8 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
       mostWanted: !curStar,
     }))
   }
-
+  const buttonText = itemFormData?.id ? "Save Wish" : "Add Wish"
+  const formText = itemFormData?.id ? "Edit Wish" : "Create A Wish"
   const [productImg, setProductImg] = useState<string | null>()
   const [productImgButtonText, setProductImgButtonText] =
     useState("+ Upload Image")
@@ -91,7 +97,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
   return (
     <div {...stylex.props(styles.base)}>
       <div {...stylex.props(styles.header)}>
-        <h3> Create A Wish</h3>
+        <h3> {formText}</h3>
       </div>
       <div {...stylex.props(styles.formDiv)}>
         <div {...stylex.props(styles.leftDiv)}>
@@ -113,6 +119,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
               type="text"
               id="name"
               onChange={inputChangeHandler}
+              value={wishItem.name}
             />
             {error && <InputError errorMsg="Please enter a wish." />}
           </div>
@@ -154,6 +161,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                     })
                   }}
                   min={0}
+                  value={wishItem.price}
                 />
               </div>
               <div {...stylex.props(styles.numberContainer)}>
@@ -180,6 +188,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
               {...stylex.props(styles.inputTextArea)}
               onChange={inputChangeHandler}
               id="notes"
+              value={wishItem.notes}
             />
           </div>
         </div>
@@ -191,6 +200,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
               type="text"
               id="link"
               onChange={inputChangeHandler}
+              value={wishItem.link}
             />
           </div>
           <div {...stylex.props(stdStyles.inputsContainer)}>
@@ -234,7 +244,7 @@ export const WishItemForm = ({ togglePopUp, wishListID }: WishItemFormType) => {
                 togglePopUp()
               }}
             />
-            <Button text="Add Wish" onClickFn={addNewWishItemToList} />
+            <Button text={buttonText} onClickFn={addNewWishItemToList} />
           </div>
         </div>
       </div>
