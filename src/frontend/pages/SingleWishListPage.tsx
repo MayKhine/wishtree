@@ -38,8 +38,13 @@ export const SingleWishListPage = () => {
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> {data?.title}</div>
-        <AddWishItemButton onClickFn={addANewWish} />
+        <div {...stylex.props(styles.header, styles.wishItemContainer)}>
+          {data?.title}
+        </div>
+        <div {...stylex.props(styles.wishItemContainer)}>
+          <AddWishItemButton onClickFn={addANewWish} />
+        </div>
+
         <div {...stylex.props(styles.wishItemContainer)}>
           {togglePopUp && wishlistid && (
             <div {...stylex.props(styles.wishItemFormContainer)}>
@@ -78,6 +83,7 @@ const styles = stylex.create({
       default: "none",
       "@media (max-width: 767px)": "center",
     },
+    backgroundColor: "pink",
   },
   header: {
     marginTop: "2rem",

@@ -22,6 +22,8 @@ export const WishItemForm = ({
   itemFormData,
 }: WishItemFormType) => {
   const utils = trpc.useUtils()
+
+  
   const { mutateAsync } = trpc.upsertWishItem.useMutation({
     onSuccess: () => {
       utils.getWishItems.invalidate()

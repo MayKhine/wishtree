@@ -28,19 +28,16 @@ export const WishListsPage = () => {
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> {testUser.name}'s Wishlists</div>
+        <div {...stylex.props(styles.header, styles.wishesContainer)}>
+          {" "}
+          {testUser.name}'s Wishlists
+        </div>
         <div {...stylex.props(styles.wishesContainer)}>
           <CreateWishListButton
             onClickFn={() => {
               setOpenWishListForm(true)
             }}
           />
-
-          {/* {openWishListForm && (
-            <div {...stylex.props(styles.display767px)}>
-              <WishListForm closeWishListForm={closeWishListForm} />
-            </div>
-          )} */}
 
           {openWishListForm && (
             <div
