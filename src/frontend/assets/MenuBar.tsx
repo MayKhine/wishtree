@@ -53,7 +53,7 @@ export const MenuBar = () => {
           <input
             {...stylex.props(styles.searchInput)}
             type="text"
-            placeholder="Search.."
+            placeholder="show after sign in.."
             name="search"
             onKeyDown={(event: React.KeyboardEvent<Element>) => {
               if (event.key === "Enter") {

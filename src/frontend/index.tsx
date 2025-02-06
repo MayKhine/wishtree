@@ -5,6 +5,7 @@ import "./index.css"
 import { CreateWishListPage } from "./pages/CreateWishListPage"
 import { LandingPage } from "./pages/LandingPage"
 import { ProfilePage } from "./pages/ProfilePage"
+import { SearchedProfilesPage } from "./pages/SearchedProfilesPage"
 import { SignInPage } from "./pages/SignInPage"
 import { SingleWishListPage } from "./pages/SingleWishListPage"
 import { WishListsPage } from "./pages/WishListsPage"
@@ -23,6 +24,8 @@ root.render(
           <Route path="/wishlists" element={<WishListsPage />}></Route>
 
           <Route path="/profile" element={<ProfilePage />}></Route>
+          <Route path="/search" element={<SearchedProfilesPage />}></Route>
+
           <Route
             path="/wishlists/:wishlistid"
             element={<SingleWishListPage />}
