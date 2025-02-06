@@ -3,8 +3,26 @@ import { MenuBar } from "../assets/MenuBar"
 import { tokens } from "../tokens.stylex"
 export const SearchedProfilesPage = () => {
   const testSearchResult = [
-    { id: "2323", name: "Kyaw" },
-    { id: "er3e", name: "m" },
+    {
+      name: "May Blah blah",
+      userName: "Mbler",
+      birthday: "12/12/1995",
+      bio: "test bio for test user",
+      facebook: "facebook.com/test",
+      numOfLists: "2",
+      numOfFollowers: "0",
+      numOfFollowings: "0",
+    },
+    {
+      name: "May Blah blah",
+      userName: "Mbler",
+      birthday: "12/12/1995",
+      bio: "test bio for test user",
+      facebook: "facebook.com/test",
+      numOfLists: "2",
+      numOfFollowers: "0",
+      numOfFollowings: "0",
+    },
   ]
   return (
     <div>
@@ -13,8 +31,9 @@ export const SearchedProfilesPage = () => {
         {testSearchResult.map((eachUser) => {
           return (
             <div {...stylex.props(styles.profileContainer)}>
-              {" "}
-              {eachUser.id} {eachUser.name}
+              <div> Picture </div>
+              <div> {eachUser.name} </div>
+              <div> {eachUser.userName} </div>
             </div>
           )
         })}
