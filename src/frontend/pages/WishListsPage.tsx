@@ -29,7 +29,6 @@ export const WishListsPage = () => {
       <MenuBar />
       <div {...stylex.props(styles.base)}>
         <div {...stylex.props(styles.header, styles.wishesContainer)}>
-          {" "}
           {testUser.name}'s Wishlists
         </div>
         <div {...stylex.props(styles.wishesContainer)}>

@@ -17,8 +17,8 @@ export const ReserveButton = ({ text, onClickFn }: ReserveButtonType) => {
 
 const styles = stylex.create({
   base: (text) => ({
-    // cursor: text == "open" ? "pointer" : "cursor",
-    cursor: "pointer",
+    cursor: text == "open" ? "pointer" : "cursor",
+    // cursor: "pointer",
     border: "2px solid black",
     borderRadius: "5rem",
     padding: ".5rem",

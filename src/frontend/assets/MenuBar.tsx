@@ -6,6 +6,7 @@ import { tokens } from "../tokens.stylex"
 import { Button } from "./Button"
 import { ClearPopUp } from "./ClearPopUp"
 import { DropDrownProfileMenu } from "./DropDownProfileMenu"
+import { SearchButton } from "./SearchButton"
 
 export const MenuBar = () => {
   const navigate = useNavigate()
@@ -22,7 +23,13 @@ export const MenuBar = () => {
   }
 
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
-
+  const [searchText, setSearchText] = useState("")
+  const search = () => {
+    console.log(
+      "To do : search users using the following text. if text is empty, serach all ",
+      searchText,
+    )
+  }
   return (
     <div {...stylex.props(styles.base)}>
       <div
@@ -41,6 +48,23 @@ export const MenuBar = () => {
               navigate("./signin")
             }}
           />
+        </div>
+        <div {...stylex.props(styles.searchBarContainer)}>
+          <input
+            {...stylex.props(styles.searchInput)}
+            type="text"
+            placeholder="Search.."
+            name="search"
+            onKeyDown={(event: React.KeyboardEvent<Element>) => {
+              if (event.key === "Enter") {
+                search()
+              }
+            }}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          ></input>
+
+          <SearchButton search={search} />
         </div>
         <div
           {...stylex.props(styles.roundDiv)}
@@ -136,6 +160,7 @@ const styles = stylex.create({
     cursor: "pointer",
     marginLeft: "1rem",
     marginRight: ".5rem",
+    alignSelf: "center",
   },
   down: {
     display: "flex",
@@ -161,5 +186,31 @@ const styles = stylex.create({
     zIndex: 11,
     width: "10rem",
     marginLeft: "-9.5rem",
+  },
+
+  searchBarContainer: {
+    display: "flex",
+    flexDirection: "row",
+    // backgroundColor: "pink",
+    marginLeft: "1rem",
+    border: "2px solid #82A3A1",
+    borderRadius: ".3rem",
+    boxSizing: "border-box",
+    width: {
+      default: "15rem",
+      "@media (max-width: 767px)": "10rem",
+    },
+    backgroundColor: tokens.offWhite,
+    justifyContent: "space-between",
+  },
+  searchInput: {
+    fontSize: "1rem",
+    paddingLeft: "1rem",
+    borderRadius: ".3rem",
+    border: "0px solid #82A3A1",
+    fontFamily: '"Funnel Sans", sans-serif',
+    backgroundColor: tokens.offWhite,
+    outline: "none",
+    width: "100%",
   },
 })

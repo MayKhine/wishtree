@@ -14,6 +14,7 @@ export const stdStyles = stylex.create({
     fontSize: "1rem",
     padding: "1rem",
     borderRadius: ".3rem",
+    // boxSizing: "border-box",
     width: {
       default: "23rem",
       "@media (max-width: 767px)": "18rem",
@@ -41,5 +42,16 @@ export const stdStyles = stylex.create({
     display: "flex",
     flexDirection: "column",
     minHeight: "6.5rem",
+  },
+  button: {
+    borderRadius: ".3rem",
+    fontSize: "1rem",
+    fontWeight: "600",
+    padding: "1rem",
+    backgroundColor: tokens.darkBlue,
+    color: { default: tokens.offWhite, ":hover": tokens.tealGreen },
+    cursor: "pointer",
+    minWidth: "5.5rem",
+    width: "100%",
   },
 })
