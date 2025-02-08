@@ -13,7 +13,7 @@ export const RemoveButton = ({ onClickFn }: RemoveButtonType) => {
 const styles = stylex.create({
   base: {
     // backgroundColor: "red",
-    border: "0px solid black",
+    // border: "0px solid black",
     borderRadius: "8rem",
     height: "1.5rem",
     width: "1.5rem",

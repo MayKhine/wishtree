@@ -6,10 +6,9 @@ import { PopUp } from "../assets/PopUp"
 import { AddWishItemButton } from "../components/formButtons/AddWishItemButton"
 import { WishItemForm } from "../components/forms/WishItemForm"
 import { WishItem } from "../components/wishList/WishItem"
-import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 
-export const WishListPage = () => {
+export const SingleWishListPage = () => {
   const { wishlistid } = useParams<{ wishlistid: string }>()
   const [togglePopUp, setTogglePopUp] = useState(false)
 
@@ -35,14 +34,17 @@ export const WishListPage = () => {
     },
   )
 
-  console.log("WishList Page data:", wishlistid, data)
-  console.log("WishList Page data:", wishItems)
   return (
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> {data?.title}</div>
-        <AddWishItemButton onClickFn={addANewWish} />
+        <div {...stylex.props(styles.header, styles.wishItemContainer)}>
+          {data?.title}
+        </div>
+        <div {...stylex.props(styles.wishItemContainer)}>
+          <AddWishItemButton onClickFn={addANewWish} />
+        </div>
+
         <div {...stylex.props(styles.wishItemContainer)}>
           {togglePopUp && wishlistid && (
             <div {...stylex.props(styles.wishItemFormContainer)}>
@@ -81,6 +83,7 @@ const styles = stylex.create({
       default: "none",
       "@media (max-width: 767px)": "center",
     },
+    backgroundColor: "pink",
   },
   header: {
     marginTop: "2rem",

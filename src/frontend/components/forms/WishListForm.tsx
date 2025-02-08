@@ -10,11 +10,29 @@ import { trpc } from "../../trpc"
 
 type WishListFormType = {
   closeWishListForm: () => void
+  formData?: formDataType
 }
 
-export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
-  const { isSuccess, mutate: upsertWishList } =
-    trpc.upsertWishList.useMutation()
+type formDataType = {
+  id: string
+  title: string
+  description: string
+  eventDate: string
+}
+
+export const WishListForm = ({
+  closeWishListForm,
+  formData,
+}: WishListFormType) => {
+  const utils = trpc.useUtils()
+
+  const { isSuccess, mutate: upsertWishList } = trpc.upsertWishList.useMutation(
+    {
+      onSuccess: () => {
+        utils.getMyWishLists.invalidate()
+      },
+    },
+  )
 
   useEffect(() => {
     if (!isSuccess) {
@@ -24,16 +42,18 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
   }, [isSuccess, closeWishListForm])
 
   const [error, setError] = useState(false)
+
   const [wishList, setWishList] = useState({
-    id: uuidV4(),
-    title: "",
-    description: "",
-    eventDate: "",
+    id: formData?.id ? formData.id : uuidV4(),
+    title: formData?.title ? formData.title : "",
+    description: formData?.description ? formData.description : "",
+    eventDate: formData?.eventDate ? formData.eventDate : "",
   })
 
   const inputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
+    console.log("Input change handler : ", event.target.value)
     if (event.target.id === "title") {
       setError(false)
     }
@@ -61,6 +81,8 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
   const [coverImg, setCoverImg] = useState<string | null>()
   const [coverImgButtonText, setCoverImgButtonText] =
     useState("+ Add Cover Image")
+  const buttonText = formData?.id ? "Save Wishlist" : "Create Wishlist"
+  const formTitle = formData?.id ? "Edit Wishlist" : "Create A Wish List"
 
   const imgPreview = (event: React.ChangeEvent<HTMLInputElement>) => {
     const first = event.target.files?.[0]
@@ -80,7 +102,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
   return (
     <div {...stylex.props(styles.base)}>
       <div {...stylex.props(styles.header)}>
-        <h3> Create A Wish List</h3>
+        <h3> {formTitle}</h3>
       </div>
       <div {...stylex.props(styles.formDiv)}>
         <div {...stylex.props(styles.leftDiv)}>
@@ -92,6 +114,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
               onChange={inputChangeHandler}
               type="text"
               id="title"
+              value={wishList.title}
             />
             {error && <InputError errorMsg="Please enter a wishlist title" />}
           </div>
@@ -102,6 +125,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
               type="date"
               id="eventDate"
               onChange={inputChangeHandler}
+              value={wishList.eventDate}
             />
           </div>
           <div {...stylex.props(stdStyles.inputsContainer)}>
@@ -110,6 +134,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
               {...stylex.props(stdStyles.inputTextArea)}
               onChange={inputChangeHandler}
               id="description"
+              value={wishList.description}
             />
           </div>
         </div>
@@ -153,7 +178,7 @@ export const WishListForm = ({ closeWishListForm }: WishListFormType) => {
                 closeWishListForm()
               }}
             />
-            <Button text="Create Wishlist" onClickFn={createWishListHandler} />
+            <Button text={buttonText} onClickFn={createWishListHandler} />
           </div>
         </div>
       </div>

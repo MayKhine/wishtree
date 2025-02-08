@@ -6,15 +6,16 @@ import { CreateWishListButton } from "../components/formButtons/CreateWishListBu
 import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
 import { trpc } from "../trpc"
+import { isLoggedIn } from "../userStore"
 
-export const HomePage = () => {
+export const WishListsPage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
   const [openWishListForm, setOpenWishListForm] = useState(false)
   const closeWishListForm = () => {
     setOpenWishListForm(false)
   }
+  console.log(isLoggedIn())
 
-  // const {mutate , data:loginUserData} = trpc.loginUser.useMutation()
   const testUser = {
     name: "May Blah blah",
     userName: "Mbler",
@@ -25,23 +26,20 @@ export const HomePage = () => {
     numOfFollowers: "0",
     numOfFollowings: "0",
   }
+
   return (
     <div>
       <MenuBar />
       <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}> {testUser.name}'s Wishlists</div>
+        <div {...stylex.props(styles.header, styles.wishesContainer)}>
+          {testUser.name}'s Wishlists
+        </div>
         <div {...stylex.props(styles.wishesContainer)}>
           <CreateWishListButton
             onClickFn={() => {
               setOpenWishListForm(true)
             }}
           />
-
-          {/* {openWishListForm && (
-            <div {...stylex.props(styles.display767px)}>
-              <WishListForm closeWishListForm={closeWishListForm} />
-            </div>
-          )} */}
 
           {openWishListForm && (
             <div

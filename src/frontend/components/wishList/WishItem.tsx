@@ -9,6 +9,7 @@ import { PopUp } from "../../assets/PopUp"
 // import { ReserveButton } from "../../assets/ReserveButton"
 import { tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
+import { WishItemForm } from "../forms/WishItemForm"
 import { WishItemDetail } from "./WishItemDetail"
 type WishItemProp = {
   wishItem: wishItemType
@@ -23,6 +24,7 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
       utils.getWishItems.invalidate()
     },
   })
+
   const [toggleWishItemDetail, setToggleWishItemDetail] =
     useState<boolean>(false)
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
@@ -37,18 +39,19 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
     // event: React.MouseEvent<SVGElement>
     {
       // event.stopPropagation() // Prevent the event from propagating to the whole div
-      console.log("Hi you cicked on the more options", wishItem.name)
       setToggleDropDownMenu(!toggleDropDownMenu)
     }
 
   const deleteItemHandler = async () => {
     await mutateAsync({ wishItemId: wishItem.id })
-    // setToggleDropDownMenu(!toggleDropDownMenu)
+    setToggleDropDownMenu(false)
   }
 
+  const [toggleWishItemForm, setToggleWishItemForm] = useState<boolean>(false)
+
   const editItemHandler = () => {
-    console.log("WishItem > TODO: edit item")
-    // setToggleDropDownMenu(!toggleDropDownMenu)
+    setToggleWishItemForm(true)
+    setToggleDropDownMenu(false)
   }
 
   const shareItemHandler = () => {
@@ -68,6 +71,23 @@ export const WishItem = ({ wishItem, wishListCreater }: WishItemProp) => {
   const wishItemNoteLength = wishItem.notes.length
   return (
     <div {...stylex.props(styles.base)}>
+      {toggleWishItemForm && (
+        <div {...stylex.props(styles.wishItemFormContainer)}>
+          <PopUp
+            onCancleFn={() => {
+              setToggleWishItemForm(false)
+            }}
+          ></PopUp>
+          <WishItemForm
+            wishListID={wishItem.wishListId}
+            togglePopUp={() => {
+              setToggleWishItemForm(false)
+            }}
+            itemFormData={wishItem}
+          />
+        </div>
+      )}
+
       <div
         {...stylex.props(styles.productImg(wishItemNoteLength))}
         onClick={wishItemClickHandler}
@@ -219,8 +239,6 @@ const styles = stylex.create({
       "@media (min-width: 768px) and  (max-width: 1024px)": "25rem",
     },
     minHeight: "13rem",
-    // height: "auto",
-    // color: tokens.darkBlue,
   },
   productImg: (wishItemNoteLength: number) => ({
     height: "15rem",
@@ -388,5 +406,15 @@ const styles = stylex.create({
       ":hover": tokens.tealGreen,
       ":visited": tokens.grayTeal,
     },
+  },
+  wishItemFormContainer: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 15,
+    display: "flex",
+    justifyContent: "center",
   },
 })

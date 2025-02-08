@@ -3,10 +3,12 @@ import ReactDOM from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import "./index.css"
 import { CreateWishListPage } from "./pages/CreateWishListPage"
-import { HomePage } from "./pages/HomePage"
 import { LandingPage } from "./pages/LandingPage"
 import { ProfilePage } from "./pages/ProfilePage"
-import { WishListPage } from "./pages/WishListPage"
+import { SearchedProfilesPage } from "./pages/SearchedProfilesPage"
+import { SignInPage } from "./pages/SignInPage"
+import { SingleWishListPage } from "./pages/SingleWishListPage"
+import { WishListsPage } from "./pages/WishListsPage"
 import { TrpcQueryContextProvider } from "./trpc"
 
 const rootElement = document.getElementById("root")!
@@ -18,9 +20,16 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />}></Route>
-          <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/signin" element={<SignInPage />}></Route>
+          <Route path="/wishlists" element={<WishListsPage />}></Route>
+
           <Route path="/profile" element={<ProfilePage />}></Route>
-          <Route path="/wishlist/:wishlistid" element={<WishListPage />} />
+          <Route path="/search" element={<SearchedProfilesPage />}></Route>
+
+          <Route
+            path="/wishlists/:wishlistid"
+            element={<SingleWishListPage />}
+          />
           <Route path="/createwishlist" element={<CreateWishListPage />} />
         </Routes>
       </BrowserRouter>

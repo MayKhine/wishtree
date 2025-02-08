@@ -6,13 +6,14 @@ import { v4 as uuidV4 } from "uuid"
 import * as z from "zod"
 import { Button } from "../../assets/Button"
 import { tokens } from "../../tokens.stylex"
+import { trpc } from "../../trpc"
+import { setUser } from "../../userStore"
 
 type UserAccountFormType = {
-  closeUserAccontForm: () => void
+  onSignIn?: () => void
 }
-export const UserAccountForm = ({
-  closeUserAccontForm,
-}: UserAccountFormType) => {
+
+export const UserAccountForm = ({ onSignIn }: UserAccountFormType) => {
   const navigate = useNavigate()
 
   const [userAccInfo, setUserAccInfo] = useState({
@@ -26,31 +27,33 @@ export const UserAccountForm = ({
   const [emailErr, setEmailErr] = useState("")
   const [pswErr, setPswErr] = useState("")
   const [accCreateSuccess, setAccCreateSuccess] = useState(false)
-  const createUserAccount = () => {
+
+  const { mutateAsync: createUserAcc } = trpc.createUser.useMutation()
+  const createUserAccount = async () => {
     const emailParser = z.string().email()
     const isValidEmail = emailParser.safeParse(userAccInfo.email).success
-
-    console.log("useremail: ", userAccInfo.email)
 
     if (
       userAccInfo.name.length > 0 &&
       userAccInfo.email.length > 0 &&
       isValidEmail &&
       userAccInfo.password.length > 5 &&
-      userAccInfo.password.length < 20
+      userAccInfo.password.length <= 20
     ) {
-      console.log("SUccess: create account")
-      console.log("TOdo : create account ")
-      // clear the form and show success
-      setAccCreateSuccess(true)
+      const createAccResult = await createUserAcc({
+        name: userAccInfo.name,
+        email: userAccInfo.email,
+        password: userAccInfo.password,
+      })
 
-      // setUserAccInfo((prevState) => ({
-      //   ...prevState,
-      //   name: "",
-      //   email: "",
-      //   password: "",
-      // }))
+      console.log("createAccResult: ", createAccResult)
+      if (createAccResult.success) {
+        setUser(userAccInfo.email)
 
+        setAccCreateSuccess(true)
+        return
+      }
+      console.log("To do : account create fialed. show error ")
       return
     }
 
@@ -104,19 +107,21 @@ export const UserAccountForm = ({
   return (
     <div {...stylex.props(styles.base)}>
       {!accCreateSuccess && (
-        <div>
-          {" "}
+        <div {...stylex.props(styles.createAccSec)}>
           <div {...stylex.props(styles.headerSec)}>
             <h3> Create Account</h3>
             <div {...stylex.props(styles.headerSubTextSec)}>
               Already have an account?
               <div
-                {...stylex.props(styles.login)}
+                {...stylex.props(styles.signin)}
                 onClick={() => {
-                  navigate("/profile")
+                  if (onSignIn) {
+                    onSignIn()
+                  }
+                  navigate("/signin")
                 }}
               >
-                Log in here!
+                SIGN IN
               </div>
             </div>
           </div>
@@ -182,16 +187,13 @@ export const UserAccountForm = ({
               </div>
             )}
 
-            <div>
-              Your account has been successfully created. Let's start your wish
-              tree!
-            </div>
+            <div>Your account has been successfully created.</div>
+            <div>Let's start your wish tree!</div>
             <div {...stylex.props(styles.buttonDiv)}>
-              {" "}
               <Button
                 text="Continue"
                 onClickFn={() => {
-                  console.log("TODO : got to log in page")
+                  navigate("/wishlists")
                 }}
               />
             </div>
@@ -205,7 +207,7 @@ export const UserAccountForm = ({
 const styles = stylex.create({
   base: {
     backgroundColor: tokens.offWhiteGreen,
-    border: "2px solid black",
+    border: `2px solid ${tokens.darkBlue}`,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -235,6 +237,11 @@ const styles = stylex.create({
       "@media (max-width: 1024px)": "auto",
     },
   },
+  createAccSec: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
   headerSec: {
     display: "flex",
     flexDirection: "column",
@@ -244,7 +251,7 @@ const styles = stylex.create({
     display: "flex",
     gap: ".5rem",
   },
-  login: {
+  signin: {
     color: {
       default: tokens.tealGreen,
       ":hover": tokens.darkBlue,
@@ -259,6 +266,7 @@ const styles = stylex.create({
     justifyContent: "center",
     justifyItems: "center",
     alignItems: "center",
+    // backgroundColor: "pink",
   },
 
   input: {

@@ -1,5 +1,5 @@
 import * as stylex from "@stylexjs/stylex"
-import { tokens } from "../tokens.stylex"
+import { stdStyles } from "../tokens.stylex"
 type ButtonProps = {
   onClickFn: () => void
   type?: "submit" | "reset" | "button"
@@ -8,7 +8,7 @@ type ButtonProps = {
 export const Button = ({ onClickFn, type, text }: ButtonProps) => {
   return (
     <button
-      {...stylex.props(styles.base)}
+      {...stylex.props(stdStyles.button)}
       type={type ? type : "button"}
       onClick={onClickFn}
     >
@@ -16,19 +16,3 @@ export const Button = ({ onClickFn, type, text }: ButtonProps) => {
     </button>
   )
 }
-
-const styles = stylex.create({
-  base: {
-    border: "0px",
-    borderRadius: ".3rem",
-    fontSize: "1rem",
-    fontWeight: "600",
-    padding: "1rem",
-    backgroundColor: tokens.darkBlue,
-    // backgroundColor: tokens.darkBlue,
-    color: { default: tokens.offWhite, ":hover": tokens.tealGreen },
-    cursor: "pointer",
-    minWidth: "5.5rem",
-    width: "100%",
-  },
-})
