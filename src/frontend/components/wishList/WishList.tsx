@@ -45,6 +45,7 @@ export const WishList = ({ title, wishlistID }: WishListProps) => {
     console.log("WishItem > todo: share list ")
     setToggleDropDownMenu(!toggleDropDownMenu)
   }
+
   return (
     <div
       {...stylex.props(styles.base)}

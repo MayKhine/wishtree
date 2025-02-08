@@ -5,6 +5,8 @@ import * as z from "zod"
 import { Button } from "../assets/Button"
 import { UserAccountForm } from "../components/forms/UserAccountForm"
 import { tokens } from "../tokens.stylex"
+import { trpc } from "../trpc"
+import { setUser } from "../userStore"
 
 export const SignInPage = () => {
   const navigate = useNavigate()
@@ -15,16 +17,11 @@ export const SignInPage = () => {
   const [pswErr, setPswErr] = useState("")
   const [userAccCreation, setUserAccCreation] = useState(false)
 
-  const signIn = () => {
+  const { mutateAsync: login } = trpc.loginUser.useMutation()
+
+  const signIn = async () => {
     const emailParser = z.string().email()
     const isValidEmail = emailParser.safeParse(email).success
-
-    if (isValidEmail && psw.length > 5 && psw.length <= 20) {
-      console.log("Success: Todo: Call be sign in func", email, psw)
-
-      navigate("/wishlists")
-      return
-    }
 
     if (email.length == 0) {
       setEmailErr("Email is required. Please enter your email. ")
@@ -42,6 +39,21 @@ export const SignInPage = () => {
 
     if (psw.length > 20) {
       setPswErr("Password is too long. It must not exceed 20 characters.")
+    }
+
+    if (isValidEmail && psw.length > 5 && psw.length <= 20) {
+      const loginResult = await login({ email, password: psw })
+      console.log("Login result : ", loginResult)
+      if (loginResult.success) {
+        //save the user name, email and password in local storage
+        setUser(email)
+        navigate("/wishlists")
+      }
+
+      if (!loginResult.success) {
+        console.log("TO do : show error msg ")
+        return
+      }
     }
   }
 
@@ -114,6 +126,7 @@ export const SignInPage = () => {
           </div>
         </div>
       )}
+
       {userAccCreation && (
         <div {...stylex.props(styles.loginContainer)}>
           <UserAccountForm

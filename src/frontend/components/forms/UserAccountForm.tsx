@@ -6,6 +6,8 @@ import { v4 as uuidV4 } from "uuid"
 import * as z from "zod"
 import { Button } from "../../assets/Button"
 import { tokens } from "../../tokens.stylex"
+import { trpc } from "../../trpc"
+import { setUser } from "../../userStore"
 
 type UserAccountFormType = {
   onSignIn?: () => void
@@ -25,7 +27,9 @@ export const UserAccountForm = ({ onSignIn }: UserAccountFormType) => {
   const [emailErr, setEmailErr] = useState("")
   const [pswErr, setPswErr] = useState("")
   const [accCreateSuccess, setAccCreateSuccess] = useState(false)
-  const createUserAccount = () => {
+
+  const { mutateAsync: createUserAcc } = trpc.createUser.useMutation()
+  const createUserAccount = async () => {
     const emailParser = z.string().email()
     const isValidEmail = emailParser.safeParse(userAccInfo.email).success
 
@@ -36,18 +40,20 @@ export const UserAccountForm = ({ onSignIn }: UserAccountFormType) => {
       userAccInfo.password.length > 5 &&
       userAccInfo.password.length <= 20
     ) {
-      console.log("SUccess: create account")
-      console.log("TOdo : create account ")
-      // clear the form and show success
-      setAccCreateSuccess(true)
+      const createAccResult = await createUserAcc({
+        name: userAccInfo.name,
+        email: userAccInfo.email,
+        password: userAccInfo.password,
+      })
 
-      // setUserAccInfo((prevState) => ({
-      //   ...prevState,
-      //   name: "",
-      //   email: "",
-      //   password: "",
-      // }))
+      console.log("createAccResult: ", createAccResult)
+      if (createAccResult.success) {
+        setUser(userAccInfo.email)
 
+        setAccCreateSuccess(true)
+        return
+      }
+      console.log("To do : account create fialed. show error ")
       return
     }
 
@@ -187,7 +193,7 @@ export const UserAccountForm = ({ onSignIn }: UserAccountFormType) => {
               <Button
                 text="Continue"
                 onClickFn={() => {
-                  navigate("/signin")
+                  navigate("/wishlists")
                 }}
               />
             </div>
