@@ -72,6 +72,18 @@ export const makeAppRouter = ({
         return { success: true, user } as const
       }),
 
+    findUsers: publicProcedure
+      .input(
+        z.object({
+          limit: z.number().default(20),
+          offset: z.number().default(0),
+          text: z.string(),
+        }),
+      )
+      .query(async ({ input }) => {
+        const result = await userService.findUsers(input)
+        return result
+      }),
     getWishlist: publicProcedure
       .input(z.object({ wishListId: z.string() }))
       .query(async ({ input }) => {

@@ -1,6 +1,7 @@
 import { DateTime } from "luxon"
 import { v4 as uuidv4 } from "uuid"
 import { User, UserPass } from "../domain/models/User"
+import { PageParam } from "../types/Page"
 import { ErrorType } from "../utils/tryCatch"
 
 export const makeUserService = (
@@ -106,10 +107,19 @@ export const makeUserService = (
     return [null, userNoPass]
   }
 
+  const findUsers = async (params: PageParam & { text: string }) => {
+    const result = await userRepository.findUsers(params)
+    return {
+      // do not return user with a pass!
+      data: result.data.map(dbUserToUser),
+    }
+  }
+
   return {
     createUser,
     login,
     authenticate,
+    findUsers,
   }
 }
 
@@ -128,6 +138,9 @@ export type UserRepository = {
   getUserByEmail(
     email: string,
   ): Promise<ErrorType<UserPass, "NotFound" | Error>>
+  findUsers(
+    params: PageParam & { text: string },
+  ): Promise<{ data: Array<UserPass> }>
 }
 
 export type AuthAdapter = {
