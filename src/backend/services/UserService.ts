@@ -32,15 +32,22 @@ export const makeUserService = (
     const newUser = { ...rest, id: uuidv4() }
     await userRepository.saveUser({ ...newUser, passwordHash })
 
+    // Get user for return - this error should never happen if save worked.
+    const [getUserErr, userOut] = await userRepository.getUser(newUser.id)
+    if (getUserErr) {
+      return [getUserErr, null] as const
+    }
+
     const [getSecretError, secret] = await secretAdapter.getSecret()
     if (getSecretError) {
       return [getSecretError, null] as const
     }
 
-    console.log("generate token from user", newUser)
     const token = jwtMinter.generateToken({ user: newUser }, secret)
 
-    return [null, token] as const
+    const userNoPass = dbUserToUser(userOut)
+
+    return [null, { token, user: userNoPass }] as const
   }
 
   // Check if password is correct for the email, and mint a token
@@ -67,20 +74,23 @@ export const makeUserService = (
       return ["InvalidPassword", null] as const
     }
 
-    const token = jwtMinter.generateToken({ user: dbUserToUser(user) }, secret)
+    const userNoPass = dbUserToUser(user)
 
-    return [null, token] as const
+    const token = jwtMinter.generateToken({ user: userNoPass }, secret)
+
+    return [null, { token, user: userNoPass }] as const
   }
 
   // Check if the token is valid
   const authenticate = async (
     token: string,
-  ): Promise<ErrorType<UserPass, Error | "NotFound">> => {
+  ): Promise<ErrorType<User, Error | "NotFound">> => {
     const [getSecretError, secret] = await secretAdapter.getSecret()
     if (getSecretError) {
       return [getSecretError, null]
     }
 
+    // this isn't exaclty right... jwt contains a slimmer user.
     const object = (await jwtMinter.verifyToken(token, secret)) as {
       user: UserPass
     }
@@ -91,7 +101,9 @@ export const makeUserService = (
       return [getUserError, null]
     }
 
-    return [null, user]
+    const userNoPass = dbUserToUser(user)
+
+    return [null, userNoPass]
   }
 
   return {
