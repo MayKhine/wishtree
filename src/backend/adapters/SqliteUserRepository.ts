@@ -1,6 +1,7 @@
 import { DateTime } from "luxon"
 import { UserPass } from "../domain/models/User"
 import { UserRepository } from "../services/UserService"
+import { PageParam } from "../types/Page"
 import { sql } from "../utils/sql"
 import { SqliteConnection } from "../utils/sqliteConnection"
 import { ErrorType } from "../utils/tryCatch"
@@ -100,10 +101,29 @@ export const makeSqliteUserRepository = (
     return [null, user] as const
   }
 
+  const findUsers = async ({
+    text,
+    limit,
+    offset,
+  }: PageParam & { text: string }) => {
+    const searchTerm = `%${text}%`
+    const users = await sqliteConnection.all<DbUserTruely>(sql`
+      SELECT *
+      FROM users
+      WHERE LOWER(email) LIKE LOWER(${searchTerm})
+        OR LOWER(name) LIKE LOWER(${searchTerm})
+      LIMIT ${limit} OFFSET ${offset ?? 0};
+    `)
+
+    return {
+      data: users.map(fromDbUserTruely),
+    }
+  }
+
   return {
     saveUser,
     getUser,
     getUserByEmail,
-    // getUserBy,
+    findUsers,
   }
 }

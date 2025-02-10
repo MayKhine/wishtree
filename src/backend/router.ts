@@ -26,12 +26,13 @@ export const makeAppRouter = ({
         }),
       )
       .mutation(async ({ input, ctx }) => {
-        const [error, token] = await userService.createUser(input)
+        const [error, createUserResult] = await userService.createUser(input)
         if (error == "AccountExists") {
           return { success: false, reason: "AccountExists" } as const
         }
 
         if (error) throw error
+        const { token, user } = createUserResult
 
         ctx.res.cookie("auth-token", token, {
           httpOnly: true, // Prevent access via JavaScript
@@ -40,7 +41,7 @@ export const makeAppRouter = ({
           // maxAge: 7 * 24 * 60 * 60 * 1000, // tokens already have an expirey, that expirey should be expressed here.
         })
 
-        return { success: true, token: token } as const
+        return { success: true, user } as const
       }),
     loginUser: publicProcedure
       .input(
@@ -51,7 +52,7 @@ export const makeAppRouter = ({
       )
       .mutation(async ({ input, ctx }) => {
         const { email, password } = input
-        const [err, token] = await userService.login(email, password)
+        const [err, loginData] = await userService.login(email, password)
         if (err === "NotFound") {
           return { success: false, reason: "UserNotFound" } as const
         }
@@ -59,6 +60,8 @@ export const makeAppRouter = ({
           return { success: false, reason: "InvalidPassword" } as const
         }
         if (err) throw err
+
+        const { token, user } = loginData
         ctx.res.cookie("auth-token", token, {
           httpOnly: true, // Prevent access via JavaScript
           secure: false, // Use HTTPS in production
@@ -66,9 +69,21 @@ export const makeAppRouter = ({
           // maxAge: 7 * 24 * 60 * 60 * 1000, // tokens already have an expirey, that expirey should be expressed here.
         })
 
-        return { success: true, jwt: token } as const
+        return { success: true, user } as const
       }),
 
+    findUsers: publicProcedure
+      .input(
+        z.object({
+          limit: z.number().default(20),
+          offset: z.number().default(0),
+          text: z.string(),
+        }),
+      )
+      .query(async ({ input }) => {
+        const result = await userService.findUsers(input)
+        return result
+      }),
     getWishlist: publicProcedure
       .input(z.object({ wishListId: z.string() }))
       .query(async ({ input }) => {
