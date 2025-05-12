@@ -6,7 +6,6 @@ import { CreateWishListButton } from "../components/formButtons/CreateWishListBu
 import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
 import { trpc } from "../trpc"
-import { isLoggedIn } from "../userStore"
 
 export const WishListsPage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
@@ -14,7 +13,6 @@ export const WishListsPage = () => {
   const closeWishListForm = () => {
     setOpenWishListForm(false)
   }
-  console.log(isLoggedIn())
 
   const testUser = {
     name: "May Blah blah",

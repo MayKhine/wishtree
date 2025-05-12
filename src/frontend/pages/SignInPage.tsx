@@ -6,8 +6,8 @@ import { Button } from "../assets/Button"
 import { UserAccountForm } from "../components/forms/UserAccountForm"
 import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
-import { setUser } from "../userStore"
-
+// import { setUsere } from "../userStore"
+import { useUserContext } from "../userContext/UserContext"
 export const SignInPage = () => {
   const navigate = useNavigate()
 
@@ -16,7 +16,7 @@ export const SignInPage = () => {
   const [psw, setPsw] = useState("")
   const [pswErr, setPswErr] = useState("")
   const [userAccCreation, setUserAccCreation] = useState(false)
-
+  const { setUser } = useUserContext()
   const { mutateAsync: login } = trpc.loginUser.useMutation()
 
   const signIn = async () => {
@@ -46,7 +46,8 @@ export const SignInPage = () => {
       console.log("Login result : ", loginResult)
       if (loginResult.success) {
         //save the user name, email and password in local storage
-        setUser(email)
+        console.log("may log did it work? login result", loginResult)
+        setUser(loginResult.user)
         navigate("/wishlists")
       }
 
@@ -115,7 +116,6 @@ export const SignInPage = () => {
               <div
                 {...stylex.props(styles.signup)}
                 onClick={() => {
-                  // navigate("/signup")
                   console.log("Pop up user account creation")
                   setUserAccCreation(true)
                 }}

@@ -1,17 +1,21 @@
+import { User } from "src/backend/domain/models/User"
+
 const kUserStorageKey = "UserStage"
 
-export const getUser = () => {
-  return localStorage.getItem(kUserStorageKey) as string
+export const getUserFromLocalStorage = (): User | null => {
+  const userStr = localStorage.getItem(kUserStorageKey)
+  if (!userStr) return null
+  try {
+    return JSON.parse(userStr)
+  } catch {
+    return null
+  }
 }
 
-export const setUser = (str: string | null) => {
-  if (str === null) {
+export const setUserToLocalStorage = (user: User | null) => {
+  if (user === null) {
     localStorage.removeItem(kUserStorageKey)
     return
   }
-  localStorage.setItem(kUserStorageKey, str)
-}
-
-export const isLoggedIn = () => {
-  return Boolean(getUser())
+  localStorage.setItem(kUserStorageKey, JSON.stringify(user))
 }

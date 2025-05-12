@@ -3,6 +3,7 @@ import { useState } from "react"
 import { FaChevronDown } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { tokens } from "../tokens.stylex"
+import { useUserContext } from "../userContext/UserContext"
 import { Button } from "./Button"
 import { ClearPopUp } from "./ClearPopUp"
 import { DropDrownProfileMenu } from "./DropDownProfileMenu"
@@ -10,6 +11,7 @@ import { SearchButton } from "./SearchButton"
 
 export const MenuBar = () => {
   const navigate = useNavigate()
+  const { user } = useUserContext()
 
   const testUser = {
     name: "May Blah blah",
@@ -41,74 +43,79 @@ export const MenuBar = () => {
         WishTree
       </div>
       <div {...stylex.props(styles.menuButtonsContainer)}>
-        <div>
-          <Button
-            text="Sign In"
-            onClickFn={() => {
-              navigate("./signin")
-            }}
-          />
-        </div>
-        <div {...stylex.props(styles.searchBarContainer)}>
-          <input
-            {...stylex.props(styles.searchInput)}
-            type="text"
-            placeholder="show after sign in.."
-            name="search"
-            onKeyDown={(event: React.KeyboardEvent<Element>) => {
-              if (event.key === "Enter") {
-                search()
-              }
-            }}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          ></input>
-
-          <SearchButton search={search} />
-        </div>
-        <div
-          {...stylex.props(styles.roundDiv)}
-          onClick={() => {
-            navigate("/profile")
-          }}
-        >
-          {testUser.name[0]}
-        </div>
-
-        <div>
-          <div
-            {...stylex.props(styles.down)}
-            onClick={() => {
-              console.log("todo : push down a drop down")
-              setToggleDropDownMenu(!toggleDropDownMenu)
-            }}
-          >
-            <FaChevronDown strokeWidth={"2rem"} color={tokens.darkBlue} />
+        {!user && (
+          <div>
+            <Button
+              text="Sign In"
+              onClickFn={() => {
+                navigate("./signin")
+              }}
+            />
           </div>
-          {toggleDropDownMenu && (
-            <div>
-              <div {...stylex.props(styles.triangle)}></div>
-              <div {...stylex.props(styles.dropDownMenuDiv)}>
-                <ClearPopUp
-                  onCancelFn={() => {
-                    setToggleDropDownMenu(false)
-                    console.log("clciked on  clear pop up")
-                  }}
-                />
+        )}
+        {user && (
+          <>
+            <div {...stylex.props(styles.searchBarContainer)}>
+              <input
+                {...stylex.props(styles.searchInput)}
+                type="text"
+                placeholder="show after sign in.."
+                name="search"
+                onKeyDown={(event: React.KeyboardEvent<Element>) => {
+                  if (event.key === "Enter") {
+                    search()
+                  }
+                }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              ></input>
 
-                <DropDrownProfileMenu
-                  onLogOutFn={() => {
-                    console.log("Todo : log out from the account")
-                    navigate("/")
-                  }}
-                  // onShareFn={shareItemHandler}
-                  // onEditFn={editItemHandler}
-                  // onReceivedFn={receivedItemHandler}
-                />
-              </div>
+              <SearchButton search={search} />
             </div>
-          )}{" "}
-        </div>
+            <div
+              {...stylex.props(styles.roundDiv)}
+              onClick={() => {
+                navigate("/profile")
+              }}
+            >
+              {testUser.name[0]}
+            </div>
+            <div>
+              <div
+                {...stylex.props(styles.down)}
+                onClick={() => {
+                  console.log("todo : push down a drop down")
+                  setToggleDropDownMenu(!toggleDropDownMenu)
+                }}
+              >
+                <FaChevronDown strokeWidth={"2rem"} color={tokens.darkBlue} />
+              </div>
+              {toggleDropDownMenu && (
+                <div>
+                  <div {...stylex.props(styles.triangle)}></div>
+                  <div {...stylex.props(styles.dropDownMenuDiv)}>
+                    <ClearPopUp
+                      onCancelFn={() => {
+                        setToggleDropDownMenu(false)
+                        console.log("clciked on  clear pop up")
+                      }}
+                    />
+
+                    <DropDrownProfileMenu
+                      onLogOutFn={() => {
+                        console.log("Todo : log out from the account")
+                        navigate("/")
+                      }}
+                      // onShareFn={shareItemHandler}
+                      // onEditFn={editItemHandler}
+                      // onReceivedFn={receivedItemHandler}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

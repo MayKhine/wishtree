@@ -20,6 +20,7 @@ export const makeUserService = (
     if (getUserError && getUserError !== "NotFound") {
       return [getUserError, null] as const
     }
+
     if (user) {
       return ["AccountExists", null] as const
     }
@@ -40,7 +41,7 @@ export const makeUserService = (
     console.log("generate token from user", newUser)
     const token = jwtMinter.generateToken({ user: newUser }, secret)
 
-    return [null, token] as const
+    return [null, { token, user: newUser }] as const
   }
 
   // Check if password is correct for the email, and mint a token
@@ -67,9 +68,11 @@ export const makeUserService = (
       return ["InvalidPassword", null] as const
     }
 
-    const token = jwtMinter.generateToken({ user: dbUserToUser(user) }, secret)
+    const safeUser = dbUserToUser(user)
 
-    return [null, token] as const
+    const token = jwtMinter.generateToken({ user: safeUser }, secret)
+
+    return [null, { token, user: safeUser }] as const
   }
 
   // Check if the token is valid

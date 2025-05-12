@@ -7,7 +7,8 @@ import * as z from "zod"
 import { Button } from "../../assets/Button"
 import { tokens } from "../../tokens.stylex"
 import { trpc } from "../../trpc"
-import { setUser } from "../../userStore"
+import { useUserContext } from "../../userContext/UserContext"
+// import { setUser } from "../../userStore"
 
 type UserAccountFormType = {
   onSignIn?: () => void
@@ -15,7 +16,7 @@ type UserAccountFormType = {
 
 export const UserAccountForm = ({ onSignIn }: UserAccountFormType) => {
   const navigate = useNavigate()
-
+  const { setUser } = useUserContext()
   const [userAccInfo, setUserAccInfo] = useState({
     id: uuidV4(),
     name: "",
@@ -48,7 +49,8 @@ export const UserAccountForm = ({ onSignIn }: UserAccountFormType) => {
 
       console.log("createAccResult: ", createAccResult)
       if (createAccResult.success) {
-        setUser(userAccInfo.email)
+        // setUser(userAccInfo.email)
+        setUser(createAccResult.user)
 
         setAccCreateSuccess(true)
         return
