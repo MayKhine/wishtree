@@ -30,7 +30,7 @@ root.render(
               path="/search/:searchText"
               element={<SearchedProfilesPage />}
             ></Route>
-            {/* <Route path="/search" element={<SearchedProfilesPage />}></Route> */}
+            <Route path="/search" element={<SearchedProfilesPage />}></Route>
 
             <Route
               path="/wishlists/:wishlistid"

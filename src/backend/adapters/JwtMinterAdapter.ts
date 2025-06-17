@@ -6,7 +6,7 @@ export const makeJwtMinterAdapter = (
 ): JwtMinterAdapter => {
   const generateToken = (payload: Record<string, unknown>, secret: string) => {
     return jwt.sign(payload, secret, {
-      expiresIn: options.expiresInSeconds || "1h",
+      expiresIn: options.expiresInSeconds || "1y",
     })
   }
 

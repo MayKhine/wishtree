@@ -6,9 +6,10 @@ import { trpc } from "../trpc"
 export const SearchedProfilesPage = () => {
   const { searchText } = useParams<{ searchText: string }>()
   console.log("search text: ", searchText)
+  const searchKeyword = searchText ?? "all"
   const { data } = trpc.getUsers.useQuery(
-    { input: searchText },
-    { enabled: Boolean(searchText) },
+    { input: searchKeyword },
+    { enabled: Boolean(searchKeyword) },
   )
 
   console.log("Searched user data: ", data)
