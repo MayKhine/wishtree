@@ -83,7 +83,7 @@ export const makeAppRouter = ({
       .query(async ({ input }) => {
         console.log("Get login user input:", input)
         return {
-          id: input,
+          id: input.loginUserId,
           name: "test name",
           email: "test email",
           birthday: "01/01/1885",

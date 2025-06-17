@@ -12,6 +12,14 @@ import { useUserContext } from "../userContext/UserContext"
 export const ProfilePage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
   const { user } = useUserContext()
+  const { data: userBioData } = trpc.getLoginUserBio.useQuery(
+    {
+      loginUserId: user?.id ?? "testUserID",
+    },
+    { enabled: Boolean(user?.id) },
+  )
+
+  console.log("userBio: ", userBioData)
 
   const testUser = {
     name: "May Blah blah",
@@ -41,10 +49,10 @@ export const ProfilePage = () => {
             <div {...stylex.props(styles.userInfoContainer)}>
               <h2>{user.name}</h2>
               <div> @{user.id}</div>
-              <h4>
+              {/* <h4>
                 {testUser.numOfLists} Lists | {testUser.numOfFollowers}{" "}
                 Followers | {testUser.numOfFollowings} Following
-              </h4>
+              </h4> */}
             </div>
 
             <div {...stylex.props(styles.buttonsContainer)}>
@@ -65,20 +73,24 @@ export const ProfilePage = () => {
           <div {...stylex.props(styles.aboutAndWishlistContainer)}>
             <div {...stylex.props(styles.userAboutMeContainer)}>
               <h2 {...stylex.props(styles.h2)}> About The USER</h2>
-              <div {...stylex.props(styles.userAboutDataDiv)}>
-                <div>
-                  <h4>Birthday</h4>
-                  {testUser.birthday}
+              {userBioData && (
+                <div {...stylex.props(styles.userAboutDataDiv)}>
+                  <div>
+                    <h4>Birthday</h4>
+                    {userBioData.birthday}
+                  </div>
+                  <div>
+                    <h4>Bio </h4>
+                    {userBioData?.bio}
+                  </div>
+                  <div>
+                    <h4>Socials </h4>
+                    {userBioData?.social}
+                  </div>
                 </div>
-                <div>
-                  <h4>Bio </h4>
-                  {testUser.bio}
-                </div>
-                <div>
-                  <h4>Socials </h4>
-                  {testUser.facebook}
-                </div>
-              </div>
+              )}
+
+              {!userBioData && <div> No user bio data </div>}
             </div>
             <div {...stylex.props(styles.wishlistsDiv)}>
               <h2> {testUser.name}'s Wishlists</h2>
