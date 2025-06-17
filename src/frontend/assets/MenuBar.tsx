@@ -11,18 +11,18 @@ import { SearchButton } from "./SearchButton"
 
 export const MenuBar = () => {
   const navigate = useNavigate()
-  const { user } = useUserContext()
+  const { user, setUser } = useUserContext()
 
-  const testUser = {
-    name: "May Blah blah",
-    userName: "Mbler",
-    birthday: "12/12/1995",
-    bio: "test bio for test user",
-    facebook: "facebook.com/test",
-    numOfLists: "2",
-    numOfFollowers: "0",
-    numOfFollowings: "0",
-  }
+  // const testUser = {
+  //   name: "Blah blah",
+  //   userName: "Mbler",
+  //   birthday: "12/12/1995",
+  //   bio: "test bio for test user",
+  //   facebook: "facebook.com/test",
+  //   numOfLists: "2",
+  //   numOfFollowers: "0",
+  //   numOfFollowings: "0",
+  // }
 
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
   const [searchText, setSearchText] = useState("")
@@ -78,7 +78,7 @@ export const MenuBar = () => {
                 navigate("/profile")
               }}
             >
-              {testUser.name[0]}
+              {user.name[0]}
             </div>
             <div>
               <div
@@ -104,6 +104,7 @@ export const MenuBar = () => {
                     <DropDrownProfileMenu
                       onLogOutFn={() => {
                         console.log("Todo : log out from the account")
+                        setUser(null)
                         navigate("/")
                       }}
                       // onShareFn={shareItemHandler}
