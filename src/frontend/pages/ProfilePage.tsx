@@ -37,7 +37,6 @@ export const ProfilePage = () => {
   }
 
   const [openUserBioForm, setOpenUserBioForm] = useState(false)
-  const editUserBio = () => {}
 
   return (
     <div>
@@ -102,12 +101,12 @@ export const ProfilePage = () => {
                     {userBioData.birthday}
                   </div>
                   <div>
-                    <h4>Bio </h4>
-                    {userBioData?.bio}
+                    <h4>About </h4>
+                    {userBioData?.about}
                   </div>
                   <div>
-                    <h4>Socials </h4>
-                    {userBioData?.social}
+                    <h4>Facebook </h4>
+                    {userBioData?.facebook}
                   </div>
                 </div>
               )}

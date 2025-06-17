@@ -84,11 +84,11 @@ export const makeAppRouter = ({
         console.log("Get login user input:", input)
         return {
           id: input.loginUserId,
-          name: "test name",
+          name: "test name !",
           email: "test email",
-          birthday: "01/01/1885",
-          bio: "blah blah bio",
-          social: "facebook.com/test_name",
+          birthday: "1995-01-25",
+          about: "About blah blah ",
+          facebook: "facebook.com/test_name",
         }
       }),
 
@@ -101,9 +101,9 @@ export const makeAppRouter = ({
           id: input,
           name: "test name",
           email: "test email",
-          birthday: "01/01/1995",
-          bio: "Edited blah blah bio",
-          social: "facebook.com/test_name",
+          birthday: "1995-01-25",
+          about: "Edited blah blah bio",
+          facebook: "facebook.com/test_name",
         }
       }),
 
