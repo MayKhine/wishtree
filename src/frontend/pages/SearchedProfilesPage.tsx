@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
 import { useParams } from "react-router-dom"
 import { MenuBar } from "../assets/MenuBar"
+import { ProfileCard } from "../components/users/ProfileCard"
 import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 export const SearchedProfilesPage = () => {
@@ -44,10 +45,11 @@ export const SearchedProfilesPage = () => {
         <div {...stylex.props(styles.base)}>
           {data.map((eachUser, index) => {
             return (
-              <div key={index} {...stylex.props(styles.profileContainer)}>
-                <div> {eachUser.id} </div>
-                <div> {eachUser.name} </div>
-              </div>
+              // <div key={index} {...stylex.props(styles.profileContainer)}>
+              //   <div> {eachUser.id} </div>
+              //   <div> {eachUser.name} </div>
+              // </div>
+              <ProfileCard key={index} data={eachUser} />
             )
           })}
         </div>

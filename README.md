@@ -20,33 +20,46 @@ Tech:
 ---
 
 Database:
+
 ```ts
 const testData = {
   listName: "My 30th birthday",
   items: [
-  {
-    name: "shoe",
-    addedDate: "11/01/2024",
-    link: "www.shoelink.com",
-    price: "33.44",
-    color: "red",
-    status: "open",
-    description: "Item desc",
-    quantity: 1,
-    image: "donot know yet",
-    mostWanted: true,
-  },
-  {
-    name: "cube box",
-    addedDate: "11/01/2024",
-    link: "",
-    price: "",
-    color: "red",
-    status: "open",
-    description: "any cube box is fine",
-    quantity: 4,
-    image: "donot know yet",
-    mostWanted: false,
-  }],
+    {
+      name: "shoe",
+      addedDate: "11/01/2024",
+      link: "www.shoelink.com",
+      price: "33.44",
+      color: "red",
+      status: "open",
+      description: "Item desc",
+      quantity: 1,
+      image: "donot know yet",
+      mostWanted: true,
+    },
+    {
+      name: "cube box",
+      addedDate: "11/01/2024",
+      link: "",
+      price: "",
+      color: "red",
+      status: "open",
+      description: "any cube box is fine",
+      quantity: 4,
+      image: "donot know yet",
+      mostWanted: false,
+    },
+  ],
 }
 ```
+
+---
+
+#### To dos
+
+- mark items as received
+- fb share feature
+- change stylex to tailwind - low priority
+- pop up forms to a page - low p
+- work on users page
+  - user card

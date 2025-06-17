@@ -46,12 +46,11 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
     })
   }
 
-  const { isSuccess, mutate: upsertLoginUserBio } =
-    trpc.upsertLoginUserBio.useMutation({
-      onSuccess: () => {
-        // utils.getUserBioData.invalidate()
-      },
-    })
+  const { mutate: upsertLoginUserBio } = trpc.upsertLoginUserBio.useMutation({
+    onSuccess: () => {
+      // utils.getUserBioData.invalidate()
+    },
+  })
 
   const editUserBio = () => {
     console.log("edit user biro ", userBioData)
