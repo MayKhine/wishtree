@@ -77,6 +77,36 @@ export const makeAppRouter = ({
         return { success: true, user } as const
       }),
 
+    getLoginUserBio: publicProcedure
+      .use(authMiddleware(userService))
+      .input(z.object({ loginUserId: z.string() }))
+      .query(async ({ input }) => {
+        console.log("Get login user input:", input)
+        return {
+          id: input,
+          name: "test name",
+          email: "test email",
+          birthday: "01/01/1885",
+          bio: "blah blah bio",
+          social: "facebook.com/test_name",
+        }
+      }),
+
+    upsertLoginUserBio: publicProcedure
+      .use(authMiddleware(userService))
+      .input(z.object({ loginUserId: z.string() }))
+      .mutation(async ({ input }) => {
+        console.log("Edit login user input:", input)
+        return {
+          id: input,
+          name: "test name",
+          email: "test email",
+          birthday: "01/01/1995",
+          bio: "Edited blah blah bio",
+          social: "facebook.com/test_name",
+        }
+      }),
+
     getWishlist: publicProcedure
       .input(z.object({ wishListId: z.string() }))
       .query(async ({ input }) => {
