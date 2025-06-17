@@ -49,7 +49,7 @@ export const MenuBar = () => {
             <Button
               text="Sign In"
               onClickFn={() => {
-                navigate("./signin")
+                navigate("/signin")
               }}
             />
           </div>

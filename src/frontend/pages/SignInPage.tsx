@@ -51,7 +51,7 @@ export const SignInPage = () => {
         //save the user name, email and password in local storage
         console.log("may log did it work? login result", loginResult)
         setUser(loginResult.user)
-        navigate("/wishlists")
+        navigate("/profile")
       }
 
       if (!loginResult.success) {

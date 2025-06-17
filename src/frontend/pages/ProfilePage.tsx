@@ -8,9 +8,10 @@ import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
 import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
+import { useUserContext } from "../userContext/UserContext"
 export const ProfilePage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
-  console.log("Profile Page: ", data)
+  const { user } = useUserContext()
 
   const testUser = {
     name: "May Blah blah",
@@ -31,95 +32,98 @@ export const ProfilePage = () => {
   return (
     <div>
       <MenuBar />
-      <div {...stylex.props(styles.base)}>
-        <div {...stylex.props(styles.header)}>
-          <div {...stylex.props(styles.roundDiv)}>{testUser.name[0]}</div>
-        </div>
-        <div>
-          <div {...stylex.props(styles.userInfoContainer)}>
-            <h2>{testUser.name}</h2>
-            <div> @{testUser.userName}</div>
-            <h4>
-              {testUser.numOfLists} Lists | {testUser.numOfFollowers} Followers
-              | {testUser.numOfFollowings} Following
-            </h4>
+      {user && (
+        <div {...stylex.props(styles.base)}>
+          <div {...stylex.props(styles.header)}>
+            <div {...stylex.props(styles.roundDiv)}>{testUser.name[0]}</div>
           </div>
+          <div>
+            <div {...stylex.props(styles.userInfoContainer)}>
+              <h2>{user.name}</h2>
+              <div> @{user.id}</div>
+              <h4>
+                {testUser.numOfLists} Lists | {testUser.numOfFollowers}{" "}
+                Followers | {testUser.numOfFollowings} Following
+              </h4>
+            </div>
 
-          <div {...stylex.props(styles.buttonsContainer)}>
-            <Button
-              text="Share"
-              onClickFn={() => {
-                console.log("todo: Share this profile")
-              }}
-            />
-            <Button
-              text="Edit"
-              onClickFn={() => {
-                console.log("todo: 'edit the profile")
-              }}
-            />
-          </div>
-        </div>
-        <div {...stylex.props(styles.aboutAndWishlistContainer)}>
-          <div {...stylex.props(styles.userAboutMeContainer)}>
-            <h2 {...stylex.props(styles.h2)}> About The USER</h2>
-            <div {...stylex.props(styles.userAboutDataDiv)}>
-              <div>
-                <h4>Birthday</h4>
-                {testUser.birthday}
-              </div>
-              <div>
-                <h4>Bio </h4>
-                {testUser.bio}
-              </div>
-              <div>
-                <h4>Socials </h4>
-                {testUser.facebook}
-              </div>
+            <div {...stylex.props(styles.buttonsContainer)}>
+              <Button
+                text="Share"
+                onClickFn={() => {
+                  console.log("todo: Share this profile")
+                }}
+              />
+              <Button
+                text="Edit"
+                onClickFn={() => {
+                  console.log("todo: 'edit the profile")
+                }}
+              />
             </div>
           </div>
-          <div {...stylex.props(styles.wishlistsDiv)}>
-            <h2> {testUser.name}'s Wishlists</h2>
-            {data && (
-              <div {...stylex.props(styles.wishlistsContainer)}>
-                <CreateWishListButton
-                  onClickFn={() => {
-                    // console.log("wish list open ")
-                    setOpenWishListForm(true)
-                  }}
-                />
-
-                {openWishListForm && (
-                  <div
-                    {...stylex.props(
-                      // styles.displayOver767px,
-                      styles.wishListFormContainer,
-                    )}
-                  >
-                    <PopUp
-                      onCancleFn={() => {
-                        closeWishListForm()
-                      }}
-                    ></PopUp>
-                    <WishListForm closeWishListForm={closeWishListForm} />
-                  </div>
-                )}
-
-                {data.map((list) => {
-                  // return <div key={list.id}> {list.title}</div>
-                  return (
-                    <WishList
-                      title={list.title}
-                      wishlistID={list.id}
-                      key={list.id}
-                    />
-                  )
-                })}
+          <div {...stylex.props(styles.aboutAndWishlistContainer)}>
+            <div {...stylex.props(styles.userAboutMeContainer)}>
+              <h2 {...stylex.props(styles.h2)}> About The USER</h2>
+              <div {...stylex.props(styles.userAboutDataDiv)}>
+                <div>
+                  <h4>Birthday</h4>
+                  {testUser.birthday}
+                </div>
+                <div>
+                  <h4>Bio </h4>
+                  {testUser.bio}
+                </div>
+                <div>
+                  <h4>Socials </h4>
+                  {testUser.facebook}
+                </div>
               </div>
-            )}
+            </div>
+            <div {...stylex.props(styles.wishlistsDiv)}>
+              <h2> {testUser.name}'s Wishlists</h2>
+              {data && (
+                <div {...stylex.props(styles.wishlistsContainer)}>
+                  <CreateWishListButton
+                    onClickFn={() => {
+                      // console.log("wish list open ")
+                      setOpenWishListForm(true)
+                    }}
+                  />
+
+                  {openWishListForm && (
+                    <div
+                      {...stylex.props(
+                        // styles.displayOver767px,
+                        styles.wishListFormContainer,
+                      )}
+                    >
+                      <PopUp
+                        onCancleFn={() => {
+                          closeWishListForm()
+                        }}
+                      ></PopUp>
+                      <WishListForm closeWishListForm={closeWishListForm} />
+                    </div>
+                  )}
+
+                  {data.map((list) => {
+                    return (
+                      <WishList
+                        title={list.title}
+                        wishlistID={list.id}
+                        key={list.id}
+                      />
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {!user && <div> User doens't exist </div>}
     </div>
   )
 }
