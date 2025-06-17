@@ -23,6 +23,8 @@ export const SignInPage = () => {
     const emailParser = z.string().email()
     const isValidEmail = emailParser.safeParse(email).success
 
+    console.log("sing in is clicked")
+
     if (email.length == 0) {
       setEmailErr("Email is required. Please enter your email. ")
     }
@@ -33,15 +35,16 @@ export const SignInPage = () => {
       }
     }
 
-    if (psw.length <= 5) {
-      setPswErr("Password is too short. It must be at least 5 characters long.")
-    }
+    // if (psw.length <= 5) {
+    //   setPswErr("Password is too short. It must be at least 5 characters long.")
+    // }
 
-    if (psw.length > 20) {
-      setPswErr("Password is too long. It must not exceed 20 characters.")
-    }
+    // if (psw.length > 20) {
+    //   setPswErr("Password is too long. It must not exceed 20 characters.")
+    // }
 
-    if (isValidEmail && psw.length > 5 && psw.length <= 20) {
+    // if (isValidEmail && psw.length > 5 && psw.length <= 20) {
+    if (isValidEmail) {
       const loginResult = await login({ email, password: psw })
       console.log("Login result : ", loginResult)
       if (loginResult.success) {
@@ -52,7 +55,8 @@ export const SignInPage = () => {
       }
 
       if (!loginResult.success) {
-        console.log("TO do : show error msg ")
+        console.log("TO do : show error msg ", loginResult.reason)
+        setPswErr(loginResult.reason)
         return
       }
     }

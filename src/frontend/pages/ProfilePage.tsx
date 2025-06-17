@@ -1,6 +1,10 @@
 import * as stylex from "@stylexjs/stylex"
+import { useState } from "react"
 import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
+import { PopUp } from "../assets/PopUp"
+import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
+import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
 import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
@@ -18,6 +22,12 @@ export const ProfilePage = () => {
     numOfFollowers: "0",
     numOfFollowings: "0",
   }
+
+  const [openWishListForm, setOpenWishListForm] = useState(false)
+  const closeWishListForm = () => {
+    setOpenWishListForm(false)
+  }
+
   return (
     <div>
       <MenuBar />
@@ -72,6 +82,29 @@ export const ProfilePage = () => {
             <h2> {testUser.name}'s Wishlists</h2>
             {data && (
               <div {...stylex.props(styles.wishlistsContainer)}>
+                <CreateWishListButton
+                  onClickFn={() => {
+                    // console.log("wish list open ")
+                    setOpenWishListForm(true)
+                  }}
+                />
+
+                {openWishListForm && (
+                  <div
+                    {...stylex.props(
+                      // styles.displayOver767px,
+                      styles.wishListFormContainer,
+                    )}
+                  >
+                    <PopUp
+                      onCancleFn={() => {
+                        closeWishListForm()
+                      }}
+                    ></PopUp>
+                    <WishListForm closeWishListForm={closeWishListForm} />
+                  </div>
+                )}
+
                 {data.map((list) => {
                   // return <div key={list.id}> {list.title}</div>
                   return (
@@ -208,5 +241,15 @@ const styles = stylex.create({
       default: "none",
       "@media (max-width: 787px)": "center", // 787px 1024px
     },
+  },
+  wishListFormContainer: {
+    width: "100vw",
+    height: "100vh",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 15,
+    display: "flex",
+    justifyContent: "center",
   },
 })
