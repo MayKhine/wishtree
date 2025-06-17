@@ -4,6 +4,7 @@ import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
 import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
+import { UserBioForm } from "../components/forms/UserBioForm"
 import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
 import { tokens } from "../tokens.stylex"
@@ -19,23 +20,24 @@ export const ProfilePage = () => {
     { enabled: Boolean(user?.id) },
   )
 
-  console.log("userBio: ", userBioData)
-
-  const testUser = {
-    name: "May Blah blah",
-    userName: "Mbler",
-    birthday: "12/12/1995",
-    bio: "test bio for test user",
-    facebook: "facebook.com/test",
-    numOfLists: "2",
-    numOfFollowers: "0",
-    numOfFollowings: "0",
-  }
+  // const testUser = {
+  //   name: "May Blah blah",
+  //   userName: "Mbler",
+  //   birthday: "12/12/1995",
+  //   bio: "test bio for test user",
+  //   facebook: "facebook.com/test",
+  //   numOfLists: "2",
+  //   numOfFollowers: "0",
+  //   numOfFollowings: "0",
+  // }
 
   const [openWishListForm, setOpenWishListForm] = useState(false)
   const closeWishListForm = () => {
     setOpenWishListForm(false)
   }
+
+  const [openUserBioForm, setOpenUserBioForm] = useState(false)
+  const editUserBio = () => {}
 
   return (
     <div>
@@ -43,7 +45,7 @@ export const ProfilePage = () => {
       {user && (
         <div {...stylex.props(styles.base)}>
           <div {...stylex.props(styles.header)}>
-            <div {...stylex.props(styles.roundDiv)}>{testUser.name[0]}</div>
+            <div {...stylex.props(styles.roundDiv)}>{user.name[0]}</div>
           </div>
           <div>
             <div {...stylex.props(styles.userInfoContainer)}>
@@ -66,8 +68,28 @@ export const ProfilePage = () => {
                 text="Edit"
                 onClickFn={() => {
                   console.log("todo: 'edit the profile")
+                  setOpenUserBioForm(true)
                 }}
               />
+              {openUserBioForm && (
+                <div
+                  {...stylex.props(
+                    // styles.displayOver767px,
+                    styles.wishListFormContainer,
+                  )}
+                >
+                  <PopUp
+                    onCancleFn={() => {
+                      setOpenUserBioForm(false)
+                    }}
+                  ></PopUp>
+                  <UserBioForm
+                    closeUserBioFrom={() => {
+                      setOpenUserBioForm(false)
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div {...stylex.props(styles.aboutAndWishlistContainer)}>
@@ -93,7 +115,7 @@ export const ProfilePage = () => {
               {!userBioData && <div> No user bio data </div>}
             </div>
             <div {...stylex.props(styles.wishlistsDiv)}>
-              <h2> {testUser.name}'s Wishlists</h2>
+              <h2> {user.name}'s Wishlists</h2>
               {data && (
                 <div {...stylex.props(styles.wishlistsContainer)}>
                   <CreateWishListButton
