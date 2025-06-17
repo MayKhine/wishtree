@@ -44,6 +44,7 @@ export const makeAppRouter = ({
 
         return { success: true, user } as const
       }),
+
     loginUser: publicProcedure
       .input(
         z.object({
@@ -130,6 +131,28 @@ export const makeAppRouter = ({
           ctx.user,
         )
         if (err) throw err
+      }),
+
+    getUsers: publicProcedure
+      .use(authMiddleware(userService))
+      .input(z.object({ input: z.string() }))
+      .query(async ({ input }) => {
+        console.log("calling Get user - input:  ", input)
+        // const [err] = await wish
+        return [
+          {
+            id: "001",
+            name: "User 1",
+          },
+          {
+            id: "002",
+            name: "User 22",
+          },
+          {
+            id: "007",
+            name: "User 7",
+          },
+        ]
       }),
   })
 }

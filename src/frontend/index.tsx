@@ -26,7 +26,11 @@ root.render(
             <Route path="/wishlists" element={<WishListsPage />}></Route>
 
             <Route path="/profile" element={<ProfilePage />}></Route>
-            <Route path="/search" element={<SearchedProfilesPage />}></Route>
+            <Route
+              path="/search/:searchText"
+              element={<SearchedProfilesPage />}
+            ></Route>
+            {/* <Route path="/search" element={<SearchedProfilesPage />}></Route> */}
 
             <Route
               path="/wishlists/:wishlistid"

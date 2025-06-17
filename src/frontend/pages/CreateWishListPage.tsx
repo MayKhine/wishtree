@@ -92,38 +92,7 @@ export const CreateWishListPage = () => {
             id="description"
           />
         </div>
-        {/* <div {...stylex.props(styles.radioButtonsContainer)}>
-         
-        <div {...stylex.props(styles.radioButtonDiv)}>
-          <input
-            {...stylex.props(styles.radioButton)}
-            onChange={inputChangeHandler}
-            type="radio"
-            id="listPrivacy"
-            name="listPrivacy"
-            defaultChecked={true}
-            value="public"
-            onChangeCapture={inputChangeHandler}
-          />
-          <label {...stylex.props(styles.label)} htmlFor="listPrivacy">
-            Public
-          </label>
-        </div>
-         
-        <div {...stylex.props(styles.radioButtonDiv)}>
-          <input
-            {...stylex.props(styles.radioButton)}
-            onChange={inputChangeHandler}
-            type="radio"
-            id="listPrivacy"
-            name="listPrivacy"
-            value="private"
-          />
-          <label {...stylex.props(styles.label)} htmlFor="listPrivacy">
-            Private
-          </label>
-        </div>
-      </div> */}
+
         <div {...stylex.props(styles.buttonsContainer)}>
           <Button
             text="Cancel"
@@ -146,7 +115,7 @@ const styles = stylex.create({
     // gap: "1rem",
   },
   formContainer: {
-    backgroundColor: tokens.lightGreen,
+    backgroundColor: tokens.offWhiteGreen,
     width: "27rem",
   },
   buttonsContainer: {

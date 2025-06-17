@@ -8,11 +8,10 @@ import { Button } from "./Button"
 import { ClearPopUp } from "./ClearPopUp"
 import { DropDrownProfileMenu } from "./DropDownProfileMenu"
 import { SearchButton } from "./SearchButton"
-
 export const MenuBar = () => {
   const navigate = useNavigate()
   const { user, setUser } = useUserContext()
-
+  // const { isSuccess, mutate: getUsers } = trpc.getUsers.useMutation()
   // const testUser = {
   //   name: "Blah blah",
   //   userName: "Mbler",
@@ -26,12 +25,14 @@ export const MenuBar = () => {
 
   const [toggleDropDownMenu, setToggleDropDownMenu] = useState<boolean>(false)
   const [searchText, setSearchText] = useState("")
-  const search = () => {
-    console.log(
-      "To do : search users using the following text. if text is empty, serach all ",
-      searchText,
-    )
-  }
+  // const [search, setSearch] = useState(false)
+
+  // const { data } = trpc.getUsers.useQuery(
+  //   { input: searchText },
+  //   { enabled: search },
+  // )
+  // console.log("Searched user data: ", data)
+
   return (
     <div {...stylex.props(styles.base)}>
       <div
@@ -63,14 +64,19 @@ export const MenuBar = () => {
                 name="search"
                 onKeyDown={(event: React.KeyboardEvent<Element>) => {
                   if (event.key === "Enter") {
-                    search()
+                    // setSearch(true)
+                    navigate(`/search/${searchText}`)
                   }
                 }}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               ></input>
-
-              <SearchButton search={search} />
+              <SearchButton
+                search={() => {
+                  // setSearch(true)
+                  navigate(`/search/${searchText}`)
+                }}
+              />
             </div>
             <div
               {...stylex.props(styles.roundDiv)}
