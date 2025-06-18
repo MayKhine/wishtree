@@ -1,10 +1,11 @@
 import * as stylex from "@stylexjs/stylex"
+import { DateTime } from "luxon"
 import { useState } from "react"
 import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
 import { CreateWishListButton } from "../components/formButtons/CreateWishListButton"
-import { UserBioForm } from "../components/forms/UserBioForm"
+import { UserForm } from "../components/forms/UserForm"
 import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
 import { tokens } from "../tokens.stylex"
@@ -13,12 +14,11 @@ import { useUserContext } from "../userContext/UserContext"
 export const ProfilePage = () => {
   const { data } = trpc.getMyWishLists.useQuery()
   const { user } = useUserContext()
-  const { data: userBioData } = trpc.getLoginUserBio.useQuery(
-    {
-      loginUserId: user?.id ?? "testUserID",
-    },
-    { enabled: Boolean(user?.id) },
-  )
+
+  const userBirthday =
+    user?.birthday && typeof user.birthday === "string"
+      ? DateTime.fromISO(user.birthday).toFormat("MMMM d, yyyy")
+      : "-"
 
   const [openWishListForm, setOpenWishListForm] = useState(false)
   const closeWishListForm = () => {
@@ -55,7 +55,6 @@ export const ProfilePage = () => {
               <Button
                 text="Edit"
                 onClickFn={() => {
-                  console.log("todo: 'edit the profile")
                   setOpenUserBioForm(true)
                 }}
               />
@@ -71,7 +70,7 @@ export const ProfilePage = () => {
                       setOpenUserBioForm(false)
                     }}
                   ></PopUp>
-                  <UserBioForm
+                  <UserForm
                     closeUserBioFrom={() => {
                       setOpenUserBioForm(false)
                     }}
@@ -83,24 +82,25 @@ export const ProfilePage = () => {
           <div {...stylex.props(styles.aboutAndWishlistContainer)}>
             <div {...stylex.props(styles.userAboutMeContainer)}>
               <h2 {...stylex.props(styles.h2)}> About The USER</h2>
-              {userBioData && (
+              {user && (
                 <div {...stylex.props(styles.userAboutDataDiv)}>
                   <div>
                     <h4>Birthday</h4>
-                    {userBioData.birthday}
+                    {/* {user?.birthday?.toLocaleString() ?? "-"} */}
+                    {userBirthday}
                   </div>
                   <div>
                     <h4>About </h4>
-                    {userBioData?.about}
+                    {user?.about ?? "-"}
                   </div>
                   <div>
                     <h4>Facebook </h4>
-                    {userBioData?.facebook}
+                    {user?.facebook ?? "-"}
                   </div>
                 </div>
               )}
 
-              {!userBioData && <div> No user bio data </div>}
+              {!user && <div> No user bio data </div>}
             </div>
             <div {...stylex.props(styles.wishlistsDiv)}>
               <h2> {user.name}'s Wishlists</h2>
@@ -240,6 +240,9 @@ const styles = stylex.create({
 
   userAboutDataDiv: {
     marginTop: "1rem",
+    gap: ".5rem",
+    display: "flex",
+    flexDirection: "column",
   },
 
   wishlistsDiv: {

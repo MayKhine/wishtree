@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex"
+import { DateTime } from "luxon"
 import { useState } from "react"
 import { Button } from "../../assets/Button"
 import { stdStyles, tokens } from "../../tokens.stylex"
@@ -19,39 +20,37 @@ type UserType = {
   password: string
 }
 
-export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
+export const UserForm = ({ closeUserBioFrom }: UserBioFormProps) => {
   const { user, setUser } = useUserContext()
-  // const { data } = trpc.getLoginUserBio.useQuery(
-  //   {
-  //     loginUserId: user?.id ?? "testUserID",
-  //   },
-  //   { enabled: Boolean(user?.id) },
-  // )
 
-  const today = new Date()
-  console.log(
-    "today date",
-    today.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }),
-  )
-  console.log("USER: ", user)
+  // const today = new Date()
+  // console.log(
+  //   "today date",
+  //   today.toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "2-digit",
+  //     day: "2-digit",
+  //   }),
+  // )
+  // console.log("USER: ", user)
 
   // date format yyyy - mm - dd
   const updatedUser = {
     id: user?.id ?? "",
     name: user?.name ?? "",
     email: user?.email ?? "",
-    birthday: user?.birthday?.toFormat("yyyy-MM-dd"),
+    // birthday: user?.birthday?.toFormat("yyyy-MM-dd"),
+    birthday:
+      typeof user?.birthday === "string"
+        ? DateTime.fromISO(user.birthday).toFormat("yyyy-MM-dd")
+        : undefined,
     about: user?.about,
     facebook: user?.facebook,
     password: "",
   }
-  const [userData, setUserData] = useState<UserType>(updatedUser)
-  // const utils = trpc.useUtils()
 
+  const [userData, setUserData] = useState<UserType>(updatedUser)
+  const [error, setError] = useState("")
   const inputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -62,12 +61,13 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
 
   const { mutate: upsertLoginUser } = trpc.upsertLoginUser.useMutation({
     onSuccess: (result) => {
-      const { success, updatedUser } = result
-      console.log("success return ", updatedUser)
-      console.log("success return")
+      if (!result.success) {
+        setError(result.reason)
+      }
 
-      if (success) {
-        setUser(updatedUser!)
+      if (result.success) {
+        setUser(result.updatedUser)
+        closeUserBioFrom()
       }
     },
     onError: () => {
@@ -90,8 +90,8 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
       about: userData.about,
       facebook: userData.facebook,
     }
+
     upsertLoginUser(loginUser)
-    closeUserBioFrom()
   }
 
   return (
@@ -119,6 +119,7 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
               id="email"
               value={userData?.email}
               onChange={inputChangeHandler}
+              readOnly
             />
           </div>
 
@@ -126,11 +127,14 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
             <label aria-label="password">Password</label>
             <input
               {...stylex.props(stdStyles.input)}
-              type="text"
+              type="password"
               id="password"
               value={userData?.password}
               onChange={inputChangeHandler}
             />
+            {error.length > 0 && (
+              <div {...stylex.props(styles.errorText)}> {error}</div>
+            )}
           </div>
           <div {...stylex.props(stdStyles.inputsContainer)}>
             <label aria-label="birthday">Birthday</label>
@@ -229,5 +233,11 @@ const styles = stylex.create({
     display: "flex",
     flexDirection: "row",
     gap: "1rem",
+  },
+
+  errorText: {
+    color: "red",
+    fontSize: ".8rem",
+    fontWeight: "200",
   },
 })
