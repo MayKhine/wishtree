@@ -9,7 +9,7 @@ type UserBioFormProps = {
   closeUserBioFrom: () => void
 }
 
-type UserBioType = {
+type UserType = {
   id: string
   name: string
   email: string
@@ -20,44 +20,53 @@ type UserBioType = {
 
 export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
   const { user } = useUserContext()
-  const { data } = trpc.getLoginUserBio.useQuery(
-    {
-      loginUserId: user?.id ?? "testUserID",
-    },
-    { enabled: Boolean(user?.id) },
-  )
+  // const { data } = trpc.getLoginUserBio.useQuery(
+  //   {
+  //     loginUserId: user?.id ?? "testUserID",
+  //   },
+  //   { enabled: Boolean(user?.id) },
+  // )
 
-  const [userBioData, setUserBioData] = useState<UserBioType>(
-    data ?? {
-      id: "",
-      name: "",
-      email: "",
-      birthday: "",
-      about: "",
-      facebook: "",
-    },
+  const today = new Date()
+  console.log(
+    "today date",
+    today.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }),
   )
+  console.log("USER: ", user)
+
+  // date format yyyy - mm - dd
+  const updatedUser = {
+    id: user?.id,
+    name: user?.name,
+    email: user?.email,
+    birthday: user?.birthday?.toString() ?? "2025-01-01",
+    about: user?.about,
+    facebook: user?.facebook,
+  }
+  const [userData, setUserData] = useState<UserType>(updatedUser)
 
   const inputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setUserBioData((prevState: UserBioType) => {
+    setUserData((prevState: UserType) => {
       return { ...prevState, [event.target.id]: event.target.value }
     })
   }
 
-  const { mutate: upsertLoginUserBio } = trpc.upsertLoginUserBio.useMutation({
+  const { mutate: upsertLoginUser } = trpc.upsertLoginUser.useMutation({
     onSuccess: () => {
       // utils.getUserBioData.invalidate()
     },
   })
 
   const editUserBio = () => {
-    console.log("edit user biro ", userBioData)
+    console.log("edit user biro ", userData)
 
-    upsertLoginUserBio({
-      loginUserId: userBioData.id,
-    })
+    // upsertLoginUser({  })
     closeUserBioFrom()
   }
 
@@ -74,7 +83,7 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
               {...stylex.props(stdStyles.input)}
               type="text"
               id="name"
-              value={userBioData?.name}
+              value={userData?.name}
               onChange={inputChangeHandler}
             />
           </div>
@@ -84,7 +93,7 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
               {...stylex.props(stdStyles.input)}
               type="date"
               id="birthday"
-              value={userBioData?.birthday}
+              value={userData?.birthday}
               onChange={inputChangeHandler}
             />
           </div>
@@ -94,7 +103,7 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
               {...stylex.props(stdStyles.input)}
               type="text"
               id="about"
-              value={userBioData?.about}
+              value={userData?.about}
               onChange={inputChangeHandler}
             />
           </div>
@@ -104,7 +113,7 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
               {...stylex.props(stdStyles.input)}
               type="text"
               id="facebook"
-              value={userBioData?.facebook}
+              value={userData?.facebook}
               onChange={inputChangeHandler}
             />
           </div>

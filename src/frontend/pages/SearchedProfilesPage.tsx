@@ -6,37 +6,11 @@ import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 export const SearchedProfilesPage = () => {
   const { searchText } = useParams<{ searchText: string }>()
-  console.log("search text: ", searchText)
   const searchKeyword = searchText ?? "all"
   const { data } = trpc.getUsers.useQuery(
     { input: searchKeyword },
     { enabled: Boolean(searchKeyword) },
   )
-
-  console.log("Searched user data: ", data)
-
-  // const testSearchResult = [
-  //   {
-  //     name: "May Blah blah",
-  //     userName: "Mbler",
-  //     birthday: "12/12/1995",
-  //     bio: "test bio for test user",
-  //     facebook: "facebook.com/test",
-  //     numOfLists: "2",
-  //     numOfFollowers: "0",
-  //     numOfFollowings: "0",
-  //   },
-  //   {
-  //     name: "May Blah blah",
-  //     userName: "Mbler",
-  //     birthday: "12/12/1995",
-  //     bio: "test bio for test user",
-  //     facebook: "facebook.com/test",
-  //     numOfLists: "2",
-  //     numOfFollowers: "0",
-  //     numOfFollowings: "0",
-  //   },
-  // ]
 
   return (
     <div>

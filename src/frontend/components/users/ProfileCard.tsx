@@ -2,7 +2,7 @@ import * as stylex from "@stylexjs/stylex"
 import { tokens } from "../../tokens.stylex"
 
 type ProfileCardProps = {
-  data: any
+  data: { name: string; id: string }
 }
 export const ProfileCard = ({ data }: ProfileCardProps) => {
   return (

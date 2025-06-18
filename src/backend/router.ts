@@ -23,6 +23,8 @@ export const makeAppRouter = ({
           email: z.string(),
           birthday: LuxonDateTimeSchema.optional(),
           password: z.string(),
+          about: z.string().optional(),
+          facebook: z.string().optional(),
         }),
       )
       .mutation(async ({ input, ctx }) => {
@@ -77,6 +79,37 @@ export const makeAppRouter = ({
         return { success: true, user } as const
       }),
 
+    upsertLoginUser: publicProcedure
+      .use(authMiddleware(userService))
+      .input(
+        z.object({
+          id: z.string(),
+          email: z.string(),
+          password: z.string(),
+          birthday: LuxonDateTimeSchema.optional(),
+          name: z.string(),
+          about: z.string().optional(),
+          facebook: z.string().optional(),
+        }),
+      )
+      .mutation(async ({ input }) => {
+        console.log("Test 1 - upsert login user")
+        const { email, password } = input
+        const [err] = await userService.login(email, password)
+        if (err === "NotFound") {
+          return { success: false, reason: "UserNotFound" } as const
+        }
+        if (err === "InvalidPassword") {
+          return { success: false, reason: "InvalidPassword" } as const
+        }
+        if (err) throw err
+
+        console.log(" Test 2 - start on upsert log in user ")
+        const user = await userService.upsertLoginUser(input)
+
+        return { success: true, user } as const
+      }),
+
     getLoginUserBio: publicProcedure
       .use(authMiddleware(userService))
       .input(z.object({ loginUserId: z.string() }))
@@ -92,20 +125,20 @@ export const makeAppRouter = ({
         }
       }),
 
-    upsertLoginUserBio: publicProcedure
-      .use(authMiddleware(userService))
-      .input(z.object({ loginUserId: z.string() }))
-      .mutation(async ({ input }) => {
-        console.log("Edit login user input:", input)
-        return {
-          id: input,
-          name: "test name",
-          email: "test email",
-          birthday: "1995-01-25",
-          about: "Edited blah blah bio",
-          facebook: "facebook.com/test_name",
-        }
-      }),
+    // upsertLoginUserBio: publicProcedure
+    //   .use(authMiddleware(userService))
+    //   .input(z.object({ loginUserId: z.string() }))
+    //   .mutation(async ({ input }) => {
+    //     console.log("Edit login user input:", input)
+    //     return {
+    //       id: input,
+    //       name: "test name",
+    //       email: "test email",
+    //       birthday: "1995-01-25",
+    //       about: "Edited blah blah bio",
+    //       facebook: "facebook.com/test_name",
+    //     }
+    //   }),
 
     getWishlist: publicProcedure
       .input(z.object({ wishListId: z.string() }))

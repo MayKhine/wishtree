@@ -20,17 +20,6 @@ export const ProfilePage = () => {
     { enabled: Boolean(user?.id) },
   )
 
-  // const testUser = {
-  //   name: "May Blah blah",
-  //   userName: "Mbler",
-  //   birthday: "12/12/1995",
-  //   bio: "test bio for test user",
-  //   facebook: "facebook.com/test",
-  //   numOfLists: "2",
-  //   numOfFollowers: "0",
-  //   numOfFollowings: "0",
-  // }
-
   const [openWishListForm, setOpenWishListForm] = useState(false)
   const closeWishListForm = () => {
     setOpenWishListForm(false)

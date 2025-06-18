@@ -9,4 +9,6 @@ export type User = {
   name: string
   email: string
   birthday?: DateTime
+  about?: string
+  facebook?: string
 }

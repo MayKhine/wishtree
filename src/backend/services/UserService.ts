@@ -1,5 +1,6 @@
 import { DateTime } from "luxon"
 import { v4 as uuidv4 } from "uuid"
+import { UpserUserDataRequest } from "../domain/models/UpsertUserData"
 import { User, UserPass } from "../domain/models/User"
 import { ErrorType } from "../utils/tryCatch"
 
@@ -97,10 +98,30 @@ export const makeUserService = (
     return [null, user]
   }
 
+  const upsertLoginUser = async (upsertRequest: UpserUserDataRequest) => {
+    console.log(
+      "test 3, upsert log in user ",
+      upsertRequest.email,
+      upsertRequest.birthday,
+    )
+
+    const [error, passwordHash] = await authAdapter.hash(upsertRequest.password)
+    if (error) {
+      return [error, null] as const
+    }
+
+    await userRepository.saveUser({
+      ...upsertRequest,
+      passwordHash,
+    })
+    return [null, "success ??"] as const
+  }
+
   return {
     createUser,
     login,
     authenticate,
+    upsertLoginUser,
   }
 }
 
@@ -110,6 +131,8 @@ export type CreateUserInput = {
   name: string
   email: string
   birthday?: DateTime
+  about?: string
+  facebook?: string
   password: string
 }
 

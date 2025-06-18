@@ -14,27 +14,34 @@ export const makeSqliteUserRepository = (
     name: string
     email: string
     birthday: string | null
+    about: string | null
+    facebook: string | null
     passwordHash: string
   }
 
   const toDbUserTruely = (user: UserPass): DbUserTruely => ({
     ...user,
     birthday: user?.birthday?.toISODate() ?? null,
+    about: user?.about ?? null,
+    facebook: user?.facebook ?? null,
   })
 
   const fromDbUserTruely = (user: DbUserTruely): UserPass => ({
     ...user,
     birthday: user.birthday ? DateTime.fromISO(user.birthday) : undefined,
+    about: user.about ?? "",
+    facebook: user.facebook ?? "",
   })
 
   const saveUser = async (user: UserPass) => {
-    const { id, name, email, birthday, passwordHash } = toDbUserTruely(user)
+    const { id, name, email, birthday, about, facebook, passwordHash } =
+      toDbUserTruely(user)
     await sqliteConnection.run(
       sql`
       INSERT INTO user 
-        (id, name, email, birthday, passwordHash) 
+        (id, name, email, birthday, passwordHash, about, facebook) 
       VALUES 
-        (${id}, ${name}, ${email}, ${birthday}, ${passwordHash})`,
+        (${id}, ${name}, ${email}, ${birthday} ,${about} , ${facebook}, ${passwordHash} )`,
     )
   }
 
@@ -72,33 +79,33 @@ export const makeSqliteUserRepository = (
     return [null, user] as const
   }
 
-  const getUserBy = async (
-    params: { type: "email"; value: string } | { type: "id"; value: string },
-  ) => {
-    let condition = sql``
-    switch (params.type) {
-      case "email": {
-        condition = sql`id = ${params.value}`
-        break
-      }
-      case "id": {
-        condition = sql`email = ${params.value}`
-        break
-      }
-    }
+  // const getUserBy = async (
+  //   params: { type: "email"; value: string } | { type: "id"; value: string },
+  // ) => {
+  //   let condition = sql``
+  //   switch (params.type) {
+  //     case "email": {
+  //       condition = sql`id = ${params.value}`
+  //       break
+  //     }
+  //     case "id": {
+  //       condition = sql`email = ${params.value}`
+  //       break
+  //     }
+  //   }
 
-    const [dbUser] = await sqliteConnection.all<DbUserTruely>(sql`
-      SELECT *
-      FROM users
-      WHERE ${condition}
-    `)
-    if (!dbUser) {
-      return ["NotFound", null] as const
-    }
+  //   const [dbUser] = await sqliteConnection.all<DbUserTruely>(sql`
+  //     SELECT *
+  //     FROM users
+  //     WHERE ${condition}
+  //   `)
+  //   if (!dbUser) {
+  //     return ["NotFound", null] as const
+  //   }
 
-    const user = fromDbUserTruely(dbUser)
-    return [null, user] as const
-  }
+  //   const user = fromDbUserTruely(dbUser)
+  //   return [null, user] as const
+  // }
 
   return {
     saveUser,
