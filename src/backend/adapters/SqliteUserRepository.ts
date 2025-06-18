@@ -36,12 +36,43 @@ export const makeSqliteUserRepository = (
   const saveUser = async (user: UserPass) => {
     const { id, name, email, birthday, about, facebook, passwordHash } =
       toDbUserTruely(user)
+
+    // console.log("Test 4: Save USer", id, name, about)
+
     await sqliteConnection.run(
       sql`
       INSERT INTO user 
-        (id, name, email, birthday, passwordHash, about, facebook) 
+        (id, name, email, birthday,  about, facebook, passwordHash) 
       VALUES 
         (${id}, ${name}, ${email}, ${birthday} ,${about} , ${facebook}, ${passwordHash} )`,
+    )
+  }
+
+  const updateUser = async (user: UserPass) => {
+    const { id, name, email, birthday, about, facebook, passwordHash } =
+      toDbUserTruely(user)
+
+    console.log("Test 4: Save USer", id, name, about)
+
+    await sqliteConnection.run(
+      // sql`
+      // UPDATE user SET
+      //   (id, name, email, birthday,  about, facebook, passwordHash)
+      // VALUES
+      //   (${id}, ${name}, ${email}, ${birthday} ,${about} , ${facebook}, ${passwordHash} )
+      // WHERE
+      //    id = ${id}`,
+
+      sql`
+    UPDATE user SET 
+      name = ${name},
+      email = ${email},
+      birthday = ${birthday},
+      about = ${about},
+      facebook = ${facebook},
+      passwordHash = ${passwordHash}
+    WHERE id = ${id}
+  `,
     )
   }
 
@@ -111,6 +142,7 @@ export const makeSqliteUserRepository = (
     saveUser,
     getUser,
     getUserByEmail,
+    updateUser,
     // getUserBy,
   }
 }

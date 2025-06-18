@@ -10,6 +10,8 @@ export const migration = {
         name TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE,
         birthday DATE,
+        about TEXT, 
+        facebook TEXT,
         passwordHash TEXT NOT NULL
       );
     `)

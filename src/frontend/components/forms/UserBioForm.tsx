@@ -16,10 +16,11 @@ type UserType = {
   birthday?: string
   about?: string
   facebook?: string
+  password: string
 }
 
 export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
-  const { user } = useUserContext()
+  const { user, setUser } = useUserContext()
   // const { data } = trpc.getLoginUserBio.useQuery(
   //   {
   //     loginUserId: user?.id ?? "testUserID",
@@ -40,14 +41,16 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
 
   // date format yyyy - mm - dd
   const updatedUser = {
-    id: user?.id,
-    name: user?.name,
-    email: user?.email,
-    birthday: user?.birthday?.toString() ?? "2025-01-01",
+    id: user?.id ?? "",
+    name: user?.name ?? "",
+    email: user?.email ?? "",
+    birthday: user?.birthday?.toFormat("yyyy-MM-dd"),
     about: user?.about,
     facebook: user?.facebook,
+    password: "",
   }
   const [userData, setUserData] = useState<UserType>(updatedUser)
+  // const utils = trpc.useUtils()
 
   const inputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -58,15 +61,37 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
   }
 
   const { mutate: upsertLoginUser } = trpc.upsertLoginUser.useMutation({
-    onSuccess: () => {
-      // utils.getUserBioData.invalidate()
+    onSuccess: (data) => {
+      console.log("success return ")
+      console.log("success return")
+
+      if (data?.updatedUser) {
+        setUser(data.updatedUser)
+      }
+
+      // utils.getUser.invalidate()
+    },
+    onError: () => {
+      console.log("Error return")
+    },
+    onMutate: () => {
+      console.log("on Mutate")
     },
   })
 
   const editUserBio = () => {
     console.log("edit user biro ", userData)
 
-    // upsertLoginUser({  })
+    const loginUser = {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+      birthday: userData.birthday,
+      about: userData.about,
+      facebook: userData.facebook,
+    }
+    upsertLoginUser(loginUser)
     closeUserBioFrom()
   }
 
@@ -84,6 +109,27 @@ export const UserBioForm = ({ closeUserBioFrom }: UserBioFormProps) => {
               type="text"
               id="name"
               value={userData?.name}
+              onChange={inputChangeHandler}
+            />
+          </div>
+          <div {...stylex.props(stdStyles.inputsContainer)}>
+            <label aria-label="email">Email</label>
+            <input
+              {...stylex.props(stdStyles.input)}
+              type="text"
+              id="email"
+              value={userData?.email}
+              onChange={inputChangeHandler}
+            />
+          </div>
+
+          <div {...stylex.props(stdStyles.inputsContainer)}>
+            <label aria-label="password">Password</label>
+            <input
+              {...stylex.props(stdStyles.input)}
+              type="text"
+              id="password"
+              value={userData?.password}
               onChange={inputChangeHandler}
             />
           </div>

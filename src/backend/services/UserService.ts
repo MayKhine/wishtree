@@ -98,7 +98,10 @@ export const makeUserService = (
     return [null, user]
   }
 
-  const upsertLoginUser = async (upsertRequest: UpserUserDataRequest) => {
+  const upsertLoginUser = async (
+    upsertRequest: UpserUserDataRequest,
+    user: User | undefined,
+  ) => {
     console.log(
       "test 3, upsert log in user ",
       upsertRequest.email,
@@ -110,11 +113,26 @@ export const makeUserService = (
       return [error, null] as const
     }
 
-    await userRepository.saveUser({
-      ...upsertRequest,
-      passwordHash,
-    })
-    return [null, "success ??"] as const
+    const updatedUser = {
+      id: upsertRequest.id,
+      name: upsertRequest.name,
+      email: upsertRequest.email,
+      birthday: upsertRequest.birthday,
+      about: upsertRequest.about,
+      facebook: upsertRequest.facebook,
+    }
+    try {
+      await userRepository.updateUser({
+        ...updatedUser,
+        passwordHash,
+      })
+      console.log("User saved successfully")
+    } catch (e) {
+      console.error("Error saving user:", e)
+      return [e, null] as const
+    }
+
+    return { success: true, updatedUser } as const
   }
 
   return {
@@ -138,6 +156,7 @@ export type CreateUserInput = {
 
 export type UserRepository = {
   saveUser(user: UserPass): Promise<void>
+  updateUser(user: UserPass): Promise<void>
   getUser(id: string): Promise<ErrorType<UserPass, "NotFound" | Error>>
   getUserByEmail(
     email: string,

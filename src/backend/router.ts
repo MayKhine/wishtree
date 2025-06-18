@@ -84,15 +84,15 @@ export const makeAppRouter = ({
       .input(
         z.object({
           id: z.string(),
+          name: z.string(),
           email: z.string(),
           password: z.string(),
           birthday: LuxonDateTimeSchema.optional(),
-          name: z.string(),
           about: z.string().optional(),
           facebook: z.string().optional(),
         }),
       )
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
         console.log("Test 1 - upsert login user")
         const { email, password } = input
         const [err] = await userService.login(email, password)
@@ -105,9 +105,12 @@ export const makeAppRouter = ({
         if (err) throw err
 
         console.log(" Test 2 - start on upsert log in user ")
-        const user = await userService.upsertLoginUser(input)
+        const [err2] = await userService.upsertLoginUser(input, ctx.user)
+        if (err2) throw err2
+        console.log("Upsert DONEEE? ")
+        // return { success: true, undefined  } as const
 
-        return { success: true, user } as const
+        return { success: true, updatedUser: ctx.user } as const
       }),
 
     getLoginUserBio: publicProcedure
