@@ -127,12 +127,11 @@ export const makeUserService = (
         passwordHash,
       })
       console.log("User saved successfully")
+      return [null, updatedUser] as const
     } catch (e) {
       console.error("Error saving user:", e)
       return [e, null] as const
     }
-
-    return { success: true, updatedUser } as const
   }
 
   return {

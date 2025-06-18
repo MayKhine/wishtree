@@ -105,12 +105,13 @@ export const makeAppRouter = ({
         if (err) throw err
 
         console.log(" Test 2 - start on upsert log in user ")
-        const [err2] = await userService.upsertLoginUser(input, ctx.user)
-        if (err2) throw err2
-        console.log("Upsert DONEEE? ")
-        // return { success: true, undefined  } as const
+        const [updateError, updatedUser] = await userService.upsertLoginUser(
+          input,
+          ctx.user,
+        )
+        if (updateError) throw updateError
 
-        return { success: true, updatedUser: ctx.user } as const
+        return { success: true, updatedUser } as const
       }),
 
     getLoginUserBio: publicProcedure
