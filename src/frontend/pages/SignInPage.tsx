@@ -23,8 +23,6 @@ export const SignInPage = () => {
     const emailParser = z.string().email()
     const isValidEmail = emailParser.safeParse(email).success
 
-    console.log("sing in is clicked")
-
     if (email.length == 0) {
       setEmailErr("Email is required. Please enter your email. ")
     }
@@ -35,27 +33,16 @@ export const SignInPage = () => {
       }
     }
 
-    // if (psw.length <= 5) {
-    //   setPswErr("Password is too short. It must be at least 5 characters long.")
-    // }
-
-    // if (psw.length > 20) {
-    //   setPswErr("Password is too long. It must not exceed 20 characters.")
-    // }
-
     // if (isValidEmail && psw.length > 5 && psw.length <= 20) {
     if (isValidEmail) {
       const loginResult = await login({ email, password: psw })
-      console.log("Login result : ", loginResult)
       if (loginResult.success) {
         //save the user name, email and password in local storage
-        console.log("may log did it work? login result", loginResult)
         setUser(loginResult.user)
         navigate("/profile")
       }
 
       if (!loginResult.success) {
-        console.log("TO do : show error msg ", loginResult.reason)
         setPswErr(loginResult.reason)
         return
       }
@@ -109,6 +96,11 @@ export const SignInPage = () => {
                     }
                     setPsw(event.target.value)
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key == "Enter") {
+                      signIn()
+                    }
+                  }}
                 />
                 <div {...stylex.props(styles.err)}> {pswErr}</div>
               </div>
@@ -120,7 +112,6 @@ export const SignInPage = () => {
               <div
                 {...stylex.props(styles.signup)}
                 onClick={() => {
-                  console.log("Pop up user account creation")
                   setUserAccCreation(true)
                 }}
               >

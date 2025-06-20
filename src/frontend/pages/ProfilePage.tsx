@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex"
 import { DateTime } from "luxon"
 import { useState } from "react"
+import { useParams } from "react-router-dom"
 import { Button } from "../assets/Button"
 import { MenuBar } from "../assets/MenuBar"
 import { PopUp } from "../assets/PopUp"
@@ -8,12 +9,19 @@ import { CreateWishListButton } from "../components/formButtons/CreateWishListBu
 import { UserForm } from "../components/forms/UserForm"
 import { WishListForm } from "../components/forms/WishListForm"
 import { WishList } from "../components/wishList/WishList"
+import { noSpaceLowerCase } from "../helperFunctions/stringFunctions"
 import { tokens } from "../tokens.stylex"
 import { trpc } from "../trpc"
 import { useUserContext } from "../userContext/UserContext"
 export const ProfilePage = () => {
+  // const { user: profilename } = useParams<{ user: string }>()
+
   const { data } = trpc.getMyWishLists.useQuery()
   const { user } = useUserContext()
+
+  // if (noSpaceLowerCase(profilename) == noSpaceLowerCase(user?.name)) {
+  //   console.log("user names are same")
+  // }
 
   const userBirthday =
     user?.birthday && typeof user.birthday === "string"

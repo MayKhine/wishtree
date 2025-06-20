@@ -26,6 +26,8 @@ root.render(
             <Route path="/wishlists" element={<WishListsPage />}></Route>
 
             <Route path="/profile" element={<ProfilePage />}></Route>
+            <Route path="/profile/:user" element={<ProfilePage />}></Route>
+
             <Route
               path="/search/:searchText"
               element={<SearchedProfilesPage />}
